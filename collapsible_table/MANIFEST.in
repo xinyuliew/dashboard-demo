@@ -1,0 +1,11 @@
+include collapsible_table/collapsible_table.min.js
+include collapsible_table/collapsible_table.min.js.map
+include collapsible_table/async-*.js
+include collapsible_table/async-*.js.map
+include collapsible_table/*-shared.js
+include collapsible_table/*-shared.js.map
+include collapsible_table/metadata.json
+include collapsible_table/package-info.json
+include README.md
+include LICENSE
+include package.json

@@ -1,0 +1,360 @@
+.header-description {
+    color: #CFCFCF;
+    margin: 4px auto;
+    text-align: center;
+    max-width: 384px;
+}
+
+body {
+    font-family: 'Trebuchet MS', sans-serif !important;
+    background-color: #F7F8FC !important;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 16rem;
+    padding: 2rem 1rem;
+    background-color: #363740;
+}
+
+.content {
+    margin-left: 18rem;
+    margin-right: 2rem;
+    padding: 2rem 1rem;
+}
+
+.menubar{
+    margin-left: 18rem;
+    margin-right: 2rem;
+    background-color: rgba(0,0,0,0.0) !important;
+    border-bottom: 1px solid #BBCAD2;
+    padding: 2rem 0rem;
+
+}
+
+@media (min-width: 768px) {
+    .container, .container-md, .container-sm {
+        max-width: 1920px;
+    }
+}
+
+.navbar-brand{
+    font-size: 2rem;
+    font-weight: 700;
+    color: #36485C;
+}
+
+.navbar-brand:hover{
+    color: #36485C;
+}
+
+.menubar .nav-link{
+    font-family: 'Trebuchet MS', sans-serif !important;
+    color: #36485C !important;
+    border-radius: 5px;
+
+}
+.menubar .nav-link:hover{
+    color: #36485C !important;
+    border-radius: 5px;
+    background-color: rgb(54, 72, 92, 0.1)
+
+}
+
+.profile_img{
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+.dropdown-menu{
+    font-family: 'Trebuchet MS', sans-serif !important;
+    background-color: #ffffff;
+    --bs-card-border-color: var(--bs-border-color-translucent) !important;
+    --bs-card-border-radius: var(--bs-border-radius) !important;
+    color: #36485C;
+    --bs-dropdown-link-active-bg: rgb(54, 72, 92, 0.1);
+    --bs-dropdown-link-active-color: #000000;
+}
+
+.dropdown-menu .bi{
+    padding: 0 0.5rem;
+}
+
+.display-6{
+    font-weight: 600;
+    line-height: 1.2;
+    color: #A4A6B3;
+    font-size: 2rem !important;
+    font-family: 'Trebuchet MS', sans-serif !important;
+
+}
+
+.nav-link.active{
+    --bs-nav-pills-link-active-bg:#36485C!important;
+}
+
+.nav-link:hover{
+    background-color:#36485C;
+}
+
+.nav-link{
+    --bs-nav-link-color: #FFFFFF;
+    --bs-nav-link-padding-y: 1rem;
+    --bs-nav-link-hover-color:#FFFFFF;
+    --bs-nav-link-hover-bg:#36485C;
+    font-size: 1rem;
+    margin: 1px;
+}
+
+.bi{
+    padding: 0 0.2rem;
+}
+
+.cell-table{
+    font-family: 'Trebuchet MS', sans-serif !important;
+}
+
+.card-header{
+    background-color: #FFFFFF !important; 
+    font-size: 1.2rem !important;
+    font-weight: 600 !important;
+    border-bottom: none !important;
+    padding-top: 1.5rem !important;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+}
+
+.card-body{
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+    padding-bottom: 2rem !important;
+}
+
+.row{
+    margin-bottom: 1rem;
+}
+
+
+.dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner th {
+    background-color: #FFFFFF !important;
+    font-size: 0.875rem !important;
+    color: #5F7896 !important;
+    font-weight: 600 !important;
+}
+
+.dash-cell{
+    border-width: 0 0 1px 0 !important;
+    height: 4rem !important;
+}
+
+.dash-header {
+    border-width: 0 !important;
+}
+
+.DateRangePicker{
+    font-family: 'Trebuchet MS', sans-serif !important;
+    padding-bottom: 1rem !important;
+    border-radius: 2px !important;
+}
+
+.DateInput_input {
+    font-size:  var(--bs-body-font-size) !important;
+    background-color: #FFFFFF;
+}
+.DateInput {
+    border-radius: 10px;
+}
+.DateRangePickerInput__withBorder {
+    border-radius: 10px;
+    border: 1px solid #dbdbdb;
+}
+.DateInput_input {
+    border-radius: 10px;
+}
+
+.DateInput_input {
+    border-radius: 10px;
+}
+
+.alert{
+    margin-bottom: 0 !important;
+}
+
+.form-label{
+    font-weight: 600 !important;
+}
+
+.dash-graph{
+    padding: 0 !important;
+}
+
+.Select-control{
+    font-family: 'Trebuchet MS', sans-serif !important;
+    padding: 0.375rem!important;
+    border-radius: 10px;
+    border: 1px solid #dbdbdb;
+}
+
+.css-13xy2my {
+    font-family: 'Trebuchet MS', sans-serif !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+.css-1bigob2 {
+    background-color: #FFFFFF !important;
+    font-size: 0.875rem !important;
+    color: #5F7896 !important;
+    font-weight: 600 !important;
+    padding: 2px !important;
+    border-bottom: 0 !important;
+}
+
+.css-13njpue{
+    font-family: 'Trebuchet MS', sans-serif !important;
+    color: #5F7896 !important;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    padding: 2px !important;
+    border-bottom: 0 !important;
+}
+
+.css-1o6fzn1{
+    font-family: 'Trebuchet MS', sans-serif !important;
+}
+
+.search_text{
+    background-color: rgba(0,0,0,0.0);
+    border-color: #36485C;
+    padding: 12px;
+    color: #BBCAD2;
+
+}
+
+.search_text::placeholder{
+    color: #BBCAD2;
+}
+
+.search_text:focus{
+    background-color: rgba(0,0,0,0.0);
+    border-color: #36485C;
+    color: #BBCAD2;
+}
+
+
+
+.search_icon{
+    background-color: #36485C;
+    border-color: #36485C;
+    color: #BBCAD2;
+
+}
+
+.sidebar-divider{
+    margin: 1rem 0;
+    border: 2px solid #36485C;
+    border-radius: 4px;
+}
+
+.css-1bp1ao6 {
+    width: 30% !important;
+    right: 0 !important;
+}
+.css-igs3ac{
+    border: 1px solid #5F7896 !important
+}
+
+.css-p0rm37{ 
+    font-family: 'Trebuchet MS', sans-serif !important;
+}
+
+
+.css-1chpzqh{
+    margin: 1rem 0;
+}
+
+.css-q34dxg {
+    font-family: 'Trebuchet MS', sans-serif !important;
+    border-bottom: 1px solid #004961 !important;
+}
+.css-1gqug66:hover{
+    background-color: rgba(244, 248, 250, 1);
+    border-left: 5px solid rgba(187, 202, 210, 1);
+}
+.css-1gqug66{
+    font-family: 'Trebuchet MS', sans-serif !important;
+}
+.css-hboir5{
+    font-family: 'Trebuchet MS', sans-serif !important;
+    border-bottom: 2px solid #004961 !important;
+    border-left: 2px solid #004961 !important;
+    margin-left: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 10px !important;
+}
+
+.customTable{
+    font-family: 'Trebuchet MS', sans-serif !important;
+}
+
+.css-1rs06yn{
+    font-family: 'Trebuchet MS', sans-serif !important;
+    background-color: #36485C !important;
+    padding: 16.5px 14px !important;
+    font-size: 0.875rem !important;
+}
+
+.css-1rs06yn:hover{
+    background-color: #363740!important;
+    box-shadow: none !important;
+}
+
+.css-1v4ccyo{
+    font-family: 'Trebuchet MS', sans-serif !important;
+    width: 100% !important;
+}
+
+.css-7g5oui:focus{
+    color:#36485C !important;
+}
+
+.css-1ald77x.Mui-focused{
+    font-family: 'Trebuchet MS', sans-serif !important;
+    color:#36485C !important;
+}
+
+.css-1km1ehz{
+    font-family: 'Trebuchet MS', sans-serif !important;
+    color:#36485C !important;
+    font-size: 0.875rem !important;
+}
+
+.css-1chpzqh{
+    font-family: 'Trebuchet MS', sans-serif !important;
+    color:#36485C !important;
+    font-size: 0.875rem !important;
+}
+
+.css-rmmij8{
+    font-family: 'Trebuchet MS', sans-serif !important;
+    color:#36485C !important;
+    font-size: 0.875rem !important;
+}
+
+.css-1gs62wq{
+    font-family: 'Trebuchet MS', sans-serif !important;
+    color:#36485C !important;
+    font-size: 0.875rem !important;
+}
+
+.keywords-table .dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner *, .dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner *:after, .dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner *:before{
+    text-align: left;
+}
+
+.chart{
+    font-family: 'Trebuchet MS', sans-serif !important;
+}

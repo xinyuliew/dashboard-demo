@@ -1,0 +1,5 @@
+﻿id,text,author,created_utc,No_of_comments,Subjectivity,Polarity,Sentiment,Parent,Link,Topic,Duration,Stance
+k9ao0i,First person receives Pfizer vaccine in UK ,Hebdomero,2020-12-08 19:10:13+00:00,3,0.333333333,0.25,Positive,1,k9ao0i,General about vaccine,1. Root,None
+gf4s378,Better him than me.,grizzlygadfly,2020-12-09 03:41:08+00:00,0,0.5,0.5,Positive,k9ao0i,k9ao0i,Second Dose,4. 12 Hours,None
+gf44io2,Saw the pic of the woman. So awesome.,gidiup8,2020-12-09 00:24:58+00:00,0,1,1,Positive,k9ao0i,k9ao0i,General after vaccination,3. 6 Hours,None
+gf3c7x6,Finally!!! I see a light at the end of this dark tunnel. Thanks science.,abarrien00,2020-12-08 20:49:43+00:00,0,0.575,0.1125,Positive,k9ao0i,k9ao0i,Thankful,3. 6 Hours,None

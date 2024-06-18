@@ -1,0 +1,89 @@
+{
+  "src/lib/components/ReactTable.react.js": {
+    "description": "",
+    "displayName": "ReactTable",
+    "methods": [],
+    "props": {
+      "id": {
+        "type": {
+          "name": "string"
+        },
+        "required": true,
+        "description": ""
+      },
+      "rows": {
+        "type": {
+          "name": "arrayOf",
+          "value": {
+            "name": "shape",
+            "value": {
+              "id": {
+                "name": "string",
+                "required": true
+              },
+              "date": {
+                "name": "string",
+                "required": true
+              },
+              "text": {
+                "name": "string",
+                "required": true
+              },
+              "stance": {
+                "name": "string",
+                "required": true
+              },
+              "sentiment": {
+                "name": "string",
+                "required": true
+              },
+              "num_replies": {
+                "name": "number",
+                "required": true
+              },
+              "replies": {
+                "name": "arrayOf",
+                "value": {
+                  "name": "shape",
+                  "value": {
+                    "id": {
+                      "name": "string",
+                      "required": true
+                    },
+                    "date": {
+                      "name": "string",
+                      "required": true
+                    },
+                    "text": {
+                      "name": "string",
+                      "required": true
+                    },
+                    "stance": {
+                      "name": "string",
+                      "required": true
+                    },
+                    "sentiment": {
+                      "name": "string",
+                      "required": true
+                    },
+                    "num_replies": {
+                      "name": "number",
+                      "required": true
+                    },
+                    "replies": {
+                      "name": "array",
+                      "required": false
+                    }
+                  }
+                },
+                "required": false
+              }
+            }
+          }
+        },
+        "required": true,
+        "description": ""
+      }
+    }
+  }
+}

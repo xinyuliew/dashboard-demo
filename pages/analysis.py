@@ -20,11 +20,11 @@ df = get_data()
 available_topics = df['Topic'].unique()
 
 # Load and configure spaCy model once
-nlp = spacy.load("en_core_web_sm")
-nlp.disable_pipes(["ner", "parser"])
-custom_stopwords = {'nt', 'm', 'like'}
-stopwords = nlp.Defaults.stop_words | custom_stopwords
-stopwords = {word.lower() for word in stopwords}
+# nlp = spacy.load("en_core_web_sm")
+# nlp.disable_pipes(["ner", "parser"])
+# custom_stopwords = {'nt', 'm', 'like'}
+# stopwords = nlp.Defaults.stop_words | custom_stopwords
+# stopwords = {word.lower() for word in stopwords}
 
 # Define a function to normalize text using spaCy
 def normalize_text(text):
@@ -88,7 +88,7 @@ def discourse_analysis_layout():
                     end_date=df['created_utc'].max(),
                 ),
                 html.Div(id='output-container-date-picker-range2')
-            ], width=5),
+            ], width=6),
             dbc.Col([
                 dbc.Label("Choose a topic:"),
                 html.Br(),
@@ -98,7 +98,7 @@ def discourse_analysis_layout():
                     multi=True,
                     value=[available_topics[0]]
                 )
-            ], width=5)
+            ], width=6)
         ], justify="between"),
         dbc.Row([
             dbc.Col([
@@ -111,10 +111,10 @@ def discourse_analysis_layout():
                             #  ], width=4, className="keywords-table"),
                             dbc.Col([
                                 dcc.Loading(dcc.Graph(id='stance_distribution'))
-                            ], width=6, className="chart"),
+                            ], width=6),
                             dbc.Col([
                                 dcc.Loading(dcc.Graph(id='sentiment_distribution'))
-                            ], width=6, className="chart")
+                            ], width=6)
                         ], align="center")
                     ])
                 ]),

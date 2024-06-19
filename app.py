@@ -5,7 +5,7 @@ from pages.side_bar import sidebar
 from pages.menubar import menubar
 
 
-app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP], use_pages=True, 
+app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP, ], use_pages=True, 
                 suppress_callback_exceptions=True)
 
 

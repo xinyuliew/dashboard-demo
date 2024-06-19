@@ -358,3 +358,7 @@ body {
 .chart{
     font-family: 'Trebuchet MS', sans-serif !important;
 }
+
+.DateRangePickerInput_clearDates{
+    top:36%;
+}

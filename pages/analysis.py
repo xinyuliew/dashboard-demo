@@ -106,15 +106,15 @@ def discourse_analysis_layout():
                     dbc.CardHeader("Summary"),
                     dbc.CardBody([
                         dbc.Row([
-                            dbc.Col([
-                                dcc.Loading(dash_table.DataTable(id='table_keywords'))
-                             ], width=4, className="keywords-table"),
+                            # dbc.Col([
+                            #     dcc.Loading(dash_table.DataTable(id='table_keywords'))
+                            #  ], width=4, className="keywords-table"),
                             dbc.Col([
                                 dcc.Loading(dcc.Graph(id='stance_distribution'))
-                            ], width=4, className="chart"),
+                            ], width=6, className="chart"),
                             dbc.Col([
                                 dcc.Loading(dcc.Graph(id='sentiment_distribution'))
-                            ], width=4, className="chart")
+                            ], width=6, className="chart")
                         ], align="center")
                     ])
                 ]),
@@ -140,7 +140,7 @@ layout = discourse_analysis_layout()
     Output('output-container-date-picker-range2', 'children'),
     Output('stance_distribution', 'figure'),
     Output('sentiment_distribution', 'figure'),
-    Output('table_keywords', 'data'),
+    # Output('table_keywords', 'data'),
     Output('table-container2', 'children'),
     Input('my-date-picker-range2', 'start_date'),
     Input('my-date-picker-range2', 'end_date'),
@@ -181,18 +181,18 @@ def update_output(start_date, end_date, value):
         selected_df = pd.concat([selected_root_posts, other_posts])
         
         # Normalize each row in the DataFrame and concatenate the results
-        normalized_text = selected_df['text'].apply(normalize_text)
+        # normalized_text = selected_df['text'].apply(normalize_text)
 
         # Flatten the list of lists
-        all_normalized_tokens = [token for sublist in normalized_text for token in sublist]
+        # all_normalized_tokens = [token for sublist in normalized_text for token in sublist]
 
         # Use Counter to get the 10 most common words
-        word_counter = Counter(all_normalized_tokens)
+        # word_counter = Counter(all_normalized_tokens)
 
         # Get the most common words and frequencies
-        most_common_words = word_counter.most_common(7)
+        # most_common_words = word_counter.most_common(7)
         # Convert to Pandas DataFrame
-        key_df = pd.DataFrame(most_common_words, columns=['Word', 'Frequency'])
+        # key_df = pd.DataFrame(most_common_words, columns=['Word', 'Frequency'])
 
         # Group by 'Stance' and count occurrences
         stance_counts = selected_df['Stance'].value_counts().reset_index()
@@ -213,7 +213,7 @@ def update_output(start_date, end_date, value):
         df_comments = selected_df[selected_df['Parent'] != '1']
 
         rows = create_rows(df_root, df_comments)
-        return dbc.Alert(date_selection_string), stance_chart, sentiment_chart, key_df.to_dict('records'), html.Div(collapsible_table.ReactTable(id='table-container2', rows=rows), className="table-discourse")
+        return dbc.Alert(date_selection_string), stance_chart, sentiment_chart, html.Div(collapsible_table.ReactTable(id='table-container2', rows=rows), className="table-discourse")
     else:
         return dbc.Alert(date_selection_string, color="danger"), None, None, None, None
   

@@ -212,18 +212,25 @@ def update_output(start_date, end_date, value):
         stance_proportions['Proportion'] = (stance_proportions['Count'] / stance_proportions['Count'].sum()) * 100
     
         # Create the bar chart with proportions
-        stance_chart = px.bar(stance_proportions, x='Proportion', y='Stance', color='Stance')
+        stance_chart = px.bar(stance_proportions, x='Proportion', y='Stance', color='Stance', color_discrete_map={
+                         'Against': '#FF6F6F',
+                         'Favor': '#6FDF6F',
+                         'None': '#C0C0C0'
+                     })
 
         # Update layout with axis titles and custom x-axis range
         stance_chart.update_layout(
-            xaxis_title="Percentage of Stances",  # Title for the x-axis
+            xaxis_title="Percentage Proportions (%)",  # Title for the x-axis
             yaxis_title="Stance Category",  # Title for the y-axis
             showlegend=False,  # Remove legend title
             modebar=dict(
                 remove=['lasso2d', 'select2d', 'reset', 'hover', 'zoom', 'autoscale'],  # Remove Lasso and Box Select
             ),
-            margin=dict(l=5, r=5),  # Small adjustment to bottom margin
-            height=300,
+            xaxis=dict(
+                range=[0, 100]  # Custom range for the x-axis (0 to 100%)
+            ),
+            margin=dict(l=5, r=5, t=0, b=0),  # Small adjustment to bottom margin
+            height=200,
             font=dict(
                 family="Trebuchet MS, sans-serif",
                 size=14,
@@ -237,7 +244,11 @@ def update_output(start_date, end_date, value):
         sentiment_proportions = sentiment_counts.copy()
         sentiment_proportions['Proportion'] = (sentiment_proportions['Count'] / sentiment_proportions['Count'].sum()) * 100
 
-        sentiment_chart = px.bar(sentiment_proportions, x='Proportion', y='Sentiment', color='Sentiment')
+        sentiment_chart = px.bar(sentiment_proportions, x='Proportion', y='Sentiment', color='Sentiment', color_discrete_map={
+                'Positive': '#4CAF50',
+                'Negative': '#F44336',
+                'Neutral': '#9E9E9E'
+        })
 
         sentiment_chart.update_layout(
             xaxis_title="Percentage Proportions (%)",  # Title for the x-axis
@@ -246,8 +257,11 @@ def update_output(start_date, end_date, value):
             modebar=dict(
                 remove=['lasso2d', 'select2d', 'reset', 'hover', 'zoom', 'autoscale'],  # Remove Lasso and Box Select
             ),
-            margin=dict(l=5, r=5),  # Small adjustment to bottom margin
-            height = 300,
+            xaxis=dict(
+                range=[0, 100]  # Custom range for the x-axis (0 to 100%)
+            ),
+            margin=dict(l=5, r=5, t=0, b=0),  # Small adjustment to bottom margin
+            height = 200,
             font=dict(
             family="Trebuchet MS, sans-serif",
             size=14,

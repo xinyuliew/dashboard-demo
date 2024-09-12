@@ -16,8 +16,10 @@ from pages.analysis import discourse_analysis_layout
 
 dash.page_container = html.Div()
 
-app.layout = html.Div([dcc.Location(id="url", refresh=False), 
-                       sidebar(),  
+app.layout = html.Div([dcc.Location(id="url", refresh=False),                         
+                       
+                       sidebar(),
+                        
                        html.Div(id="menubar-content"),  # Div for menubar
  
                        html.Div(id="page-content"), dash.page_container])

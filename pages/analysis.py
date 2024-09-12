@@ -20,11 +20,11 @@ df = get_data()
 available_topics = df['Topic'].unique()
 
 # Load and configure spaCy model once
-nlp = spacy.load("en_core_web_sm")
-nlp.disable_pipes(["ner", "parser"])
-custom_stopwords = {'nt', 'm', 'like'}
-stopwords = nlp.Defaults.stop_words | custom_stopwords
-stopwords = {word.lower() for word in stopwords}
+# nlp = spacy.load("en_core_web_sm")
+# nlp.disable_pipes(["ner", "parser"])
+# custom_stopwords = {'nt', 'm', 'like'}
+# stopwords = nlp.Defaults.stop_words | custom_stopwords
+# stopwords = {word.lower() for word in stopwords}
 
 # Define a function to normalize text using spaCy
 def normalize_text(text):
@@ -87,8 +87,7 @@ def discourse_analysis_layout():
                     start_date=df['created_utc'].min(),
                     end_date=df['created_utc'].max(),
                 ),
-                html.Div(id='output-container-date-picker-range2')
-            ], width=5),
+            ], xs=12, sm=12, md=12, lg=6, className="p-2"),
             dbc.Col([
                 dbc.Label("Choose a topic:"),
                 html.Br(),
@@ -98,24 +97,25 @@ def discourse_analysis_layout():
                     multi=True,
                     value=[available_topics[0]]
                 )
-            ], width=5)
-        ], justify="between"),
+            ], xs=12, sm=12, md=12, lg=6, className="p-2"),
+            html.Div(id='output-container-date-picker-range2')
+        ], className="g-2", justify="between"),
         dbc.Row([
             dbc.Col([
                 dbc.Card([
                     dbc.CardHeader("Summary"),
                     dbc.CardBody([
                         dbc.Row([
-                            dbc.Col([
-                                dcc.Loading(dash_table.DataTable(id='table_keywords'))
-                             ], width=4, className="keywords-table"),
+                            # dbc.Col([
+                            #     dcc.Loading(dash_table.DataTable(id='table_keywords'))
+                            #  ], width=4, className="keywords-table"),
                             dbc.Col([
                                 dcc.Loading(dcc.Graph(id='stance_distribution'))
-                            ], width=4, className="chart"),
+                            ], xs=12, sm=12, md=6),
                             dbc.Col([
                                 dcc.Loading(dcc.Graph(id='sentiment_distribution'))
-                            ], width=4, className="chart")
-                        ], align="center")
+                            ], xs=12, sm=12, md=12, lg=6, className="p-2")
+                        ], className="g-2", align="center")
                     ])
                 ]),
             ], width=12),
@@ -140,7 +140,7 @@ layout = discourse_analysis_layout()
     Output('output-container-date-picker-range2', 'children'),
     Output('stance_distribution', 'figure'),
     Output('sentiment_distribution', 'figure'),
-    Output('table_keywords', 'data'),
+    # Output('table_keywords', 'data'),
     Output('table-container2', 'children'),
     Input('my-date-picker-range2', 'start_date'),
     Input('my-date-picker-range2', 'end_date'),
@@ -181,39 +181,84 @@ def update_output(start_date, end_date, value):
         selected_df = pd.concat([selected_root_posts, other_posts])
         
         # Normalize each row in the DataFrame and concatenate the results
-        normalized_text = selected_df['text'].apply(normalize_text)
+        # normalized_text = selected_df['text'].apply(normalize_text)
 
         # Flatten the list of lists
-        all_normalized_tokens = [token for sublist in normalized_text for token in sublist]
+        # all_normalized_tokens = [token for sublist in normalized_text for token in sublist]
 
         # Use Counter to get the 10 most common words
-        word_counter = Counter(all_normalized_tokens)
+        # word_counter = Counter(all_normalized_tokens)
 
         # Get the most common words and frequencies
-        most_common_words = word_counter.most_common(7)
+        # most_common_words = word_counter.most_common(7)
         # Convert to Pandas DataFrame
-        key_df = pd.DataFrame(most_common_words, columns=['Word', 'Frequency'])
+        # key_df = pd.DataFrame(most_common_words, columns=['Word', 'Frequency'])
 
         # Group by 'Stance' and count occurrences
         stance_counts = selected_df['Stance'].value_counts().reset_index()
         stance_counts.columns = ['Stance', 'Count']
-        stance_chart = px.bar(stance_counts, x='Count', y='Stance', color='Stance', title='Stance Distribution',
-                              color_discrete_map={'Favor': '#BFD1D9', 'None': '#DFE8EC', 'Against': '#5F8CA0'})
-        stance_chart = update_figure_style(stance_chart)
+        # If proportions are needed, calculate them (this step can be optional)
+        stance_proportions = stance_counts.copy()
+        stance_proportions['Proportion'] = (stance_proportions['Count'] / stance_proportions['Count'].sum()) * 100
 
+        stance_chart = px.bar(stance_proportions, x='Proportion', y='Stance', color='Stance', title='Stance Distribution',)
+        stance_chart = update_figure_style(stance_chart)
+        stance_chart.update_layout(
+            legend=dict(
+                orientation="h",  # Horizontal legend
+                yanchor="bottom",  # Position legend at the bottom
+                y=1.05,  # Slightly above the chart
+                xanchor="center",  # Center horizontally
+                x=0.45  # Center horizontally
+            ),
+            legend_title_text=None,  # Remove legend title
+            modebar=dict(
+                remove=['lasso2d', 'select2d', 'reset', 'hover', 'zoom', 'autoscale'],  # Remove Lasso and Box Select
+            ),
+            margin=dict(l=5, r=5),  # Small adjustment to bottom margin
+            height = 300,
+            font=dict(
+            family="Trebuchet MS, sans-serif",
+            size=14,
+            color="Black")
+            )
+        
         # Group by 'Sentiment' and count occurrences
         sentiment_counts = selected_df['Sentiment'].value_counts().reset_index()
         sentiment_counts.columns = ['Sentiment', 'Count']
-        sentiment_chart = px.bar(sentiment_counts, x='Count', y='Sentiment', color='Sentiment', title='Sentiment Distribution',
-                                 color_discrete_map={'Positive': '#BFD1D9', 'Neutral': '#DFE8EC', 'Negative': '#5F8CA0'})
+        sentiment_proportions = sentiment_counts.copy()
+        sentiment_proportions['Proportion'] = (sentiment_proportions['Count'] / sentiment_proportions['Count'].sum()) * 100
+
+        sentiment_chart = px.bar(sentiment_proportions, x='Proportion', y='Sentiment', color='Sentiment', title='Sentiment Distribution',)
         sentiment_chart = update_figure_style(sentiment_chart)
+
+        sentiment_chart.update_layout(
+            legend=dict(
+                orientation="h",  # Horizontal legend
+                yanchor="bottom",  # Position legend at the bottom
+                y=1.05,  # Slightly above the chart
+                xanchor="center",  # Center horizontally
+                x=0.45  # Center horizontally
+            ),
+            legend_title_text=None,  # Remove legend title
+            modebar=dict(
+                remove=['lasso2d', 'select2d', 'reset', 'hover', 'zoom', 'autoscale'],  # Remove Lasso and Box Select
+            ),
+            margin=dict(l=5, r=5),  # Small adjustment to bottom margin
+            height = 300,
+            font=dict(
+            family="Trebuchet MS, sans-serif",
+            size=14,
+            color="Black")
+            )
+        
         # Put every data in selected_df that their "parent" is 1 into df_root
         df_root = selected_df[selected_df['Parent'] == '1']
         # Put every data in selected_df that their "parent" is not 1 into df_comments
         df_comments = selected_df[selected_df['Parent'] != '1']
 
         rows = create_rows(df_root, df_comments)
-        return dbc.Alert(date_selection_string), stance_chart, sentiment_chart, key_df.to_dict('records'), html.Div(collapsible_table.ReactTable(id='table-container2', rows=rows), className="table-discourse")
+        return dbc.Alert(date_selection_string), stance_chart, sentiment_chart, html.Div(collapsible_table.ReactTable(id='table-container2', rows=rows), className="table-discourse")
     else:
         return dbc.Alert(date_selection_string, color="danger"), None, None, None, None
   

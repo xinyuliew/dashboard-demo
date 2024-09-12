@@ -6,7 +6,7 @@ import dash_bootstrap_components as dbc
 def sidebar():
     return html.Div(
     [
-        html.H2([html.I(className="bi bi-clipboard-data"), "   Dashboard"], className="display-6"),
+        html.H2( "DiscourseDash", className="display-6"),
         html.Hr(className="sidebar-divider"),
         dbc.InputGroup(
                 [

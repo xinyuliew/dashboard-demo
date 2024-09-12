@@ -5,34 +5,47 @@
     max-width: 384px;
 }
 
+/* Body styles */
 body {
     font-family: 'Trebuchet MS', sans-serif !important;
     background-color: #F7F8FC !important;
 }
 
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 16rem;
-    padding: 2rem 1rem;
-    background-color: #363740;
-}
-
+/* Main content area styles */
 .content {
-    margin-left: 18rem;
+    margin-left: 18rem; /* Default margin for expanded sidebar */
     margin-right: 2rem;
     padding: 2rem 1rem;
+    transition: margin-left 0.3s; /* Smooth transition for margin change */
 }
 
-.menubar{
-    margin-left: 18rem;
+/* Menubar styles */
+.menubar {
+    margin-left: 18rem; /* Default margin for expanded sidebar */
     margin-right: 2rem;
     background-color: rgba(0,0,0,0.0) !important;
     border-bottom: 1px solid #BBCAD2;
     padding: 2rem 0rem;
+    transition: margin-left 0.3s; /* Smooth transition for margin change */
+}
 
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .content {
+        margin: 0; /* No offset on small screens */
+    }
+    .menubar {
+        margin: 0; /* No offset on small screens */
+    }
+    .nav-bar {    
+        padding: 0;
+    }
+}
+
+@media (min-width: 576px) {
+    .container, .container-sm{
+        padding: 0;
+    }
 }
 
 @media (min-width: 768px) {
@@ -357,4 +370,119 @@ body {
 
 .chart{
     font-family: 'Trebuchet MS', sans-serif !important;
+}
+
+.DateRangePickerInput_clearDates{
+    top:36%;
+}
+
+/* Original sidebar styles */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 16rem;
+    padding: 2rem 1rem;
+    background-color: #363740;
+    transition: width 0.3s; /* Smooth transition for width change */
+}
+
+/* Sidebar collapse style */
+.sidebar.collapsed {
+    width: 4rem; /* Collapsed width */
+    overflow: hidden; /* Hide overflow when collapsed */
+    padding: 1rem 0.5rem; /* Adjust padding for collapsed state */
+}
+
+/* Style for sidebar links */
+.sidebar .nav-link {
+    color: white; /* Text color */
+}
+
+/* Active link style */
+.sidebar .nav-link.active {
+    background-color: #36485C; /* Highlight active link */
+    color: white; /* Text color for active link */
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%; /* Full width on small screens */
+        position: relative; /* Change to relative positioning */
+        height: auto; /* Adjust height for small screens */
+    }
+
+    .sidebar.collapsed {
+        width: 100%; /* Full width on small screens when collapsed */
+    }
+}
+
+/* Main content area adjustment */
+.main-content {
+    margin-left: 16rem; /* Offset for sidebar */
+    transition: margin-left 0.3s; /* Smooth transition for margin change */
+}
+
+/* Adjust content margin when sidebar is collapsed */
+.main-content.sidebar-collapsed {
+    margin-left: 4rem; /* Adjust margin for collapsed sidebar */
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0; /* No offset on small screens */
+    }
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .card {
+        width: 100%; /* Full width on small screens */
+        margin-left: 0; /* Remove left margin */
+        margin-right: 0; /* Remove right margin */
+    }
+}
+
+.dash-graph {
+    margin:0;
+}
+
+/* Adjust font size based on screen width */
+@media (min-width: 475px) {
+    .dash-graph {
+        font-size: 18px;
+    }
+}
+
+@media (min-width: 768px) {
+    .dash-graph {
+        font-size: 20px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .dash-graph {
+        font-size: 30px !important;
+    }
+}
+
+.graph-wrapper {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px; /* Optional padding for spacing */
+}
+
+/* Responsive adjustments */
+@media (min-width: 475px) {
+    .graph-wrapper {
+        padding: 20px;
+    }
+}
+
+@media (min-width: 768px) {
+    .graph-wrapper {
+        padding: 30px;
+    }
 }

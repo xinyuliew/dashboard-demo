@@ -5,7 +5,7 @@ from pages.side_bar import sidebar
 from pages.menubar import menubar
 
 
-app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP], use_pages=True, 
+app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP, ], use_pages=True, 
                 suppress_callback_exceptions=True)
 
 
@@ -16,8 +16,10 @@ from pages.analysis import discourse_analysis_layout
 
 dash.page_container = html.Div()
 
-app.layout = html.Div([dcc.Location(id="url", refresh=False), 
-                       sidebar(),  
+app.layout = html.Div([dcc.Location(id="url", refresh=False),                         
+                       
+                       sidebar(),
+                        
                        html.Div(id="menubar-content"),  # Div for menubar
  
                        html.Div(id="page-content"), dash.page_container])

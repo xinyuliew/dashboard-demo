@@ -7,6 +7,7 @@ import dash_bootstrap_components as dbc
 from utils import get_data
 from utils import update_figure_style
 dash.register_page(__name__, path='/')
+import plotly.graph_objects as go
 
 
 df = get_data()
@@ -19,29 +20,33 @@ def overview_layout():
                         html.Br(),
                         dcc.DatePickerRange(
                             id='my-date-picker-range',
+                            clearable=True,
+                            display_format="DD-MM-YY",
                             min_date_allowed=df['created_utc'].min(),
                             max_date_allowed=df['created_utc'].max(),
                             initial_visible_month=df['created_utc'].max(),
                             start_date=df['created_utc'].min(),
                             end_date=df['created_utc'].max(),
                         ),
-                        html.Div(id='output-container-date-picker-range')
-                    ], width=5),
+                    ], xs=12, sm=12, md=12, lg=6, className="p-2"),
                     dbc.Col([
                         dbc.Label("Filter number of topics:"),
                         html.Br(),
                         dbc.RadioItems(
                             id='num-topics-slider',
                             options=[
+                                {"label": "1", "value": 1},
+                                {"label": "2", "value": 2},
+                                {"label": "3", "value": 3},
+                                {"label": "4", "value": 4},
                                 {"label": "5", "value": 5},
-                                {"label": "10", "value": 10},
-                                {"label": "15", "value": 15},
                             ],
                             value=5,
                             inline=True
                         ),   
-                    ], width=2)
-                ], justify="between"),
+                    ], xs=12, sm=12, md=12, lg=6, className="p-2"),
+                    html.Div(id='output-container-date-picker-range')
+                ], justify="between", className="g-2"),
                 dbc.Row([
                     dbc.Col([
                         dbc.Card([
@@ -60,7 +65,7 @@ def overview_layout():
                                 dcc.Loading(dcc.Graph(id='stances-chart'))
                             ])
                         ])
-                    ], width=6),
+                    ], xs=12, sm=12, md=12, lg=6, className="p-2"),
                     dbc.Col([
                         dbc.Card([
                             dbc.CardHeader("Sentiments"),
@@ -68,8 +73,8 @@ def overview_layout():
                                 dcc.Loading(dcc.Graph(id='sentiments-chart'))
                             ])
                         ])
-                    ], width=6)
-                ]),
+                    ], xs=12, sm=12, md=12, lg=6, className="p-2"),
+                ], className="g-2"),
                 dbc.Row([
                     dbc.Col([
                         dbc.Card([
@@ -84,6 +89,25 @@ def overview_layout():
     return layout
 
 layout = overview_layout()
+
+@callback(
+    Output('num-topics-slider', 'options'),
+    [Input('my-date-picker-range', 'start_date'),
+     Input('my-date-picker-range', 'end_date')]
+)
+
+def update_num_topics_options(start_date, end_date):
+    # Convert start_date and end_date to datetime.date objects for comparison
+    start_date = date.fromisoformat(start_date) if start_date else None
+    end_date = date.fromisoformat(end_date) if end_date else None
+
+    if start_date and end_date:
+        filtered_df = df[(df['created_utc'] >= start_date) & (df['created_utc'] <= end_date)]
+        num_topics = filtered_df['Topic'].nunique()
+        options = [{"label": str(i), "value": i} for i in range(1, min(num_topics, 5) + 1)]
+        return options
+    return [{"label": "1", "value": 1}, {"label": "2", "value": 2}, {"label": "3", "value": 3}, {"label": "4", "value": 4}, {"label": "5", "value": 5}]
+
 
 @callback(
     [Output('output-container-date-picker-range', 'children'),
@@ -116,9 +140,14 @@ def update_output(start_date, end_date, value):
     end_date = date.fromisoformat(end_date) if end_date else None
 
     if start_date and end_date:
+        
         # Filter DataFrame based on date range
         filtered_df = df[(df['created_utc'] >= start_date) & (df['created_utc'] <= end_date)]
 
+        if filtered_df.empty:
+            date_selection_string = "No data available for the selected date range."
+            return date_selection_string, None, None,None,None
+        
         # Count topics and replies
         post_counts = filtered_df.loc[filtered_df['Parent'] == '1', 'Topic'].value_counts()
         replies_counts = filtered_df.loc[filtered_df['Parent'] != '1', 'Topic'].value_counts()
@@ -130,21 +159,26 @@ def update_output(start_date, end_date, value):
         sorted_topics = combined_counts.reset_index()
         sorted_topics.columns = ['Topics', 'Total number of post']
         sorted_topics['Topic_id'] = [str(i).zfill(3) for i in range(1, len(sorted_topics) + 1)]
-
+        
         # Calculate replies count
         replies = [replies_counts.get(topic, 0) for topic in sorted_topics['Topics']]
         sorted_topics['Total number of replies'] = replies
-        sorted_topics['Severity'] = ['High', 'High', 'Medium', 'Medium', 'Low']
+
+        # Dynamically generate severity values based on the number of topics
+        severity_values = ['High'] * 2 + ['Medium'] * 2 + ['Low']
+        severity_values = severity_values[:len(sorted_topics)]
+        sorted_topics['Harmfulness'] = severity_values
 
         # Filter topics based on the number selected by the user
         sorted_topics = sorted_topics.head(value)
         
         # Table
         table = dash.dash_table.DataTable(
-            data=sorted_topics[['Topic_id', 'Topics', 'Total number of post', 'Total number of replies', 'Severity']].to_dict('records'),
-            columns=[{'name': col, 'id': col} for col in ['Topic_id', 'Topics', 'Total number of post', 'Total number of replies', 'Severity']],
+            data=sorted_topics[['Topic_id', 'Topics', 'Total number of post', 'Total number of replies', 'Harmfulness']].to_dict('records'),
+            columns=[{'name': col, 'id': col} for col in ['Topic_id', 'Topics', 'Total number of post', 'Total number of replies', 'Harmfulness']],
             style_table={'overflowX': 'auto'},
-            style_cell={'textAlign': 'left'}
+            style_cell={'textAlign': 'left'},
+            sort_action='native'
         )
 
         # Store the mapping between topics and topic IDs in a dictionary
@@ -152,25 +186,78 @@ def update_output(start_date, end_date, value):
 
         # Filter DataFrame to include only the selected topics
         filtered_df_topic = filtered_df[filtered_df['Topic'].isin(sorted_topics['Topics'])]
+        topic_order = sorted(topic_id_mapping.values())
 
         # Stance chart
         stance_counts = filtered_df_topic.groupby(['Topic', 'Stance']).size().unstack(fill_value=0)
-        data_stance = pd.melt(stance_counts.reset_index(), id_vars=["Topic"])
+        # Calculate the proportions
+        stance_proportions = stance_counts.div(stance_counts.sum(axis=1), axis=0) * 100
+        # Melt the DataFrame for Plotly
+        data_stance = pd.melt(stance_proportions.reset_index(), id_vars=["Topic"])
         data_stance['Topic_id'] = data_stance['Topic'].map(topic_id_mapping)
-        fig_stance = px.bar(data_stance, x='value', y='Topic_id', color='Stance', 
-                    orientation='h', barmode='stack', 
-                    color_discrete_map={'Favor': '#BFD1D9', 'None': '#DFE8EC', 'Against': '#5F8CA0'})
-        # Apply style changes to stance chart
-        fig_stance = update_figure_style(fig_stance)
+        data_stance = data_stance.rename(columns={'value': 'Proportions(%)'})
+        # Create the bar plot using Plotly
+        fig_stance = px.bar(data_stance, x='Proportions(%)', y='Topic_id', color='Stance', 
+                    orientation='h', barmode='stack')
+        fig_stance.update_layout(
+            legend=dict(
+                orientation="h",  # Horizontal legend
+                yanchor="bottom",  # Position legend at the bottom
+                y=1.05,  # Slightly above the chart
+                xanchor="center",  # Center horizontally
+                x=0.45  # Center horizontally
+            ),
+            legend_title_text=None,  # Remove legend title
+            modebar=dict(
+                remove=['lasso2d', 'select2d', 'reset', 'hover', 'zoom', 'autoscale'],  # Remove Lasso and Box Select
+            ),
+            yaxis=dict(
+                categoryorder='array',
+                categoryarray=topic_order  # Ensure 'topic_order' is defined
+            ),
+            margin=dict(l=0, r=0),  # Small adjustment to bottom margin
+            height = 300,
+            font=dict(
+            family="Trebuchet MS, sans-serif",
+            size=14,
+            color="Black") 
+            )
         
         # Sentiment chart
+
         sentiment_counts = filtered_df_topic.groupby(['Topic', 'Sentiment']).size().unstack(fill_value=0)
-        data_sentiment = pd.melt(sentiment_counts.reset_index(), id_vars=["Topic"])
+        # Calculate the proportions
+        sentiment_proportions = sentiment_counts.div(sentiment_counts.sum(axis=1), axis=0) * 100
+        data_sentiment = pd.melt(sentiment_proportions.reset_index(), id_vars=["Topic"])
+        
         data_sentiment['Topic_id'] = data_sentiment['Topic'].map(topic_id_mapping)
-        fig_sentiment = px.bar(data_sentiment, x='value', y='Topic_id', color='Sentiment', orientation='h',
-                       barmode='stack', color_discrete_map={'Positive': '#BFD1D9', 'Neutral': '#DFE8EC', 'Negative': '#5F8CA0'})
-        # Apply style changes to sentiment chart
-        fig_sentiment = update_figure_style(fig_sentiment)
+        data_sentiment = data_sentiment.rename(columns={'value': 'Proportions(%)'})
+        fig_sentiment = px.bar(data_sentiment, x='Proportions(%)', y='Topic_id', color='Sentiment', orientation='h',
+                       barmode='stack')
+        
+        fig_sentiment.update_layout(
+            legend=dict(
+                orientation="h",  # Horizontal legend
+                yanchor="bottom",  # Position legend at the bottom
+                y=1.05,  # Slightly above the chart
+                xanchor="center",  # Center horizontally
+                x=0.45  # Center horizontally
+            ),
+            legend_title_text=None,  # Remove legend title
+            modebar=dict(
+                remove=['lasso2d', 'select2d', 'reset', 'hover', 'zoom', 'autoscale'],  # Remove Lasso and Box Select
+            ),
+            yaxis=dict(
+                categoryorder='array',
+                categoryarray=topic_order  # Ensure 'topic_order' is defined
+            ),
+            margin=dict(l=0, r=0),  # Small adjustment to bottom margin
+            height = 300,
+            font=dict(
+            family="Trebuchet MS, sans-serif",
+            size=14,
+            color="Black")
+            )
 
         # Create a list to store line plot data for each topic
         line_plot_data_list = []
@@ -191,6 +278,28 @@ def update_output(start_date, end_date, value):
         fig_popularity = px.line(combined_line_plot_data, x='created_utc', y='No_of_comments', color='Topic')
         # Apply style changes to popularity line graph
         fig_popularity = update_figure_style(fig_popularity)
+        fig_popularity.update_layout(
+            legend=dict(
+                orientation="h",  # Horizontal legend
+                yanchor="bottom",  # Position legend at the bottom
+                y=1.05,  # Slightly above the chart
+                xanchor="center",  # Center horizontally
+                x=0.45  # Center horizontally
+            ),
+            legend_title_text=None,  # Remove legend title
+            modebar=dict(
+                remove=['lasso2d', 'select2d', 'reset', 'hover', 'zoom', 'autoscale'],  # Remove Lasso and Box Select
+            ),
+            yaxis=dict(
+                categoryorder='array',
+                categoryarray=topic_order  # Ensure 'topic_order' is defined
+            ),
+            margin=dict(l=0, r=0),  # Small adjustment to bottom margin
+            font=dict(
+            family="Trebuchet MS, sans-serif",
+            size=14,
+            color="Black")
+            )
 
         return dbc.Alert(date_selection_string), table, fig_stance, fig_sentiment, fig_popularity
     else:

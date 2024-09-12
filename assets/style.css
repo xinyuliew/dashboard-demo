@@ -486,3 +486,15 @@ body {
         padding: 30px;
     }
 }
+
+.card-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.card-header-container .help-icon {
+    display: flex;
+    align-items: center;
+}

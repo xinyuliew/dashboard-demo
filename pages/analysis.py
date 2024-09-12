@@ -8,8 +8,7 @@ import spacy
 from collections import Counter
 import plotly.express as px
 import collapsible_table
-from utils import get_data
-from utils import update_figure_style
+from utils import get_data, explain
 import pandas as pd
 
 # Initialize Dash app
@@ -103,7 +102,12 @@ def discourse_analysis_layout():
         dbc.Row([
             dbc.Col([
                 dbc.Card([
-                    dbc.CardHeader("Summary"),
+                    dbc.CardHeader(
+                        html.Div([
+                                    "Summary",
+                                    explain("Summary")
+                                ], className="card-header-container")  
+                        ),
                     dbc.CardBody([
                         dbc.Row([
                             # dbc.Col([
@@ -123,7 +127,12 @@ def discourse_analysis_layout():
         dbc.Row([
             dbc.Col([
                 dbc.Card([
-                    dbc.CardHeader("Discourses"),
+                    dbc.CardHeader(
+                        html.Div([
+                                    "Discourses",
+                                    explain("Discourses")
+                                ], className="card-header-container")  
+                            ),
                     dbc.CardBody([
                         dcc.Loading(html.Div(id='table-container2'))
                     ]),
@@ -197,31 +206,30 @@ def update_output(start_date, end_date, value):
         # Group by 'Stance' and count occurrences
         stance_counts = selected_df['Stance'].value_counts().reset_index()
         stance_counts.columns = ['Stance', 'Count']
-        # If proportions are needed, calculate them (this step can be optional)
+
+        # Calculate proportions as percentages
         stance_proportions = stance_counts.copy()
         stance_proportions['Proportion'] = (stance_proportions['Count'] / stance_proportions['Count'].sum()) * 100
+    
+        # Create the bar chart with proportions
+        stance_chart = px.bar(stance_proportions, x='Proportion', y='Stance', color='Stance')
 
-        stance_chart = px.bar(stance_proportions, x='Proportion', y='Stance', color='Stance', title='Stance Distribution',)
-        stance_chart = update_figure_style(stance_chart)
+        # Update layout with axis titles and custom x-axis range
         stance_chart.update_layout(
-            legend=dict(
-                orientation="h",  # Horizontal legend
-                yanchor="bottom",  # Position legend at the bottom
-                y=1.05,  # Slightly above the chart
-                xanchor="center",  # Center horizontally
-                x=0.45  # Center horizontally
-            ),
-            legend_title_text=None,  # Remove legend title
+            xaxis_title="Percentage of Stances",  # Title for the x-axis
+            yaxis_title="Stance Category",  # Title for the y-axis
+            showlegend=False,  # Remove legend title
             modebar=dict(
                 remove=['lasso2d', 'select2d', 'reset', 'hover', 'zoom', 'autoscale'],  # Remove Lasso and Box Select
             ),
             margin=dict(l=5, r=5),  # Small adjustment to bottom margin
-            height = 300,
+            height=300,
             font=dict(
-            family="Trebuchet MS, sans-serif",
-            size=14,
-            color="Black")
+                family="Trebuchet MS, sans-serif",
+                size=14,
+                color="Black"
             )
+        )
         
         # Group by 'Sentiment' and count occurrences
         sentiment_counts = selected_df['Sentiment'].value_counts().reset_index()
@@ -229,18 +237,12 @@ def update_output(start_date, end_date, value):
         sentiment_proportions = sentiment_counts.copy()
         sentiment_proportions['Proportion'] = (sentiment_proportions['Count'] / sentiment_proportions['Count'].sum()) * 100
 
-        sentiment_chart = px.bar(sentiment_proportions, x='Proportion', y='Sentiment', color='Sentiment', title='Sentiment Distribution',)
-        sentiment_chart = update_figure_style(sentiment_chart)
+        sentiment_chart = px.bar(sentiment_proportions, x='Proportion', y='Sentiment', color='Sentiment')
 
         sentiment_chart.update_layout(
-            legend=dict(
-                orientation="h",  # Horizontal legend
-                yanchor="bottom",  # Position legend at the bottom
-                y=1.05,  # Slightly above the chart
-                xanchor="center",  # Center horizontally
-                x=0.45  # Center horizontally
-            ),
-            legend_title_text=None,  # Remove legend title
+            xaxis_title="Percentage Proportions (%)",  # Title for the x-axis
+            yaxis_title="Sentiment Category",
+            showlegend=False, # Remove legend title
             modebar=dict(
                 remove=['lasso2d', 'select2d', 'reset', 'hover', 'zoom', 'autoscale'],  # Remove Lasso and Box Select
             ),

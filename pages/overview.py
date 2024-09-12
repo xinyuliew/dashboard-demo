@@ -4,13 +4,13 @@ import pandas as pd
 from datetime import date
 import plotly.express as px
 import dash_bootstrap_components as dbc
-from utils import get_data
-from utils import update_figure_style
+from utils import get_data, explain
 dash.register_page(__name__, path='/')
 import plotly.graph_objects as go
 
 
 df = get_data()
+
 
 def overview_layout():
     layout = html.Div([
@@ -50,7 +50,12 @@ def overview_layout():
                 dbc.Row([
                     dbc.Col([
                         dbc.Card([
-                            dbc.CardHeader("Top Discussed Topics"),
+                            dbc.CardHeader(
+                                    html.Div([
+                                        "Top Discussed Topics",
+                                        explain("Top")
+                                    ], className="card-header-container")  
+                                ),
                             dbc.CardBody([
                                 dcc.Loading(html.Div(id='table-container'))
                             ])
@@ -60,7 +65,12 @@ def overview_layout():
                 dbc.Row([
                     dbc.Col([
                         dbc.Card([
-                            dbc.CardHeader("Stances"),
+                            dbc.CardHeader(
+                                html.Div([
+                                    "Stance Analysis",
+                                    explain("Stance")
+                                ], className="card-header-container")  
+                            ),
                             dbc.CardBody([
                                 dcc.Loading(dcc.Graph(id='stances-chart'))
                             ])
@@ -68,7 +78,12 @@ def overview_layout():
                     ], xs=12, sm=12, md=12, lg=6, className="p-2"),
                     dbc.Col([
                         dbc.Card([
-                            dbc.CardHeader("Sentiments"),
+                            dbc.CardHeader(
+                                html.Div([
+                                    "Sentiment Analysis",
+                                    explain("Sentiment")
+                                ], className="card-header-container")  
+                            ),
                             dbc.CardBody([
                                 dcc.Loading(dcc.Graph(id='sentiments-chart'))
                             ])
@@ -78,7 +93,12 @@ def overview_layout():
                 dbc.Row([
                     dbc.Col([
                         dbc.Card([
-                            dbc.CardHeader("Popularity Insights"),
+                            dbc.CardHeader(
+                                 html.Div([
+                                    "Popularity Insights",
+                                    explain("Popularity")
+                                ], className="card-header-container")  
+                            ),
                             dbc.CardBody([
                                 dcc.Graph(id='popularity-chart')
                             ])
@@ -277,7 +297,6 @@ def update_output(start_date, end_date, value):
         # Popularity line graph
         fig_popularity = px.line(combined_line_plot_data, x='created_utc', y='No_of_comments', color='Topic')
         # Apply style changes to popularity line graph
-        fig_popularity = update_figure_style(fig_popularity)
         fig_popularity.update_layout(
             legend=dict(
                 orientation="h",  # Horizontal legend

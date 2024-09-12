@@ -218,7 +218,11 @@ def update_output(start_date, end_date, value):
         data_stance = data_stance.rename(columns={'value': 'Proportions(%)'})
         # Create the bar plot using Plotly
         fig_stance = px.bar(data_stance, x='Proportions(%)', y='Topic_id', color='Stance', 
-                    orientation='h', barmode='stack')
+                    orientation='h', barmode='stack', color_discrete_map={
+                         'Against': '#FF6F6F',
+                         'Favor': '#6FDF6F',
+                         'None': '#C0C0C0'
+                     })
         fig_stance.update_layout(
             legend=dict(
                 orientation="h",  # Horizontal legend
@@ -230,6 +234,9 @@ def update_output(start_date, end_date, value):
             legend_title_text=None,  # Remove legend title
             modebar=dict(
                 remove=['lasso2d', 'select2d', 'reset', 'hover', 'zoom', 'autoscale'],  # Remove Lasso and Box Select
+            ),
+            xaxis=dict(
+                range=[0, 100]  # Custom range for the x-axis (0 to 100%)
             ),
             yaxis=dict(
                 categoryorder='array',
@@ -253,7 +260,11 @@ def update_output(start_date, end_date, value):
         data_sentiment['Topic_id'] = data_sentiment['Topic'].map(topic_id_mapping)
         data_sentiment = data_sentiment.rename(columns={'value': 'Proportions(%)'})
         fig_sentiment = px.bar(data_sentiment, x='Proportions(%)', y='Topic_id', color='Sentiment', orientation='h',
-                       barmode='stack')
+                       barmode='stack', color_discrete_map={
+                'Positive': '#4CAF50',
+                'Negative': '#F44336',
+                'Neutral': '#9E9E9E'
+    })
         
         fig_sentiment.update_layout(
             legend=dict(
@@ -262,6 +273,9 @@ def update_output(start_date, end_date, value):
                 y=1.05,  # Slightly above the chart
                 xanchor="center",  # Center horizontally
                 x=0.45  # Center horizontally
+            ),
+            xaxis=dict(
+                range=[0, 100]  # Custom range for the x-axis (0 to 100%)
             ),
             legend_title_text=None,  # Remove legend title
             modebar=dict(

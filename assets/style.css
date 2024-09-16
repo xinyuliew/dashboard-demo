@@ -11,30 +11,47 @@ body {
     background-color: #F7F8FC !important;
 }
 
-/* Main content area styles */
-.content {
-    margin-left: 18rem; /* Default margin for expanded sidebar */
-    margin-right: 2rem;
-    padding: 2rem 1rem;
-    transition: margin-left 0.3s; /* Smooth transition for margin change */
-}
 
-/* Menubar styles */
+/* Base styles for the menu bar */
 .menubar {
-    margin-left: 18rem; /* Default margin for expanded sidebar */
+    margin-left: 18rem; /* Default width of the sidebar when expanded */
     margin-right: 2rem;
-    background-color: rgba(0,0,0,0.0) !important;
+    background-color: rgba(0, 0, 0, 0.0) !important;
     border-bottom: 1px solid #BBCAD2;
     padding: 2rem 0rem;
-    transition: margin-left 0.3s; /* Smooth transition for margin change */
+    transition: margin-left 0.3s ease-in-out;
+}
+
+/* Media query for medium screens (up to 991px) */
+@media (max-width: 991px) {
+    .menubar {
+        margin-left: 17rem; /* Adjust to match minimized sidebar width */
+        padding: 1rem 0.5rem; /* Adjust padding for smaller screens */
+    }
+}
+
+/* Media query for small screens (up to 767px) */
+@media (max-width: 767px) {
+    .menubar {
+        margin-left: 0rem; /* Remove margin when the sidebar is minimized */
+        padding: 1rem 0.5rem; /* Adjust padding to fit smaller screens */
+    }
+    .container{
+        margin: 1rem;
+    }
+}
+
+/* Media query for extra small screens (up to 575px) */
+@media (max-width: 575px) {
+    .menubar {
+        margin-left: 1rem; /* Remove margin */
+        padding: 0.5rem 0.5rem; /* Further reduced padding */
+    }
 }
 
 /* Responsive design for smaller screens */
 @media (max-width: 768px) {
     .content {
-        margin: 0; /* No offset on small screens */
-    }
-    .menubar {
         margin: 0; /* No offset on small screens */
     }
     .nav-bar {    
@@ -266,12 +283,6 @@ body {
 
 }
 
-.sidebar-divider{
-    margin: 1rem 0;
-    border: 2px solid #36485C;
-    border-radius: 4px;
-}
-
 .css-1bp1ao6 {
     width: 30% !important;
     right: 0 !important;
@@ -376,117 +387,6 @@ body {
     top:36%;
 }
 
-/* Original sidebar styles */
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 16rem;
-    padding: 2rem 1rem;
-    background-color: #363740;
-    transition: width 0.3s; /* Smooth transition for width change */
-}
-
-/* Sidebar collapse style */
-.sidebar.collapsed {
-    width: 4rem; /* Collapsed width */
-    overflow: hidden; /* Hide overflow when collapsed */
-    padding: 1rem 0.5rem; /* Adjust padding for collapsed state */
-}
-
-/* Style for sidebar links */
-.sidebar .nav-link {
-    color: white; /* Text color */
-}
-
-/* Active link style */
-.sidebar .nav-link.active {
-    background-color: #36485C; /* Highlight active link */
-    color: white; /* Text color for active link */
-}
-
-/* Responsive design for smaller screens */
-@media (max-width: 768px) {
-    .sidebar {
-        width: 100%; /* Full width on small screens */
-        position: relative; /* Change to relative positioning */
-        height: auto; /* Adjust height for small screens */
-    }
-
-    .sidebar.collapsed {
-        width: 100%; /* Full width on small screens when collapsed */
-    }
-}
-
-/* Main content area adjustment */
-.main-content {
-    margin-left: 16rem; /* Offset for sidebar */
-    transition: margin-left 0.3s; /* Smooth transition for margin change */
-}
-
-/* Adjust content margin when sidebar is collapsed */
-.main-content.sidebar-collapsed {
-    margin-left: 4rem; /* Adjust margin for collapsed sidebar */
-}
-
-@media (max-width: 768px) {
-    .main-content {
-        margin-left: 0; /* No offset on small screens */
-    }
-}
-
-/* Responsive design for smaller screens */
-@media (max-width: 768px) {
-    .card {
-        width: 100%; /* Full width on small screens */
-        margin-left: 0; /* Remove left margin */
-        margin-right: 0; /* Remove right margin */
-    }
-}
-
-.dash-graph {
-    margin:0;
-}
-
-/* Adjust font size based on screen width */
-@media (min-width: 475px) {
-    .dash-graph {
-        font-size: 18px;
-    }
-}
-
-@media (min-width: 768px) {
-    .dash-graph {
-        font-size: 20px;
-    }
-}
-
-@media (min-width: 1024px) {
-    .dash-graph {
-        font-size: 30px !important;
-    }
-}
-
-.graph-wrapper {
-    width: 100%;
-    max-width: 100%;
-    padding: 10px; /* Optional padding for spacing */
-}
-
-/* Responsive adjustments */
-@media (min-width: 475px) {
-    .graph-wrapper {
-        padding: 20px;
-    }
-}
-
-@media (min-width: 768px) {
-    .graph-wrapper {
-        padding: 30px;
-    }
-}
-
 .card-header-container {
     display: flex;
     justify-content: space-between;
@@ -509,3 +409,106 @@ body {
 .css-i44wyl{
     width: 200px !important;;
 }
+
+#sidebar {
+    text-align: center;
+    padding: 2rem 1rem;
+    background-color: #363740;
+  }
+  
+  #sidebar h2 {
+    font-weight: 600;
+    line-height: 1.2;
+    color: #A4A6B3;
+    font-size: 1.6rem !important;
+    font-family: 'Trebuchet MS', sans-serif !important;
+  }
+  
+  /* Hide the blurb on a small screen */
+  #blurb {
+    display: none;
+    color: #36485C;
+    border-top: 2px solid #36485C;
+  }
+  
+  #sidebar-toggle {
+    display: none;
+  }
+  
+  #collapse *:first-child {
+    margin-top: 1rem;
+  }
+  
+  #page-content {
+    padding: 2rem 1rem;
+  }
+
+  .navbar-toggler{
+    color: #A4A6B3;
+    font-weight: 900 !important;
+    font-size: 1.5rem;
+    
+  }
+  
+  @media (min-width: 48em) {
+    #sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 16.5rem;
+      text-align: left;
+      transition: margin 0.3s ease-in-out, padding 0.3s ease-in-out;
+    }
+   
+  
+    #sidebar-toggle {
+      display: inline-block;
+      position: relative;
+      top: 0;
+      transition: top 0.3s ease-in-out;
+    }
+  
+    /* add negative margin to sidebar to achieve the collapse */
+    #sidebar.collapsed {
+      margin-left: -13.5rem;
+      padding-right: 0.5rem;
+    }
+  
+    /* also adjust margin of page content */
+    #sidebar.collapsed ~ #page-content {
+      margin-left: 4.5rem;
+    }
+
+    
+
+    
+    /* move all contents of navbar other than header (containing toggle) further
+       off-screen */
+    #sidebar.collapsed > *:not(:first-child) {
+      margin-left: -6rem;
+      margin-right: 6rem;
+    }
+  
+    /* reveal the blurb on a large screen */
+    #blurb {
+      display: block;
+    }
+  
+    /* Hide the toggle on a large screen */
+    #navbar-toggle {
+      display: none;
+    }
+  
+    #collapse {
+      display: block;
+    }
+  
+    /* set margins of the main content so that it doesn't overlap the sidebar */
+    #page-content {
+      margin-left: 17rem;
+      margin-right: 1rem;
+      transition: margin-left 0.3s ease-in-out;
+    }
+  }
+  

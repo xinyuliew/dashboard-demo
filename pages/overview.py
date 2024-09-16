@@ -16,8 +16,7 @@ def overview_layout():
     layout = html.Div([
                 dbc.Row([
                     dbc.Col([
-                         create_notification("This is a demo showcasing analysis of social media discourses to support prioritisation based on indicators such as harmfulness, stances, sentiment, and popularity.")
-                    ]),
+                        create_notification("This demo showcases the analysis of social media discourses to navigate prioritisation of overwhelming narratives based on indicators such as harmfulness, stance, sentiment, and popularity.")                    ]),
                 ]),
                 dbc.Row([
                     dbc.Col([

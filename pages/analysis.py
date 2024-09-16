@@ -76,7 +76,7 @@ def discourse_analysis_layout():
     layout = html.Div([
         dbc.Row([
                     dbc.Col([
-                         create_notification("This is a demo showcasing in-depth discourse analysis to support the investigation of social media discourses with supportive labels attached to each text.")
+                         create_notification("This demo showcases an in-depth view of social media discourses, facilitating investigations by featuring stance and sentiment labels for each text within discourses. This is designed to support investigative efforts, such as uncovering the propagation and reasoning behind narratives.")
                     ]),
                 ]),
         dbc.Row([

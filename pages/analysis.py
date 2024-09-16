@@ -2,13 +2,13 @@ import sys
 sys.path.append("/Users/trixieliew/dash/collapsible_table")
 from datetime import date
 import dash
-from dash import html, dcc, callback, Input, Output, dash_table
+from dash import html, dcc, callback, Input, Output, dash_table, State
 import dash_bootstrap_components as dbc
 import spacy
 from collections import Counter
 import plotly.express as px
 import collapsible_table
-from utils import get_data, explain
+from utils import get_data, explain, create_notification
 import pandas as pd
 
 # Initialize Dash app
@@ -74,6 +74,11 @@ def create_rows(df_root, df_comments):
 
 def discourse_analysis_layout():
     layout = html.Div([
+        dbc.Row([
+                    dbc.Col([
+                         create_notification("This is a demo showcasing in-depth discourse analysis to support the investigation of social media discourses with supportive labels attached to each text.")
+                    ]),
+                ]),
         dbc.Row([
             dbc.Col([
                 dbc.Label("Choose a date range:"),
@@ -274,7 +279,7 @@ def update_output(start_date, end_date, value):
         df_comments = selected_df[selected_df['Parent'] != '1']
 
         rows = create_rows(df_root, df_comments)
-        return dbc.Alert(date_selection_string), stance_chart, sentiment_chart, html.Div(collapsible_table.ReactTable(id='table-container2', rows=rows), className="table-discourse")
+        return dbc.Alert(date_selection_string, dismissable=True), stance_chart, sentiment_chart, html.Div(collapsible_table.ReactTable(id='table-container2', rows=rows), className="table-discourse")
     else:
-        return dbc.Alert(date_selection_string, color="danger"), None, None, None, None
+        return dbc.Alert(date_selection_string, color="danger", dismissable=True), None, None, None, None
   

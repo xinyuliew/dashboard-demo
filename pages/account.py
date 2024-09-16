@@ -1,14 +1,18 @@
 import dash
 import dash_bootstrap_components as dbc
-import dash_html_components as html
-import dash_core_components as dcc
-
+from dash import dcc, html
+from utils import create_notification
 # Initialize Dash app
 dash.register_page(__name__, path='/account')
 
 def account_layout():
     layout = html.Div([
         dbc.Container([
+            dbc.Row([
+                    dbc.Col([
+                         create_notification("This is a demo version of an account page.")
+                    ]),
+                ]),
             dbc.Row([
                 dbc.Col([
                     # User Information Card

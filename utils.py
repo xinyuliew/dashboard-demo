@@ -72,3 +72,23 @@ def explain(item):
             make_button(tooltip_id),  # Unique ID for the button
             make_tooltip("Displays all detailed discourse data that reflects all visual analysis to support in-depth investigation.", tooltip_id)
         ], className="help-icon")
+
+def create_notification(description):
+    return html.Div(
+        [
+            dbc.Button(
+                "Page Description",  # Initial button text when the alert is open
+                id="alert-toggle",
+                n_clicks=0,
+                className="button"
+            ),
+            dbc.Alert(
+                description,
+                id="demo-alert",
+                is_open=True,  # Alert is initially open
+                className="notification-card",  # Apply the transition class
+                color="light",
+            ),
+        ],
+        className="notification-container"
+    )

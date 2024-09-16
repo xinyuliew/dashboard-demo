@@ -1,10 +1,10 @@
 import dash
-from dash import html, dcc, callback, Input, Output
+from dash import html, dcc, callback, Input, Output, State
 import pandas as pd
 from datetime import date
 import plotly.express as px
 import dash_bootstrap_components as dbc
-from utils import get_data, explain
+from utils import get_data, explain, create_notification
 dash.register_page(__name__, path='/')
 import plotly.graph_objects as go
 
@@ -14,6 +14,11 @@ df = get_data()
 
 def overview_layout():
     layout = html.Div([
+                dbc.Row([
+                    dbc.Col([
+                         create_notification("This is a demo showcasing analysis of social media discourses to support prioritisation based on indicators such as harmfulness, stances, sentiment, and popularity.")
+                    ]),
+                ]),
                 dbc.Row([
                     dbc.Col([
                         dbc.Label("Choose a date range:"),
@@ -109,6 +114,7 @@ def overview_layout():
     return layout
 
 layout = overview_layout()
+
 
 @callback(
     Output('num-topics-slider', 'options'),
@@ -334,8 +340,8 @@ def update_output(start_date, end_date, value):
             color="Black")
             )
 
-        return dbc.Alert(date_selection_string), table, fig_stance, fig_sentiment, fig_popularity
+        return dbc.Alert(date_selection_string, dismissable=True), table, fig_stance, fig_sentiment, fig_popularity
     else:
-        return dbc.Alert(date_selection_string, color="danger"), None, None, None, None
+        return dbc.Alert(date_selection_string, color="danger", dismissable=True), None, None, None, None
     
 

@@ -2,12 +2,15 @@ import dash_bootstrap_components as dbc
 from dash import html
 
 def menubar(title="NavbarSimple"):
-    
-    return dbc.NavbarSimple(
-        
-        brand=title,
-        brand_href="#",
-        color="primary",
-        dark=True,
-        className="menubar"
+    return html.Div(
+        [
+            dbc.Nav(
+                [
+                    html.Div(title, className="navbar-brand")
+                ],
+                className="menubar"
+            ),
+            html.Div(id="navbar-toggler-placeholder")  # Placeholder to ensure no toggler
+        ],
+        className="menubar-container"
     )

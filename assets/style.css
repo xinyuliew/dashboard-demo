@@ -22,10 +22,11 @@ body {
     transition: margin-left 0.3s ease-in-out;
 }
 
+
 /* Media query for medium screens (up to 991px) */
 @media (max-width: 991px) {
     .menubar {
-        margin-left: 17rem; /* Adjust to match minimized sidebar width */
+        margin-left: 18rem; /* Adjust to match minimized sidebar width */
         padding: 1rem 0.5rem; /* Adjust padding for smaller screens */
     }
 }
@@ -33,29 +34,12 @@ body {
 /* Media query for small screens (up to 767px) */
 @media (max-width: 767px) {
     .menubar {
-        margin-left: 0rem; /* Remove margin when the sidebar is minimized */
+        margin-left: 1rem; /* Remove margin when the sidebar is minimized */
+        margin-right: 1rem;
         padding: 1rem 0.5rem; /* Adjust padding to fit smaller screens */
     }
     .container{
         margin: 1rem;
-    }
-}
-
-/* Media query for extra small screens (up to 575px) */
-@media (max-width: 575px) {
-    .menubar {
-        margin-left: 1rem; /* Remove margin */
-        padding: 0.5rem 0.5rem; /* Further reduced padding */
-    }
-}
-
-/* Responsive design for smaller screens */
-@media (max-width: 768px) {
-    .content {
-        margin: 0; /* No offset on small screens */
-    }
-    .nav-bar {    
-        padding: 0;
     }
 }
 
@@ -92,25 +76,6 @@ body {
     border-radius: 5px;
     background-color: rgb(54, 72, 92, 0.1)
 
-}
-
-.profile_img{
-    border-radius: 50%;
-    margin-right: 0.5rem;
-}
-
-.dropdown-menu{
-    font-family: 'Trebuchet MS', sans-serif !important;
-    background-color: #ffffff;
-    --bs-card-border-color: var(--bs-border-color-translucent) !important;
-    --bs-card-border-radius: var(--bs-border-radius) !important;
-    color: #36485C;
-    --bs-dropdown-link-active-bg: rgb(54, 72, 92, 0.1);
-    --bs-dropdown-link-active-color: #000000;
-}
-
-.dropdown-menu .bi{
-    padding: 0 0.5rem;
 }
 
 .display-6{
@@ -511,4 +476,19 @@ body {
       transition: margin-left 0.3s ease-in-out;
     }
   }
-  
+
+.button{
+    background-color: #36485C;
+    padding: 16px 14px;
+}
+
+.button:hover{
+    background-color: #363740!important;
+    box-shadow: none !important;
+}
+
+.notification-card{
+    background-color: #ffffff;
+    color:#363740;
+    border-color:rgba(0, 0, 0, 0.175);
+}

@@ -2,8 +2,6 @@ import dash
 from dash import html, dcc
 
 import dash_bootstrap_components as dbc
-import dash_html_components as html
-import dash_core_components as dcc
 # Initialize Dash app
 dash.register_page(__name__, path='/settings')
 

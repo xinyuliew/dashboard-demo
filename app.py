@@ -3,6 +3,7 @@ import dash_bootstrap_components as dbc
 from dash import dcc, html, Input, Output, State
 from pages.side_bar import sidebar
 from pages.menubar import menubar
+from pages.footer import footer
 
 
 app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP, ], use_pages=True, 
@@ -19,13 +20,14 @@ from pages.support import support_layout
 
 dash.page_container = html.Div()
 
-app.layout = html.Div([dcc.Location(id="url", refresh=False),                         
-                       
+app.layout = html.Div([
+                       dcc.Location(id="url", refresh=False),            
                        sidebar(),
-                        
                        html.Div(id="menubar-content"),  # Div for menubar
- 
-                       html.Div(id="page-content"), dash.page_container])
+                       html.Div(id="page-content"), 
+                       dash.page_container,
+                       footer()
+                       ])
 
 @app.callback(
     [Output("page-content", "children"),

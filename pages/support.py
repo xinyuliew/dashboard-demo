@@ -7,7 +7,6 @@ dash.register_page(__name__, path='/support')
 
 def support_layout():
     layout = html.Div([
-        dbc.Container([
             dbc.Row([
                     dbc.Col([
                          create_notification("This is a demo version of a settings page.")
@@ -100,11 +99,10 @@ def support_layout():
             # Submit Button Row
             dbc.Row(
                 dbc.Col(
-                    dbc.Button("Submit", id="submit-support", color="primary", className="mt-4"),
+                    dbc.Button("Submit", id="submit-support", color="primary", className="button"),
                     width="auto",  # Adjust width so the button is only as wide as needed
                 ), className="d-flex justify-content-end"
             ),
-        ], fluid=True),
     ])
     
     return layout

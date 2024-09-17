@@ -8,9 +8,7 @@ def menubar(title="NavbarSimple"):
                 [
                     html.Div(title, className="navbar-brand")
                 ],
-                className="menubar"
             ),
-            html.Div(id="navbar-toggler-placeholder")  # Placeholder to ensure no toggler
+            
         ],
-        className="menubar-container"
     )

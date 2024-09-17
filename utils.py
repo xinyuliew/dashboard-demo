@@ -92,3 +92,4 @@ def create_notification(description):
         ],
         className="notification-container"
     )
+

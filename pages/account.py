@@ -7,7 +7,6 @@ dash.register_page(__name__, path='/account')
 
 def account_layout():
     layout = html.Div([
-        dbc.Container([
             dbc.Row([
                     dbc.Col([
                          create_notification("This is a demo version of an account page.")
@@ -24,8 +23,11 @@ def account_layout():
                             html.Label("Email", className="form-label"),
                             dbc.Input(type="email", id="email", placeholder="Enter your email address", className="mb-3"),
                         ])
-                    ], className="mb-4"),  # Add margin-bottom between cards
-
+                    ]),  # Add margin-bottom between cards
+                ]),
+            ], className="mb-4"),
+            dbc.Row([
+                dbc.Col([
                     # Change Password Card
                     dbc.Card([
                         dbc.CardHeader(html.H4("Change Password")),
@@ -37,8 +39,11 @@ def account_layout():
                             html.Label("Confirm New Password", className="form-label"),
                             dbc.Input(type="password", id="confirm-new-password", placeholder="Confirm your new password", className="mb-3"),
                         ])
-                    ], className="mb-4"),  # Add margin-bottom between cards
-
+                    ]),  # Add margin-bottom between cards
+                ]),
+            ], className="mb-4"),
+            dbc.Row([
+                dbc.Col([
                     # Account Settings Card
                     dbc.Card([
                         dbc.CardHeader(html.H4("Account Settings")),
@@ -66,20 +71,19 @@ def account_layout():
                                 value="GMT",
                                 className="mb-3"
                             ),
-                        ])
+                        ]),
                     ]),
-
-                    # Save Changes Button Outside the Cards
-                    dbc.Row(
-                        dbc.Col(
-                            dbc.Button("Save Changes", id="save-account-settings", color="primary", className="mt-4"),
-                            width="auto",  # Adjust width so the button is as wide as its content
-                        ), className="d-flex justify-content-end"
-                    )
-                ], width=12),  # Full width for the single column
-            ]),
-        ], fluid=True),
-    ])
+                ], width=12),
+            ], className="mb-4"),
+            # Save Changes Button Outside the Cards
+            dbc.Row(
+                    dbc.Col(
+                        dbc.Button("Save Changes", id="save-account-settings", color="primary", className="button"),
+                        width="auto",  # Adjust width so the button is as wide as its content
+                    ), className="d-flex justify-content-end"
+                )
+            ]),  # Full width for the single column
+            
     
     return layout
 

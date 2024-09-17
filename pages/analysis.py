@@ -225,8 +225,8 @@ def update_output(start_date, end_date, value):
 
         # Update layout with axis titles and custom x-axis range
         stance_chart.update_layout(
-            xaxis_title="Percentage Proportions (%)",  # Title for the x-axis
-            yaxis_title="Stance Category",  # Title for the y-axis
+            xaxis_title="PROPORTIONS (%)",  # Title for the x-axis
+            yaxis_title="STANCES",  # Title for the y-axis
             showlegend=False,  # Remove legend title
             modebar=dict(
                 remove=['lasso2d', 'select2d', 'reset', 'hover', 'zoom', 'autoscale'],  # Remove Lasso and Box Select
@@ -256,8 +256,8 @@ def update_output(start_date, end_date, value):
         })
 
         sentiment_chart.update_layout(
-            xaxis_title="Percentage Proportions (%)",  # Title for the x-axis
-            yaxis_title="Sentiment Category",
+            xaxis_title="PROPORTIONS (%)",  # Title for the x-axis
+            yaxis_title="SENTIMENTS",
             showlegend=False, # Remove legend title
             modebar=dict(
                 remove=['lasso2d', 'select2d', 'reset', 'hover', 'zoom', 'autoscale'],  # Remove Lasso and Box Select

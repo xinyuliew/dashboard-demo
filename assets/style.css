@@ -12,36 +12,6 @@ body {
 }
 
 
-/* Base styles for the menu bar */
-.menubar {
-    margin-left: 18rem; /* Default width of the sidebar when expanded */
-    margin-right: 2rem;
-    background-color: rgba(0, 0, 0, 0.0) !important;
-    border-bottom: 1px solid #BBCAD2;
-    padding: 2rem 0rem;
-    transition: margin-left 0.3s ease-in-out;
-}
-
-
-/* Media query for medium screens (up to 991px) */
-@media (max-width: 991px) {
-    .menubar {
-        margin-left: 18rem; /* Adjust to match minimized sidebar width */
-        padding: 1rem 0.5rem; /* Adjust padding for smaller screens */
-    }
-}
-
-/* Media query for small screens (up to 767px) */
-@media (max-width: 767px) {
-    .menubar {
-        margin-left: 1rem; /* Remove margin when the sidebar is minimized */
-        margin-right: 1rem;
-        padding: 1rem 0.5rem; /* Adjust padding to fit smaller screens */
-    }
-    .container{
-        margin: 1rem;
-    }
-}
 
 @media (min-width: 576px) {
     .container, .container-sm{
@@ -56,7 +26,7 @@ body {
 }
 
 .navbar-brand{
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 700;
     color: #36485C;
 }
@@ -379,103 +349,143 @@ body {
     text-align: center;
     padding: 2rem 1rem;
     background-color: #363740;
-  }
-  
-  #sidebar h2 {
+}
+
+#sidebar h2 {
     font-weight: 600;
     line-height: 1.2;
     color: #A4A6B3;
     font-size: 1.6rem !important;
     font-family: 'Trebuchet MS', sans-serif !important;
-  }
-  
-  /* Hide the blurb on a small screen */
-  #blurb {
+}
+
+/* Hide the blurb on a small screen */
+#blurb {
     display: none;
     color: #36485C;
     border-top: 2px solid #36485C;
-  }
-  
-  #sidebar-toggle {
-    display: none;
-  }
-  
-  #collapse *:first-child {
-    margin-top: 1rem;
-  }
-  
-  #page-content {
-    padding: 2rem 1rem;
-  }
+}
 
-  .navbar-toggler{
+#sidebar-toggle {
+    display: none;
+}
+
+#collapse *:first-child {
+    margin-top: 1rem;
+}
+
+#page-content {
+    padding: 1.5rem 1rem;
+    transition: margin-left 0.3s ease-in-out; /* Smooth transition for margin change */
+}
+
+.navbar-toggler {
     color: #A4A6B3;
     font-weight: 900 !important;
     font-size: 1.5rem;
-    
-  }
-  
-  @media (min-width: 48em) {
+}
+
+/* Base styles for the menu bar */
+#menubar-content {
+    padding: 2rem 1rem;
+    transition: margin-left 0.3s ease-in-out; /* Smooth transition for margin change */
+}
+
+/* Footer styling */
+#footer {
+    padding: 2rem 1rem;
+    bottom: 0;
+    color:#363740;
+    transition: margin-left 0.3s ease-in-out; /* Smooth transition for margin change */
+
+    .nav-link{
+        color:#004961;
+        padding: 0 1rem;
+        
+    }
+    .nav-link:hover{
+        background-color: transparent;
+        color:var(--bs-nav-pills-link-active-bg);
+
+    }
+}
+.footer-nav {
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+@media (min-width: 48em) {
     #sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: 16.5rem;
-      text-align: left;
-      transition: margin 0.3s ease-in-out, padding 0.3s ease-in-out;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 16.5rem;
+        text-align: left;
+        transition: margin 0.3s ease-in-out, padding 0.3s ease-in-out;
     }
-   
-  
+
     #sidebar-toggle {
-      display: inline-block;
-      position: relative;
-      top: 0;
-      transition: top 0.3s ease-in-out;
+        display: inline-block;
+        position: relative;
+        top: 0;
+        transition: top 0.3s ease-in-out;
     }
-  
+
     /* add negative margin to sidebar to achieve the collapse */
     #sidebar.collapsed {
-      margin-left: -13.5rem;
-      padding-right: 0.5rem;
+        margin-left: -13.5rem; /* Adjust according to the sidebar width */
+        padding-right: 0.5rem;
     }
-  
-    /* also adjust margin of page content */
+
+    /* Adjust margin of page content and menubar when sidebar is collapsed */
     #sidebar.collapsed ~ #page-content {
-      margin-left: 4.5rem;
+        margin-left: 4.5rem; /* Adjust to match collapsed sidebar width */
     }
 
-    
+    #sidebar.collapsed ~ #menubar-content {
+        margin-left: 4.5rem; /* Adjust to match collapsed sidebar width */
+    }
 
-    
-    /* move all contents of navbar other than header (containing toggle) further
-       off-screen */
+    /* Move all contents of navbar other than header (containing toggle) further off-screen */
     #sidebar.collapsed > *:not(:first-child) {
-      margin-left: -6rem;
-      margin-right: 6rem;
+        margin-left: -6rem;
+        margin-right: 6rem;
     }
-  
-    /* reveal the blurb on a large screen */
+
+    /* Reveal the blurb on a large screen */
     #blurb {
-      display: block;
+        display: block;
     }
-  
+
     /* Hide the toggle on a large screen */
     #navbar-toggle {
-      display: none;
+        display: none;
     }
-  
+
     #collapse {
-      display: block;
+        display: block;
     }
-  
-    /* set margins of the main content so that it doesn't overlap the sidebar */
+
+    /* Set margins of the main content so that it doesn't overlap the sidebar */
     #page-content {
-      margin-left: 17rem;
-      margin-right: 1rem;
-      transition: margin-left 0.3s ease-in-out;
+        margin-left: 18rem; /* Adjust based on expanded sidebar width */
+        margin-right: 1rem;
+        transition: margin-left 0.3s ease-in-out; /* Smooth transition for margin change */
     }
-  }
+    #menubar-content {
+        margin-left: 18rem; /* Default width of the sidebar when expanded */
+        margin-right: 1rem;
+        transition: margin-left 0.3s ease-in-out; /* Smooth transition for margin change */
+    }
+    #footer {
+        margin-left: 18rem; /* Default width of the sidebar when expanded */
+        margin-right: 1rem;
+        transition: margin-left 0.3s ease-in-out; /* Smooth transition for margin change */
+    }
+
+}
 
 .button{
     background-color: #36485C;

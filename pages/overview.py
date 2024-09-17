@@ -200,7 +200,7 @@ def update_output(start_date, end_date, value):
         # Table
         table = dash.dash_table.DataTable(
             data=sorted_topics[['Topic_id', 'Topics', 'Total number of post', 'Total number of replies', 'Harmfulness']].to_dict('records'),
-            columns=[{'name': col, 'id': col} for col in ['Topic_id', 'Topics', 'Total number of post', 'Total number of replies', 'Harmfulness']],
+            columns=[{'name': col.upper(), 'id': col} for col in ['Topic_id', 'Topics', 'Total number of post', 'Total number of replies', 'Harmfulness']],
             style_table={'overflowX': 'auto'},
             style_cell={'textAlign': 'left'},
             sort_action='native'
@@ -219,15 +219,18 @@ def update_output(start_date, end_date, value):
         stance_proportions = stance_counts.div(stance_counts.sum(axis=1), axis=0) * 100
         # Melt the DataFrame for Plotly
         data_stance = pd.melt(stance_proportions.reset_index(), id_vars=["Topic"])
-        data_stance['Topic_id'] = data_stance['Topic'].map(topic_id_mapping)
-        data_stance = data_stance.rename(columns={'value': 'Proportions(%)'})
+        data_stance['TOPIC_ID'] = data_stance['Topic'].map(topic_id_mapping)
+        data_stance = data_stance.rename(columns={'value': 'PROPORTIONS(%)'})
+        # Convert the 'Stance' column to uppercase
+        data_stance['STANCES'] = data_stance['Stance'].str.upper()
+
         # Create the bar plot using Plotly
-        fig_stance = px.bar(data_stance, x='Proportions(%)', y='Topic_id', color='Stance', 
-                    orientation='h', barmode='stack', color_discrete_map={
-                         'Against': '#FF6F6F',
-                         'Favor': '#6FDF6F',
-                         'None': '#C0C0C0'
-                     })
+        fig_stance = px.bar(data_stance, x='PROPORTIONS(%)', y='TOPIC_ID', color='STANCES', 
+                            orientation='h', barmode='stack', color_discrete_map={
+                                'AGAINST': '#bd1f36',  # Bold red
+                                'FAVOR': '#40916c',    # Bold green
+                                'NONE': '#cfcdc9'      # Bold grey
+                            })
         fig_stance.update_layout(
             legend=dict(
                 orientation="h",  # Horizontal legend
@@ -236,7 +239,6 @@ def update_output(start_date, end_date, value):
                 xanchor="center",  # Center horizontally
                 x=0.45  # Center horizontally
             ),
-            legend_title_text=None,  # Remove legend title
             modebar=dict(
                 remove=['lasso2d', 'select2d', 'reset', 'hover', 'zoom', 'autoscale'],  # Remove Lasso and Box Select
             ),
@@ -251,8 +253,8 @@ def update_output(start_date, end_date, value):
             height = 300,
             font=dict(
             family="Trebuchet MS, sans-serif",
-            size=14,
-            color="Black") 
+            size=13,
+            color="#000000") 
             )
         
         # Sentiment chart
@@ -262,13 +264,16 @@ def update_output(start_date, end_date, value):
         sentiment_proportions = sentiment_counts.div(sentiment_counts.sum(axis=1), axis=0) * 100
         data_sentiment = pd.melt(sentiment_proportions.reset_index(), id_vars=["Topic"])
         
-        data_sentiment['Topic_id'] = data_sentiment['Topic'].map(topic_id_mapping)
-        data_sentiment = data_sentiment.rename(columns={'value': 'Proportions(%)'})
-        fig_sentiment = px.bar(data_sentiment, x='Proportions(%)', y='Topic_id', color='Sentiment', orientation='h',
+        data_sentiment['TOPIC_ID'] = data_sentiment['Topic'].map(topic_id_mapping)
+        data_sentiment = data_sentiment.rename(columns={'value': 'PROPORTIONS(%)'})
+        # Convert the 'Stance' column to uppercase
+        data_sentiment['SENTIMENTS'] = data_sentiment['Sentiment'].str.upper()
+
+        fig_sentiment = px.bar(data_sentiment, x='PROPORTIONS(%)', y='TOPIC_ID', color='SENTIMENTS', orientation='h',
                        barmode='stack', color_discrete_map={
-                'Positive': '#4CAF50',
-                'Negative': '#F44336',
-                'Neutral': '#9E9E9E'
+                'POSITIVE': '#4CAF50',
+                'NEGATIVE': '#F44336',
+                'NEUTRAL': '#9E9E9E'
     })
         
         fig_sentiment.update_layout(
@@ -282,7 +287,6 @@ def update_output(start_date, end_date, value):
             xaxis=dict(
                 range=[0, 100]  # Custom range for the x-axis (0 to 100%)
             ),
-            legend_title_text=None,  # Remove legend title
             modebar=dict(
                 remove=['lasso2d', 'select2d', 'reset', 'hover', 'zoom', 'autoscale'],  # Remove Lasso and Box Select
             ),
@@ -294,7 +298,7 @@ def update_output(start_date, end_date, value):
             height = 300,
             font=dict(
             family="Trebuchet MS, sans-serif",
-            size=14,
+            size=13,
             color="Black")
             )
 
@@ -314,7 +318,13 @@ def update_output(start_date, end_date, value):
         # Concatenate line plot data for all topics into a single DataFrame
         combined_line_plot_data = pd.concat(line_plot_data_list)
         # Popularity line graph
-        fig_popularity = px.line(combined_line_plot_data, x='created_utc', y='No_of_comments', color='Topic')
+        # Rename the columns to upper case
+        combined_line_plot_data = combined_line_plot_data.rename(columns={
+            'created_utc': 'DATE',
+            'No_of_comments': 'NO. OF ENGAGEMENTS',
+            'Topic': 'TOPICS'
+        })
+        fig_popularity = px.line(combined_line_plot_data, x='DATE', y='NO. OF ENGAGEMENTS', color='TOPICS')
         # Apply style changes to popularity line graph
         fig_popularity.update_layout(
             legend=dict(

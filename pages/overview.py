@@ -220,12 +220,12 @@ def update_output(start_date, end_date, value):
         # Melt the DataFrame for Plotly
         data_stance = pd.melt(stance_proportions.reset_index(), id_vars=["Topic"])
         data_stance['TOPIC_ID'] = data_stance['Topic'].map(topic_id_mapping)
-        data_stance = data_stance.rename(columns={'value': 'PROPORTIONS(%)'})
+        data_stance = data_stance.rename(columns={'value': 'Percentage proportions (%)'})
         # Convert the 'Stance' column to uppercase
         data_stance['STANCES'] = data_stance['Stance'].str.upper()
 
         # Create the bar plot using Plotly
-        fig_stance = px.bar(data_stance, x='PROPORTIONS(%)', y='TOPIC_ID', color='STANCES', 
+        fig_stance = px.bar(data_stance, x='Percentage proportions (%)', y='TOPIC_ID', color='STANCES', 
                             orientation='h', barmode='stack', color_discrete_map={
                                 'AGAINST': '#bd1f36',  # Bold red
                                 'FAVOR': '#40916c',    # Bold green
@@ -252,7 +252,6 @@ def update_output(start_date, end_date, value):
             margin=dict(l=0, r=0),  # Small adjustment to bottom margin
             height = 300,
             font=dict(
-            family="Trebuchet MS, sans-serif",
             size=13,
             color="#000000") 
             )
@@ -265,11 +264,11 @@ def update_output(start_date, end_date, value):
         data_sentiment = pd.melt(sentiment_proportions.reset_index(), id_vars=["Topic"])
         
         data_sentiment['TOPIC_ID'] = data_sentiment['Topic'].map(topic_id_mapping)
-        data_sentiment = data_sentiment.rename(columns={'value': 'PROPORTIONS(%)'})
+        data_sentiment = data_sentiment.rename(columns={'value': 'Percentage proportions (%)'})
         # Convert the 'Stance' column to uppercase
         data_sentiment['SENTIMENTS'] = data_sentiment['Sentiment'].str.upper()
 
-        fig_sentiment = px.bar(data_sentiment, x='PROPORTIONS(%)', y='TOPIC_ID', color='SENTIMENTS', orientation='h',
+        fig_sentiment = px.bar(data_sentiment, x='Percentage proportions (%)', y='TOPIC_ID', color='SENTIMENTS', orientation='h',
                        barmode='stack', color_discrete_map={
                 'POSITIVE': '#4CAF50',
                 'NEGATIVE': '#F44336',
@@ -297,7 +296,6 @@ def update_output(start_date, end_date, value):
             margin=dict(l=0, r=0),  # Small adjustment to bottom margin
             height = 300,
             font=dict(
-            family="Trebuchet MS, sans-serif",
             size=13,
             color="Black")
             )
@@ -344,7 +342,6 @@ def update_output(start_date, end_date, value):
             ),
             margin=dict(l=0, r=0),  # Small adjustment to bottom margin
             font=dict(
-            family="Trebuchet MS, sans-serif",
             size=14,
             color="Black")
             )

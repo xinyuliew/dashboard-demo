@@ -1,8 +1,11 @@
 import pandas as pd
 import dash_bootstrap_components as dbc
 from dash import html
+from dotenv import load_dotenv
 import os
 
+# Load environment variables from the .env file
+load_dotenv()
 
 # Retrieve the API keys from the environment
 SUPABASE_URL = os.getenv("SUPABASE_URL")
@@ -10,7 +13,7 @@ SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
 if not SUPABASE_URL or not SUPABASE_KEY:
     raise ValueError("Missing required environment variables")
-
+    
 from supabase import create_client, Client
 
 # Create Supabase client

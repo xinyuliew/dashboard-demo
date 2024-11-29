@@ -12,6 +12,7 @@ chardet==5.2.0
 charset-normalizer==3.3.2
 click==8.1.7
 cloudpathlib==0.18.1
+collapsible-table==0.0.1
 confection==0.1.5
 cookiecutter==2.6.0
 cymem==2.0.8

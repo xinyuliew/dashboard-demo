@@ -139,7 +139,7 @@ def discourse_analysis_layout():
                                 ], className="card-header-container")  
                             ),
                     dbc.CardBody([
-                        #dcc.Loading(html.Div(id='table-container2'))
+                        dcc.Loading(html.Div(id='table-container2'))
                     ]),
                 ]),
             ]),
@@ -155,7 +155,7 @@ layout = discourse_analysis_layout()
     Output('stance_distribution', 'figure'),
     Output('sentiment_distribution', 'figure'),
     # Output('table_keywords', 'data'),
-    #Output('table-container2', 'children'),
+    Output('table-container2', 'children'),
     Input('my-date-picker-range2', 'start_date'),
     Input('my-date-picker-range2', 'end_date'),
     Input('num-topics-picker', 'value'),
@@ -237,6 +237,7 @@ def update_output(start_date, end_date, value):
             margin=dict(l=5, r=5, t=0, b=0),  # Small adjustment to bottom margin
             height=200,
             font=dict(
+                family="Trebuchet MS, sans-serif",
                 size=14,
                 color="Black"
             )
@@ -267,6 +268,7 @@ def update_output(start_date, end_date, value):
             margin=dict(l=5, r=5, t=0, b=0),  # Small adjustment to bottom margin
             height = 200,
             font=dict(
+            family="Trebuchet MS, sans-serif",
             size=14,
             color="Black")
             )
@@ -277,7 +279,7 @@ def update_output(start_date, end_date, value):
         df_comments = selected_df[selected_df['Parent'] != '1']
 
         rows = create_rows(df_root, df_comments)
-        return dbc.Alert(date_selection_string, dismissable=True), stance_chart, sentiment_chart
+        return dbc.Alert(date_selection_string, dismissable=True), stance_chart, sentiment_chart, html.Div(collapsible_table.ReactTable(id='table-container2', rows=rows), className="table-discourse")
     else:
-        return dbc.Alert(date_selection_string, color="danger", dismissable=True), None, None, None
+        return dbc.Alert(date_selection_string, color="danger", dismissable=True), None, None, None, None
   

@@ -237,7 +237,6 @@ def update_output(start_date, end_date, value):
             margin=dict(l=5, r=5, t=0, b=0),  # Small adjustment to bottom margin
             height=200,
             font=dict(
-                family="Trebuchet MS, sans-serif",
                 size=14,
                 color="Black"
             )
@@ -268,7 +267,6 @@ def update_output(start_date, end_date, value):
             margin=dict(l=5, r=5, t=0, b=0),  # Small adjustment to bottom margin
             height = 200,
             font=dict(
-            family="Trebuchet MS, sans-serif",
             size=14,
             color="Black")
             )

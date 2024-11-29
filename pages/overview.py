@@ -4,12 +4,12 @@ import pandas as pd
 from datetime import date
 import plotly.express as px
 import dash_bootstrap_components as dbc
-from utils import get_data, explain, create_notification
+from utils import explain, create_notification, get_data_supa
 dash.register_page(__name__, path='/')
 import plotly.graph_objects as go
 
 
-df = get_data()
+df = get_data_supa("reddit")
 
 
 def overview_layout():

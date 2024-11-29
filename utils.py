@@ -1,13 +1,8 @@
 import pandas as pd
 import dash_bootstrap_components as dbc
 from dash import html
-
-
-from dotenv import load_dotenv
 import os
 
-# Load environment variables from the .env file
-load_dotenv()
 
 # Retrieve the API keys from the environment
 SUPABASE_URL = os.getenv("SUPABASE_URL")

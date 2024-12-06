@@ -74,6 +74,14 @@ body {
     padding: 0 0.2rem;
 }
 
+:root, [data-bs-theme=light]{
+    --bs-border-radius: 0.9rem !important;
+}
+
+.card{
+    border:#FFFFFF;
+    box-shadow: 0 12px 30px rgba(46, 71, 101, 0.1) !important;
+}
 .card-header{
     background-color: #FFFFFF !important; 
     font-size: 1.2rem !important;
@@ -91,15 +99,13 @@ body {
 }
 
 .row{
-    margin-bottom: 1rem;
+    margin-bottom: 1.2rem;
 }
 
 
 .dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner th {
     background-color: #FFFFFF !important;
-    font-size: 0.875rem !important;
     color: #5F7896 !important;
-    font-weight: 600 !important;
 }
 
 .dash-cell{
@@ -113,7 +119,10 @@ body {
 
 .DateRangePicker{
     padding-bottom: 1rem !important;
-    border-radius: 2px !important;
+}
+
+#num-topics-slider{
+    padding-bottom: 1rem !important;
 }
 
 .DateInput_input {
@@ -310,15 +319,17 @@ body {
 
 #sidebar {
     text-align: center;
-    padding: 2rem 1rem;
+    margin: 1rem;
+    border-radius: 1rem;
+    padding: 2rem 1.2rem;
     background-color: #212631;
 }
 
 #sidebar h2 {
-    font-weight: 600;
+    font-weight: 800;
     line-height: 1.2;
     color: rgba(255, 255, 255, 0.87);
-    font-size: 1.6rem !important;
+    font-size: 1.5rem !important;
 }
 
 /* Hide the blurb on a small screen */
@@ -337,7 +348,7 @@ body {
 }
 
 #page-content {
-    padding: 1.5rem 1rem;
+    padding: 1.2rem 1rem;
     transition: margin-left 0.3s ease-in-out; /* Smooth transition for margin change */
 }
 
@@ -349,7 +360,7 @@ body {
 
 /* Base styles for the menu bar */
 #menubar-content {
-    padding: 2rem 1rem;
+    padding: 1.4rem 1rem;
     transition: margin-left 0.3s ease-in-out; /* Smooth transition for margin change */
 }
 
@@ -383,7 +394,7 @@ body {
         top: 0;
         left: 0;
         bottom: 0;
-        width: 16.5rem;
+        width: 17rem;
         text-align: left;
         transition: margin 0.3s ease-in-out, padding 0.3s ease-in-out;
     }
@@ -419,6 +430,8 @@ body {
     /* Reveal the blurb on a large screen */
     #blurb {
         display: block;
+        margin-bottom: 1.5rem;
+
     }
 
     /* Hide the toggle on a large screen */
@@ -432,12 +445,12 @@ body {
 
     /* Set margins of the main content so that it doesn't overlap the sidebar */
     #page-content {
-        margin-left: 18rem; /* Adjust based on expanded sidebar width */
+        margin-left: 19rem; /* Adjust based on expanded sidebar width */
         margin-right: 1rem;
         transition: margin-left 0.3s ease-in-out; /* Smooth transition for margin change */
     }
     #menubar-content {
-        margin-left: 18rem; /* Default width of the sidebar when expanded */
+        margin-left: 19rem; /* Default width of the sidebar when expanded */
         margin-right: 1rem;
         transition: margin-left 0.3s ease-in-out; /* Smooth transition for margin change */
     }
@@ -462,5 +475,63 @@ body {
 .notification-card{
     background-color: #ffffff;
     color:#212631;
-    border-color:rgba(0, 0, 0, 0.175);
+    border-color:#ffffff;
+    box-shadow: 0 12px 30px rgba(46, 71, 101, 0.1) !important;
+    
+}
+
+.dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner table {
+    font-family: sans-serif !important;
+    --accent: var(--bs-nav-link-hover-bg) !important;
+}
+
+.selectionrow .row{
+    margin: 0;
+}
+
+.selectionrow .card-body{
+    padding: 1rem !important
+}
+
+#menubar-content{
+    .btn{
+        background-color:#36485C;
+        padding: 1rem;
+    }
+    .nav-link{
+        color: #36485C;
+    }
+    .nav-link:hover{
+        background-color: transparent;
+    }
+    .dropdown-menu.show{
+        padding:1rem 0;
+    }
+    .dropdown-item:active{
+        background-color: transparent;
+    }
+    .dropdown-item{
+        padding: 0.8rem;
+
+    }
+}
+
+@media (max-width: 768px) {
+    #menubar-content {
+        padding: 10px; /* Reduced padding for small screens */
+    }
+}
+
+#sources{
+    a{
+        color:#5F7896;
+        text-decoration: solid;
+    }
+}
+
+#footer{
+    a{
+        color:#5F7896;
+        text-decoration: solid;
+    }
 }

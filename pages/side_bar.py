@@ -9,7 +9,6 @@ def sidebar():
         sidebar_header,
         html.Div(
             [
-                html.Hr(),
             ],
             id="blurb",
         ),
@@ -26,9 +25,8 @@ def sidebar():
                     dbc.NavLink([html.I(className="bi bi-grid"), "   Overview"], href="/", id="page-1-link", active='exact'),
                     dbc.NavLink([html.I(className="bi bi-graph-up"), "   Discourse Analysis"], href="/discourse_analysis", id="page-2-link", active='exact'),
                     #dbc.NavLink([html.I(className="bi bi-gear"), "   Settings"], href="/settings", id="page-3-link", active='exact'),
-                    dbc.NavLink([html.I(className="bi bi-globe"), "   Support"], href="/support", id="page-5-link", active='exact'),
-                    dbc.NavLink([html.I(className="bi bi-person-circle"), "   My account"], href="/account", id="page-4-link", active='exact'),
-
+                    dbc.NavLink([html.I(className="bi bi-chat-right-dots"), "   Support"], href="/support", id="page-5-link", active='exact'),
+                    dbc.NavLink([html.I(className="bi bi-info-square"), "   Sources"], href="/sources", id="page-6-link", active='exact'),
                 ],
                 vertical=True,
                 pills=True,

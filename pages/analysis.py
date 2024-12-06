@@ -76,34 +76,45 @@ def discourse_analysis_layout():
     layout = html.Div([
         dbc.Row([
                     dbc.Col([
-                         create_notification("This demo showcases an in-depth view of social media discourses, facilitating investigations by featuring stance and sentiment labels for each text within discourses. This is designed to support investigative efforts, such as uncovering the propagation and reasoning behind narratives.")
+                         create_notification("This is a demo showcasing an in-depth view of social media discourses, facilitating investigations by featuring stance and sentiment labels for each text within discourses. This is designed to support investigative efforts, such as uncovering the propagation and reasoning behind narratives.")
                     ]),
                 ]),
-        dbc.Row([
-            dbc.Col([
-                dbc.Label("Choose a date range:"),
-                html.Br(),
-                dcc.DatePickerRange(
-                    id='my-date-picker-range2',
-                    min_date_allowed=df['created_utc'].min(),
-                    max_date_allowed=df['created_utc'].max(),
-                    initial_visible_month=df['created_utc'].max(),
-                    start_date=df['created_utc'].min(),
-                    end_date=df['created_utc'].max(),
+        dbc.Row(
+                    dbc.Col(
+                        dbc.Card([
+                            dbc.CardBody(
+                                dbc.Row([
+                                    dbc.Col([
+                                        dbc.Label("Choose a date range:"),
+                                        html.Br(),
+                                        dcc.DatePickerRange(
+                                            id='my-date-picker-range2',
+                                            min_date_allowed=df['created_utc'].min(),
+                                            max_date_allowed=df['created_utc'].max(),
+                                            initial_visible_month=df['created_utc'].max(),
+                                            start_date=df['created_utc'].min(),
+                                            end_date=df['created_utc'].max(),
+                                        ),
+                                    ], xs=12, sm=12, md=12, lg=6),
+                                    dbc.Col([
+                                        dbc.Label("Choose a topic:"),
+                                        html.Br(),
+                                        dcc.Dropdown(
+                                            id='num-topics-picker',
+                                            options=[{'label': topic, 'value': topic} for topic in available_topics],
+                                            multi=True,
+                                            value=[available_topics[0]]
+                                        )
+                                    ], xs=12, sm=12, md=12, lg=6),
+                                    html.Div(id='output-container-date-picker-range2')
+                                ], justify="between"
+                                ),
+                            ),
+                            ],
+                        ),
+                        width=12, className="selectionrow"  # Full width for the card
+                    ),
                 ),
-            ], xs=12, sm=12, md=12, lg=6, className="p-2"),
-            dbc.Col([
-                dbc.Label("Choose a topic:"),
-                html.Br(),
-                dcc.Dropdown(
-                    id='num-topics-picker',
-                    options=[{'label': topic, 'value': topic} for topic in available_topics],
-                    multi=True,
-                    value=[available_topics[0]]
-                )
-            ], xs=12, sm=12, md=12, lg=6, className="p-2"),
-            html.Div(id='output-container-date-picker-range2')
-        ], className="g-2", justify="between"),
         dbc.Row([
             dbc.Col([
                 dbc.Card([
@@ -235,12 +246,7 @@ def update_output(start_date, end_date, value):
                 range=[0, 100]  # Custom range for the x-axis (0 to 100%)
             ),
             margin=dict(l=5, r=5, t=0, b=0),  # Small adjustment to bottom margin
-            height=200,
-            font=dict(
-                family="Trebuchet MS, sans-serif",
-                size=14,
-                color="Black"
-            )
+            height=200
         )
         
         # Group by 'Sentiment' and count occurrences
@@ -266,11 +272,7 @@ def update_output(start_date, end_date, value):
                 range=[0, 100]  # Custom range for the x-axis (0 to 100%)
             ),
             margin=dict(l=5, r=5, t=0, b=0),  # Small adjustment to bottom margin
-            height = 200,
-            font=dict(
-            family="Trebuchet MS, sans-serif",
-            size=14,
-            color="Black")
+            height = 200
             )
         
         # Put every data in selected_df that their "parent" is 1 into df_root

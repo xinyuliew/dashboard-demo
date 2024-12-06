@@ -65,32 +65,32 @@ def explain(item):
     if item == "Stance":
         return html.Div([
             make_button(tooltip_id),  # Unique ID for the button
-            make_tooltip("Shows the distribution of opinions, 'Against', 'Favour', or 'None'. This helps to understand different viewpoints within discourses by topic.", tooltip_id)
+            make_tooltip("The percentage distribution of opinions, 'Against', 'Favour', or 'None', within discourses by topic ID.", tooltip_id)
         ], className="help-icon")
     elif item == "Sentiment":
         return html.Div([
             make_button(tooltip_id),  # Unique ID for the button
-            make_tooltip("Displays the distribution of emotional tone, 'Positive', 'Negative', or 'Neutral'. This reveals the overall mood within discourses by topic.", tooltip_id)
+            make_tooltip("T he percentage distribution of emotional tone, 'Positive', 'Negative', or 'Neutral', within discourses by topic ID.", tooltip_id)
         ], className="help-icon")
     elif item == "Popularity":
         return html.Div([
             make_button(tooltip_id),  # Unique ID for the button
-            make_tooltip("Popularity insights reflect the level of engagement or interest in topics over time. This helps identify trends providing an understanding of how each topic of discourse is gaining or losing traction.", tooltip_id)
+            make_tooltip("The level of engagement or interest in topics over time.", tooltip_id)
         ], className="help-icon")
     elif item == "Top":
         return html.Div([
             make_button(tooltip_id),  # Unique ID for the button
-            make_tooltip("Clusters the resulting discourses into topics to help identify areas that are currently the most prominent or relevant.", tooltip_id)
+            make_tooltip("Topic clustering to bring forward the most prominent or relevant discussion.", tooltip_id)
         ], className="help-icon")
     elif item == "Summary":
         return html.Div([
             make_button(tooltip_id),  # Unique ID for the button
-            make_tooltip("Provides a zoomed-in view of stances and sentiments for a specific topic, customising investigation into finer details and trends.", tooltip_id)
+            make_tooltip("A zoomed-in view of stances and sentiments for topic(s) of interest, allowing the customisation for investigation into details and trends.", tooltip_id)
         ], className="help-icon")
     elif item == "Discourses":
         return html.Div([
             make_button(tooltip_id),  # Unique ID for the button
-            make_tooltip("Displays all detailed discourse data that reflects all visual analysis to support in-depth investigation.", tooltip_id)
+            make_tooltip("All detailed discourses that contributed to the visual analysis to support in-depth investigation.", tooltip_id)
         ], className="help-icon")
 
 def create_notification(description):

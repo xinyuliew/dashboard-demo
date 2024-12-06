@@ -17,6 +17,8 @@ from pages.analysis import discourse_analysis_layout
 from pages.settings import settings_layout
 from pages.account import account_layout
 from pages.support import support_layout
+from pages.sources import sources_layout
+
 
 dash.page_container = html.Div()
 
@@ -50,8 +52,11 @@ def render_page_content(pathname):
     elif pathname == "/support":
         content = support_layout()
         title = "Support"
+    elif pathname == "/sources":
+        content = sources_layout()
+        title = "Sources"
     else:
-        content = html.Div("404 - Page not found")
+        content = html.Div("Error 404 - Page not found")
         title = "Page not found"
 
     menubar_content = menubar(title)  # Create the menubar with the appropriate title

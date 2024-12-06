@@ -16,41 +16,53 @@ def overview_layout():
     layout = html.Div([
                 dbc.Row([
                     dbc.Col([
-                        create_notification("This demo showcases the analysis of social media discourses to navigate prioritisation of overwhelming narratives based on indicators such as harmfulness, stance, sentiment, and popularity.")                    ]),
-                ]),
-                dbc.Row([
-                    dbc.Col([
-                        dbc.Label("Choose a date range:"),
-                        html.Br(),
-                        dcc.DatePickerRange(
-                            id='my-date-picker-range',
-                            clearable=True,
-                            display_format="DD-MM-YY",
-                            min_date_allowed=df['created_utc'].min(),
-                            max_date_allowed=df['created_utc'].max(),
-                            initial_visible_month=df['created_utc'].max(),
-                            start_date=df['created_utc'].min(),
-                            end_date=df['created_utc'].max(),
+                        create_notification(
+                            "This is a demo showcasing an overview analysis of social media discourses to navigate prioritisation of narratives."
                         ),
-                    ], xs=12, sm=12, md=12, lg=6, className="p-2"),
-                    dbc.Col([
-                        dbc.Label("Filter number of topics:"),
-                        html.Br(),
-                        dbc.RadioItems(
-                            id='num-topics-slider',
-                            options=[
-                                {"label": "1", "value": 1},
-                                {"label": "2", "value": 2},
-                                {"label": "3", "value": 3},
-                                {"label": "4", "value": 4},
-                                {"label": "5", "value": 5},
+                    ]),
+                ]),
+                dbc.Row(
+                    dbc.Col(
+                        dbc.Card([
+                            dbc.CardBody(
+                                    dbc.Row([
+                                        dbc.Col([
+                                                dbc.Label("Choose a date range:"),
+                                                html.Br(),
+                                                dcc.DatePickerRange(
+                                                    id='my-date-picker-range',
+                                                    clearable=True,
+                                                    display_format="DD-MM-YY",
+                                                    min_date_allowed=df['created_utc'].min(),
+                                                    max_date_allowed=df['created_utc'].max(),
+                                                    initial_visible_month=df['created_utc'].max(),
+                                                    start_date=df['created_utc'].min(),
+                                                    end_date=df['created_utc'].max(),
+                                                ),
+                                            ],
+                                            xs=12, sm=12, md=6, lg=6,
+                                        ),
+                                        dbc.Col([
+                                                dbc.Label("Filter number of topics:"),
+                                                html.Br(),
+                                                dbc.RadioItems(
+                                                    id='num-topics-slider',
+                                                    options=[{"label": str(i), "value": i} for i in range(1, 6)],
+                                                    value=5,
+                                                    inline=True,
+                                                ),
+                                            ],
+                                            xs=12, sm=12, md=6, lg=6),
+                                            html.Div(id='output-container-date-picker-range')
+                                        ],
+                                    justify="between", 
+                                    ),
+                                ),
                             ],
-                            value=5,
-                            inline=True
-                        ),   
-                    ], xs=12, sm=12, md=12, lg=6, className="p-2"),
-                    html.Div(id='output-container-date-picker-range')
-                ], justify="between", className="g-2"),
+                        ),
+                        width=12, className="selectionrow"  # Full width for the card
+                    ),
+                ),
                 dbc.Row([
                     dbc.Col([
                         dbc.Card([
@@ -79,7 +91,7 @@ def overview_layout():
                                 dcc.Loading(dcc.Graph(id='stances-chart'))
                             ])
                         ])
-                    ], xs=12, sm=12, md=12, lg=6, className="p-2"),
+                    ], xs=12, sm=12, md=12, lg=6),
                     dbc.Col([
                         dbc.Card([
                             dbc.CardHeader(
@@ -92,8 +104,8 @@ def overview_layout():
                                 dcc.Loading(dcc.Graph(id='sentiments-chart'))
                             ])
                         ])
-                    ], xs=12, sm=12, md=12, lg=6, className="p-2"),
-                ], className="g-2"),
+                    ], xs=12, sm=12, md=12, lg=6),
+                ]),
                 dbc.Row([
                     dbc.Col([
                         dbc.Card([
@@ -200,7 +212,7 @@ def update_output(start_date, end_date, value):
         # Table
         table = dash.dash_table.DataTable(
             data=sorted_topics[['Topic_id', 'Topics', 'Total number of post', 'Total number of replies', 'Harmfulness']].to_dict('records'),
-            columns=[{'name': col.upper(), 'id': col} for col in ['Topic_id', 'Topics', 'Total number of post', 'Total number of replies', 'Harmfulness']],
+            columns=[{'name': col, 'id': col} for col in ['Topic_id', 'Topics', 'Total number of post', 'Total number of replies', 'Harmfulness']],
             style_table={'overflowX': 'auto'},
             style_cell={'textAlign': 'left'},
             sort_action='native'
@@ -250,10 +262,7 @@ def update_output(start_date, end_date, value):
                 categoryarray=topic_order  # Ensure 'topic_order' is defined
             ),
             margin=dict(l=0, r=0),  # Small adjustment to bottom margin
-            height = 300,
-            font=dict(
-            size=13,
-            color="#000000") 
+            height = 300
             )
         
         # Sentiment chart
@@ -294,10 +303,7 @@ def update_output(start_date, end_date, value):
                 categoryarray=topic_order  # Ensure 'topic_order' is defined
             ),
             margin=dict(l=0, r=0),  # Small adjustment to bottom margin
-            height = 300,
-            font=dict(
-            size=13,
-            color="Black")
+            height = 300
             )
 
         # Create a list to store line plot data for each topic
@@ -341,9 +347,6 @@ def update_output(start_date, end_date, value):
                 categoryarray=topic_order  # Ensure 'topic_order' is defined
             ),
             margin=dict(l=0, r=0),  # Small adjustment to bottom margin
-            font=dict(
-            size=14,
-            color="Black")
             )
 
         return dbc.Alert(date_selection_string, dismissable=True), table, fig_stance, fig_sentiment, fig_popularity

@@ -9,7 +9,7 @@ def support_layout():
     layout = html.Div([
             dbc.Row([
                     dbc.Col([
-                         create_notification("This is a demo version of a settings page.")
+                         create_notification("This is a demo version of a support page.")
                     ]),
                 ]),
             # Contact Information Card

@@ -331,6 +331,14 @@ body {
     color: rgba(255, 255, 255, 0.87);
     font-size: 1.5rem !important;
 }
+#login h2 {
+    font-weight: 800;
+    line-height: 1.2;
+    color:#36485C;
+    font-size: 1.5rem !important;
+    text-align: center;
+    margin:1rem;
+}
 
 /* Hide the blurb on a small screen */
 #blurb {
@@ -464,12 +472,17 @@ body {
 
 .button{
     background-color: #36485C;
-    padding: 16px 14px;
+    padding: 1rem 3rem;
+    border-color: #36485C;
+    border-radius: 1rem;
+    color:#FFFFFF;
 }
 
 .button:hover{
     background-color: #212631!important;
     box-shadow: none !important;
+    border-color: #212631;
+
 }
 
 .notification-card{
@@ -494,10 +507,6 @@ body {
 }
 
 #menubar-content{
-    .btn{
-        background-color:#36485C;
-        padding: 1rem;
-    }
     .nav-link{
         color: #36485C;
     }
@@ -535,3 +544,39 @@ body {
         text-decoration: solid;
     }
 }
+#login{
+    .nav-tabs .nav-link{
+        color:#212631;
+    }
+    .form-control{
+        padding:14px;
+        margin-top: 1rem;
+        border-radius: 1rem;
+    }
+    .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+       background-color: #36485C;
+       color: #FFFFFF;
+    }
+    .nav-link:hover{
+        background-color: TRANSPARENT;
+    }
+    .button{
+        display: block;
+        margin: auto;
+    }
+    .alert:before{
+        display: none;
+    }
+}
+
+#login-feedback{
+    margin:1rem;
+    text-align: center;
+}
+
+#register-feedback{
+    margin:1rem;
+    text-align: center;
+}
+
+

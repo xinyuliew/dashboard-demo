@@ -4,12 +4,13 @@ import pandas as pd
 from datetime import date
 import plotly.express as px
 import dash_bootstrap_components as dbc
-from utils import explain, create_notification, get_data_supa
+from utils import explain, create_notification, get_data_supa, get_supabase_client
 dash.register_page(__name__, path='/')
 import plotly.graph_objects as go
 
-
-df = get_data_supa("reddit")
+# Initialize Supabase client
+supabase = get_supabase_client()
+df = get_data_supa(supabase, "reddit")
 
 
 def overview_layout():

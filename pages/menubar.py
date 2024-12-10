@@ -21,12 +21,19 @@ def menubar(title="NavbarSimple"):
                                 dbc.DropdownMenuItem(
                                     dbc.NavLink(
                                         [html.I(className="bi bi-box-arrow-right"), "   Logout"], 
-                                        href="/logout"
+                                        href="/login"
                                     )
                                 ),
                             ],
                             label="My Account",  # Label for the dropdown menu
-                            align_end=True
+                            align_end=True,   
+                            toggle_style={
+                                "background": "#36485C",
+                                "padding": "0.5rem 1.5rem",
+                                "border-color": "#36485C",
+                                "border-radius": "1rem",
+                                "color":"#FFFFFF",
+                            },
                         )
                     ]
                 ),
@@ -36,7 +43,9 @@ def menubar(title="NavbarSimple"):
 
 
 @callback(
-    Output("button-clicks", "children"), [Input("button-link", "n_clicks")]
+    Output("button-clicks", "children"), 
+    [Input("button-link", "n_clicks")]
 )
 def show_clicks(n):
     return "Button clicked {} times".format(n)
+    

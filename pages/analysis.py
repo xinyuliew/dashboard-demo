@@ -8,14 +8,19 @@ import spacy
 from collections import Counter
 import plotly.express as px
 import collapsible_table
-from utils import explain, create_notification, get_data_supa
+from utils import explain, create_notification, get_data_supa, get_supabase_client
 import pandas as pd
 
 # Initialize Dash app
 dash.register_page(__name__, path='/discourse_analysis')
 
 # Load data once
-df = get_data_supa("reddit")
+# Initialize Supabase client
+supabase = get_supabase_client()
+
+# Fetch data from the "reddit" table in Supabase
+df = get_data_supa(supabase, "reddit")  # Pass the supabase client and table name
+
 available_topics = df['Topic'].unique()
 
 # Load and configure spaCy model once

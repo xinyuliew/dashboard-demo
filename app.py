@@ -18,50 +18,64 @@ from pages.settings import settings_layout
 from pages.account import account_layout
 from pages.support import support_layout
 from pages.sources import sources_layout
+from pages.login import login_layout
 
 
 dash.page_container = html.Div()
 
+# Define the app layout
 app.layout = html.Div([
-                       dcc.Location(id="url", refresh=False),            
-                       sidebar(),
-                       html.Div(id="menubar-content"),  # Div for menubar
-                       html.Div(id="page-content"), 
-                       dash.page_container,
-                       footer()
-                       ])
+    dcc.Location(id="url", refresh=False),  # Handle URL changes
+    sidebar(),  # Sidebar component
+    html.Div(id="menubar-content"),  # Div for menubar content
+    html.Div(id="page-content"),  # Div for main page content
+    html.Div(id="login-page-container", style={"display": "none"}),  # Separate container for login page (hidden by default)
+    html.Div(id="footer-container"),  # Footer container
+    dash.page_container,  # Page container for dynamic page loading
+])
 
+# Callback to render content, menubar, and handle visibility of login page, sidebar, footer
 @app.callback(
     [Output("page-content", "children"),
-     Output("menubar-content", "children")],  # Update menubar content
+     Output("menubar-content", "children"),
+     Output("login-page-container", "children"),
+     Output("login-page-container", "style"),
+     Output("footer-container", "style"),
+     Output("sidebar", "style")],
     [Input("url", "pathname")],
 )
 def render_page_content(pathname):
+    content, menubar_content, login_page_content, login_page_style, footer_style, sidebar_style = None, None, None, {"display": "none"}, None, {"display": "block"}
+
+    # For normal pages (non-login)
     if pathname == "/":
         content = overview_layout()
-        title = "Overview"
+        menubar_content = menubar("Overview")
     elif pathname == "/discourse_analysis":
         content = discourse_analysis_layout()
-        title = "Discourse Analysis"
-    #elif pathname == "/settings":
-    #    content = settings_layout()
-    #    title = "Settings"
+        menubar_content = menubar("Discourse Analysis")
     elif pathname == "/account":
         content = account_layout()
-        title = "My account"
+        menubar_content = menubar("My account")
     elif pathname == "/support":
         content = support_layout()
-        title = "Support"
+        menubar_content = menubar("Support")
     elif pathname == "/sources":
         content = sources_layout()
-        title = "Sources"
+        menubar_content = menubar("Sources")
+    elif pathname == "/login":
+        login_page_content = login_layout()  # Custom login page layout
+        login_page_style = {"display": "block"}  # Show login page layout
+        menubar_content = None  # Hide the menubar on the login page
+        footer_style = {"display": "none"}  # Hide the footer on the login page
+        sidebar_style = {"display": "none"}  # Hide the sidebar on the login page
     else:
         content = html.Div("Error 404 - Page not found")
-        title = "Page not found"
+        menubar_content = None
 
-    menubar_content = menubar(title)  # Create the menubar with the appropriate title
-    return content, menubar_content
+    return content, menubar_content, login_page_content, login_page_style, footer_style, sidebar_style
 
+# Callback to toggle sidebar visibility (already handled in render_page_content)
 @app.callback(
     Output("sidebar", "className"),
     [Input("sidebar-toggle", "n_clicks")],
@@ -69,9 +83,10 @@ def render_page_content(pathname):
 )
 def toggle_classname(n, classname):
     if n and classname == "":
-        return "collapsed"
+        return "collapsed"  # Collapse sidebar when toggled
     return ""
 
+# Callback to toggle demo alert visibility
 @app.callback(
     Output("demo-alert", "is_open"),
     [Input("alert-toggle", "n_clicks")],
@@ -79,10 +94,10 @@ def toggle_classname(n, classname):
 )
 def toggle_alert(n, is_open):
     if n:
-        return not is_open
+        return not is_open  # Toggle alert visibility
     return is_open
 
-
+# Callback to toggle navbar collapse
 @app.callback(
     Output("collapse", "is_open"),
     [Input("navbar-toggle", "n_clicks")],
@@ -90,7 +105,7 @@ def toggle_alert(n, is_open):
 )
 def toggle_collapse(n, is_open):
     if n:
-        return not is_open
+        return not is_open  # Toggle collapse state of navbar
     return is_open
 
 if __name__ == "__main__":

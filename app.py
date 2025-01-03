@@ -40,7 +40,7 @@ app.layout = html.Div([
      Output("menubar-content", "children"),
      Output("login-page-container", "children"),
      Output("login-page-container", "style"),
-     Output("footer-container", "style"),
+     Output("footer-container", "children"),
      Output("sidebar", "style")],
     [Input("url", "pathname")],
 )
@@ -51,27 +51,35 @@ def render_page_content(pathname):
     if pathname == "/":
         content = overview_layout()
         menubar_content = menubar("Overview")
+        footer_style = footer()
     elif pathname == "/discourse_analysis":
         content = discourse_analysis_layout()
         menubar_content = menubar("Discourse Analysis")
+        footer_style = footer()
     elif pathname == "/account":
         content = account_layout()
         menubar_content = menubar("My account")
+        footer_style = footer()
+
     elif pathname == "/support":
         content = support_layout()
         menubar_content = menubar("Support")
+        footer_style = footer()
+
     elif pathname == "/sources":
         content = sources_layout()
         menubar_content = menubar("Sources")
+        footer_style = footer()
     elif pathname == "/login":
         login_page_content = login_layout()  # Custom login page layout
         login_page_style = {"display": "block"}  # Show login page layout
         menubar_content = None  # Hide the menubar on the login page
-        footer_style = {"display": "none"}  # Hide the footer on the login page
+        footer_style = None  # Hide the footer on the login page
         sidebar_style = {"display": "none"}  # Hide the sidebar on the login page
     else:
         content = html.Div("Error 404 - Page not found")
         menubar_content = None
+        footer_style = footer()
 
     return content, menubar_content, login_page_content, login_page_style, footer_style, sidebar_style
 

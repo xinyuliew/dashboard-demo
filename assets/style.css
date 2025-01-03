@@ -393,6 +393,8 @@ body {
 .footer-nav {
     display: flex;
     justify-content: flex-end;
+    margin-bottom: 0; /* Remove margin if default styling adds it */
+
 }
 
 

@@ -9,7 +9,7 @@ from collections import Counter
 import plotly.express as px
 import collapsible_table
 from utils import explain, create_notification, get_data_supa, get_supabase_client
-import pandas as pd
+import pandas as pd 
 
 # Initialize Dash app
 dash.register_page(__name__, path='/discourse_analysis')

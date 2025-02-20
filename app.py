@@ -4,9 +4,16 @@ from dash import dcc, html, Input, Output, State
 from pages.side_bar import sidebar
 from pages.menubar import menubar
 from pages.footer import footer
+import dash_mantine_components as dmc
+from dash import Dash, _dash_renderer
+_dash_renderer._set_react_version("18.2.0")
 
-
-app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP, ], use_pages=True, 
+app = dash.Dash(external_stylesheets=[dmc.styles.ALL, dmc.styles.DATES, dmc.styles.CHARTS,
+                                dmc.styles.CODE_HIGHLIGHT,
+                                dmc.styles.CHARTS,
+                                dmc.styles.CAROUSEL,
+                                dmc.styles.NOTIFICATIONS,
+                                dmc.styles.NPROGRESS, dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP, ], use_pages=True, 
                 suppress_callback_exceptions=True)
 
 
@@ -24,7 +31,8 @@ from pages.login import login_layout
 dash.page_container = html.Div()
 
 # Define the app layout
-app.layout = html.Div([
+app.layout = dmc.MantineProvider(
+    html.Div([
     dcc.Location(id="url", refresh=False),  # Handle URL changes
     sidebar(),  # Sidebar component
     html.Div(id="menubar-content"),  # Div for menubar content
@@ -33,6 +41,7 @@ app.layout = html.Div([
     html.Div(id="footer-container"),  # Footer container
     dash.page_container,  # Page container for dynamic page loading
 ])
+)
 
 # Callback to render content, menubar, and handle visibility of login page, sidebar, footer
 @app.callback(

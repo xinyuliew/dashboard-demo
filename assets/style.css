@@ -36,12 +36,10 @@ body {
 
 .menubar .nav-link{
     color: #36485C !important;
-    border-radius: 5px;
 
 }
 .menubar .nav-link:hover{
     color: #36485C !important;
-    border-radius: 5px;
     background-color: rgb(54, 72, 92, 0.1)
 
 }
@@ -75,7 +73,7 @@ body {
 }
 
 :root, [data-bs-theme=light]{
-    --bs-border-radius: 0.9rem !important;
+    --bs-border-radius: 0.8rem !important;
 }
 
 .card{
@@ -129,19 +127,9 @@ body {
     font-size:  var(--bs-body-font-size) !important;
     background-color: #FFFFFF;
 }
-.DateInput {
-    border-radius: 10px;
-}
-.DateRangePickerInput__withBorder {
-    border-radius: 10px;
-    border: 1px solid #dbdbdb;
-}
-.DateInput_input {
-    border-radius: 10px;
-}
 
-.DateInput_input {
-    border-radius: 10px;
+.DateRangePickerInput__withBorder {
+    border: 1px solid #dbdbdb;
 }
 
 .alert{
@@ -152,13 +140,16 @@ body {
     font-weight: 600 !important;
 }
 
+.form-control{
+    border-radius: 0;
+}
+
 .dash-graph{
     padding: 0 !important;
 }
 
 .Select-control{
     padding: 0.375rem!important;
-    border-radius: 10px;
     border: 1px solid #dbdbdb;
 }
 
@@ -188,6 +179,7 @@ body {
     background-color: rgba(0,0,0,0.0);
     border-color: #36485C;
     padding: 12px;
+    border-radius: 0.8rem !important;
     color: #BBCAD2;
 
 }
@@ -238,7 +230,6 @@ body {
     margin-left: 1rem;
     margin-top: 1rem;
     margin-bottom: 1rem;
-    border-radius: 10px !important;
 }
 
 
@@ -320,7 +311,7 @@ body {
 #sidebar {
     text-align: center;
     margin: 1rem;
-    border-radius: 1rem;
+    border-radius: 0.8rem;
     padding: 2rem 1.2rem;
     background-color: #212631;
 }
@@ -476,8 +467,9 @@ body {
     background-color: #36485C;
     padding: 1rem 3rem;
     border-color: #36485C;
-    border-radius: 1rem;
+    border-radius: 0.8rem;
     color:#FFFFFF;
+
 }
 
 .button:hover{
@@ -553,7 +545,6 @@ body {
     .form-control{
         padding:14px;
         margin-top: 1rem;
-        border-radius: 1rem;
     }
     .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
        background-color: #36485C;

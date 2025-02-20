@@ -2,6 +2,7 @@ import dash
 import dash_bootstrap_components as dbc
 from dash import dcc, html
 from utils import create_notification
+import dash_mantine_components as dmc
 # Initialize Dash app
 dash.register_page(__name__, path='/support')
 
@@ -18,26 +19,17 @@ def support_layout():
                     dbc.Card([
                         dbc.CardHeader(html.H4("Contact Information")),
                         dbc.CardBody([
-                            html.Label("Email", className="form-label"),
-                            dbc.Input(type="email", id="support-email", placeholder="Enter your email", className="mb-3"),
-                            
-                            html.Label("Phone", className="form-label"),
-                            dbc.Input(type="text", id="support-phone", placeholder="Enter your phone number (optional)", className="mb-3"),
-                            
-                            html.Label("Preferred Contact Method", className="form-label"),
-                            dcc.Dropdown(
-                                id="contact-method-dropdown",
-                                options=[
-                                    {"label": "Email", "value": "email"},
-                                    {"label": "Phone", "value": "phone"},
-                                ],
-                                value="email",
-                                className="mb-3"
+                            dmc.Stack(
+                                children=[
+                                    dmc.TextInput(label="Your Name"),
+                                    dmc.TextInput(label="Email Address"),
+                                    dmc.TextInput(label="Phone Number"),
+                                    ],
                             ),
                         ]),
                     ])
                 ], width=12),
-            ], className="mb-4"),
+            ]),
             
             # Issue Reporting Card
             dbc.Row([
@@ -45,28 +37,27 @@ def support_layout():
                     dbc.Card([
                         dbc.CardHeader(html.H4("Report an Issue")),
                         dbc.CardBody([
-                            html.Label("Issue Category", className="form-label"),
-                            dcc.Dropdown(
-                                id="issue-category-dropdown",
-                                options=[
-                                    {"label": "Bug", "value": "bug"},
-                                    {"label": "Feature Request", "value": "feature"},
-                                    {"label": "Other", "value": "other"},
-                                ],
-                                value="bug",
-                                className="mb-3"
-                            ),
-                            
-                            html.Label("Describe the Issue", className="form-label"),
-                            dbc.Textarea(
-                                id="issue-description",
-                                placeholder="Describe your issue or request in detail",
-                                className="mb-3"
+                            dmc.Stack(
+                                children=[
+                                    dmc.Select(
+                                        label="Issue Category",
+                                        data=[
+                                            {"label": "Bug", "value": "bug"},
+                                            {"label": "Feature Request", "value": "feature"},
+                                            {"label": "Other", "value": "other"},
+                                        ],
+                                        value="bug",
+                                    ),
+                                    dmc.TextInput(
+                                        label="Describe the Issue",
+                                        placeholder="Describe your issue or request in detail",
+                                    ),
+                                    ],
                             ),
                         ]),
                     ])
                 ], width=12),
-            ], className="mb-4"),
+            ]),
             
             # Feedback Card
             dbc.Row([
@@ -74,22 +65,30 @@ def support_layout():
                     dbc.Card([
                         dbc.CardHeader(html.H4("Feedback")),
                         dbc.CardBody([
-                            html.Label("Rate Your Experience", className="form-label"),
-                            dcc.Slider(
-                                id="feedback-rating",
-                                min=1,
-                                max=5,
-                                step=1,
-                                value=3,
-                                marks={i: str(i) for i in range(1, 6)},
-                                className="mb-3"
-                            ),
-                            
-                            html.Label("Additional Comments", className="form-label"),
-                            dbc.Textarea(
-                                id="feedback-comments",
-                                placeholder="Share any additional feedback",
-                                className="mb-3"
+                             dmc.Stack(
+                                children=[
+                                    dmc.Text("Rate Your Experience", size="md"),
+                                    dmc.Slider(
+                                        label="Rate",
+                                        value=[1, 5],  # This defines a range from 1 to 5
+                                        marks=[
+                                            {"value": 1, "label": "1"},
+                                            {"value": 2, "label": "2"},
+                                            {"value": 3, "label": "3"},
+                                            {"value": 4, "label": "4"},
+                                            {"value": 5, "label": "5"}
+                                        ],
+                                        step=1,  # Allows movement only between integer values
+                                        min=1,  # Minimum value
+                                        max=5,  # Maximum value
+                                    ),
+                                    # add a break here
+                                    html.Br(),
+                                    dmc.TextInput(
+                                        label="Additional Comments",
+                                        placeholder="Share any additional feedback",
+                                    ),
+                                    ],
                             ),
                         ]),
                     ])

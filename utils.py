@@ -204,3 +204,19 @@ def create_notification(description):
         className="notification-container"
     )
 
+def barchart_layout(figure, topic_order):
+    return figure.update_layout(legend=dict(orientation="h", yanchor="bottom", y=1.05, xanchor="center", x=0.45),
+                                     xaxis=dict(range=[0, 100]),
+                                     modebar=dict(remove=['lasso2d', 'select2d', 'reset', 'hover', 'zoom', 'autoscale']),
+                                     yaxis=dict(categoryorder='array', categoryarray=topic_order), 
+                                     margin=dict(l=0, r=0), 
+                                    )
+    
+def stats_count(filtered_df_topic, item, topic_id_mapping):
+    counts = filtered_df_topic.groupby(['Topic', item]).size().unstack(fill_value=0)
+    proportions = (counts.div(counts.sum(axis=1), axis=0) * 100).round(0).astype(int)
+    data = pd.melt(proportions.reset_index(), id_vars=["Topic"])
+    data['TOPIC_ID'] = data['Topic'].map(topic_id_mapping)
+    data = data.rename(columns={'value': 'Percentage proportions (%)'})
+    data[item] = data[item].str.upper()
+    return data

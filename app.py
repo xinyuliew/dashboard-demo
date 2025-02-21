@@ -8,12 +8,7 @@ import dash_mantine_components as dmc
 from dash import Dash, _dash_renderer
 _dash_renderer._set_react_version("18.2.0")
 
-app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP, dmc.styles.ALL, dmc.styles.DATES, dmc.styles.CHARTS,
-                dmc.styles.CODE_HIGHLIGHT,
-                dmc.styles.CHARTS,
-                dmc.styles.CAROUSEL,
-                dmc.styles.NOTIFICATIONS,
-                dmc.styles.NPROGRESS], use_pages=True, 
+app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP, dmc.styles.ALL, dmc.styles.DATES], use_pages=True, 
                 suppress_callback_exceptions=True)
 
 

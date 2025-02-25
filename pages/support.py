@@ -1,15 +1,13 @@
-import dash
 import dash_bootstrap_components as dbc
 from dash import html, callback, Input, Output, State
+from utils import get_data_supa, get_supabase_client
 import dash_mantine_components as dmc
 from supabase import create_client
 import os
 import re  # Added for email validation
 
-# Supabase Credentials (Replace with your actual Supabase URL & Key)
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY")
-supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+# Initialize Supabase client
+supabase = get_supabase_client()
 
 # Support Form Layout with Required Inputs
 def support_layout():
@@ -76,11 +74,10 @@ def is_valid_email(email):
     State("phone-input", "value"),
     State("issue-category", "value"),
     State("issue-description", "value"),
-    State("feedback-rating", "value"),
     State("additional-comments", "value"),
     prevent_initial_call=True
 )
-def handle_submission(n_clicks, name, email, phone, category, issue, rating, comments):
+def handle_submission(n_clicks, name, email, phone, category, issue, comments):
     # Ensure values are not None
     name = name or ""
     email = email or ""
@@ -108,7 +105,6 @@ def handle_submission(n_clicks, name, email, phone, category, issue, rating, com
         "phone": phone,
         "category": category,
         "issue_description": issue,
-        "feedback_rating": rating,
         "additional_comments": comments
     }
 

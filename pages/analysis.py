@@ -10,6 +10,8 @@ import dash_mantine_components as dmc
 from dash.exceptions import PreventUpdate
 import re
 from collections import Counter
+import nltk
+nltk.download('stopwords')
 from nltk.corpus import stopwords
 
 # Initialize Dash app

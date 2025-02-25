@@ -1,3 +1,4 @@
+import os
 from datetime import date
 import dash
 from dash import html, dcc, callback, Input, Output
@@ -11,8 +12,22 @@ from dash.exceptions import PreventUpdate
 import re
 from collections import Counter
 import nltk
-nltk.download('stopwords')
+
+# Ensure nltk_data is in the /tmp directory on Heroku (it's writeable)
+nltk_data_path = '/tmp/nltk_data'
+if not os.path.exists(nltk_data_path):
+    os.makedirs(nltk_data_path)
+
+nltk.data.path.append(nltk_data_path)
+
+# Download NLTK corpora, if not already present
+try:
+    nltk.download('stopwords', download_dir=nltk_data_path)
+except Exception as e:
+    print(f"Error downloading NLTK data: {e}")
+
 from nltk.corpus import stopwords
+print(stopwords.words("english"))
 
 # Initialize Dash app
 dash.register_page(__name__, path='/discourse_analysis')

@@ -1,5 +1,5 @@
 import dash
-from dash import html, dcc, callback, Input, Output, State
+from dash import html, dcc, callback, Input, Output
 import pandas as pd
 from datetime import date
 import plotly.express as px
@@ -8,9 +8,6 @@ from utils import explain, create_notification, get_data_supa, get_supabase_clie
 import dash_mantine_components as dmc
 from dash.exceptions import PreventUpdate
 import pandas as pd
-import numpy as np
-import xgboost as xgb
-import joblib
 import plotly.express as px
 # Register Page
 dash.register_page(__name__, path='/')

@@ -1,4 +1,3 @@
-import os
 from datetime import date
 import dash
 from dash import html, dcc, callback, Input, Output
@@ -11,23 +10,7 @@ import dash_mantine_components as dmc
 from dash.exceptions import PreventUpdate
 import re
 from collections import Counter
-import nltk
-
-# Ensure nltk_data is in the /tmp directory on Heroku (it's writeable)
-nltk_data_path = '/tmp/nltk_data'
-if not os.path.exists(nltk_data_path):
-    os.makedirs(nltk_data_path)
-
-nltk.data.path.append(nltk_data_path)
-
-# Download NLTK corpora, if not already present
-try:
-    nltk.download('stopwords', download_dir=nltk_data_path)
-except Exception as e:
-    print(f"Error downloading NLTK data: {e}")
-
 from nltk.corpus import stopwords
-print(stopwords.words("english"))
 
 # Initialize Dash app
 dash.register_page(__name__, path='/discourse_analysis')
@@ -176,8 +159,8 @@ def discourse_analysis_layout():
                                 html.H6("All detailed discourses that contributed to the visual analysis to support in-depth investigation.", className="card-subtitle")
                             ],),
                             explain("Discourses")      
-                        ], className="card-header-container")  
-                    ),
+                            ], className="card-header-container")  
+                        ),
                     dbc.CardBody([
                         dcc.Loading(html.Div(id='table-container2'))
                     ]),

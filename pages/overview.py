@@ -248,24 +248,21 @@ def update_output(dates, value):
     fig_sentiment = barchart_layout(fig_sentiment, topic_order)
     line_plot_data_list = []
 
-    # Loop over each topic
     for topic in sorted_topics['Topics']:
-        topic_df = filtered_df_topic[filtered_df_topic['Topic'] == topic]
-        
-        # Create a synthetic popularity proxy using sentiment and stance
+        topic_df = filtered_df_topic.loc[filtered_df_topic['Topic'] == topic].copy()  # Explicit copy
+
         topic_df['Synthetic_Popularity'] = (
             (topic_df['Polarity'] * 0.5) +  # Adjust polarity weight
             (topic_df['Subjectivity'] * 0.3) +  # Adjust subjectivity weight
             (topic_df['No_of_comments'] * 0.2)  # Weight based on number of comments
         )
-    
+
         # Group by 'created_utc' and sum the synthetic popularity
-        line_plot_data = topic_df.groupby('created_utc')['Synthetic_Popularity'].sum().reset_index()
-        
+        line_plot_data = topic_df.groupby('created_utc', as_index=False)['Synthetic_Popularity'].sum()
+
         # Add topic as a column for grouping
         line_plot_data['Topic'] = topic
         line_plot_data_list.append(line_plot_data)
-
 
     # Combine all the data into one dataframe
     combined_line_plot_data = pd.concat(line_plot_data_list)

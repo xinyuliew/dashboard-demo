@@ -1,40 +1,44 @@
 import dash_bootstrap_components as dbc
 from dash import html
 from dash import Input, Output, html, callback
-
+from dash_iconify import DashIconify
+import dash_mantine_components as dmc
 
 def menubar(title="NavbarSimple"):
     return html.Div(
             dbc.Navbar(
                 dbc.Container(
-                    [
-                        # Left-aligned item (e.g., a title or logo)
+                    [   
                         dbc.NavbarBrand(title, className="me-auto"),
-                        dbc.DropdownMenu(
+                        dmc.Menu(
                             [
-                                dbc.DropdownMenuItem(
-                                    dbc.NavLink(
-                                        [html.I(className="bi bi-person-circle"), "   My account"], 
-                                        href="/account"
-                                    )
-                                ),
-                                dbc.DropdownMenuItem(
-                                    dbc.NavLink(
-                                        [html.I(className="bi bi-box-arrow-right"), "   Logout"], 
-                                        href="/login"
-                                    )
+                                dmc.MenuTarget(dmc.Button("My account", rightSection=DashIconify(icon="icon-park-solid:down-one"))),
+                                dmc.MenuDropdown(
+                                    [   
+                                        dmc.MenuItem(
+                                            "My Account", leftSection=DashIconify(icon="tabler:user-circle"), href="/account"
+                                        ),
+                                        dmc.MenuItem("Settings", leftSection=DashIconify(icon="tabler:settings")),
+                                        dmc.MenuItem("Messages", leftSection=DashIconify(icon="tabler:message")),
+                                        dmc.MenuItem("Gallery", leftSection=DashIconify(icon="tabler:photo")),
+                                        dmc.MenuItem("Search", leftSection=DashIconify(icon="tabler:search")),
+                                        dmc.MenuDivider(),
+                                        dmc.MenuItem("Transfer my data", leftSection=DashIconify(icon="tabler:arrows-left-right")),
+                                        dmc.MenuItem(
+                                            "Delete my account",
+                                            leftSection=DashIconify(icon="tabler:trash"),
+                                            color="red",
+                                        ),
+                                        dmc.MenuDivider(),
+                                        dmc.MenuItem(
+                                            "Logout", leftSection=DashIconify(icon="material-symbols:logout-rounded"), color="blue", href="/login"
+                                        ),
+                                    ]
                                 ),
                             ],
-                            label="My Account",  # Label for the dropdown menu
-                            align_end=True,   
-                            toggle_style={
-                                "background": "#36485C",
-                                "padding": "0.5rem 1.5rem",
-                                "border-color": "#36485C",
-                                "border-radius": "1rem",
-                                "color":"#FFFFFF",
-                            },
-                        )
+                            trigger="click",
+                            position="bottom-end",
+                        ),
                     ]
                 ),
             )

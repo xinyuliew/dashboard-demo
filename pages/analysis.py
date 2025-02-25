@@ -128,10 +128,13 @@ def discourse_analysis_layout():
                 dbc.Card([
                     dbc.CardHeader(
                         html.Div([
-                                    "Summary",
-                                    explain("Summary")
-                                ], className="card-header-container")  
-                        ),
+                            html.Div([
+                                html.H5("Summary", className="card-title fw-bold"), 
+                                html.H6("A zoomed-in view of stances and sentiments for topic(s) of interest, allowing the customisation for investigation into details and trends.", className="card-subtitle")
+                            ],),
+                            explain("Summary")
+                        ], className="card-header-container")  
+                    ),
                     dbc.CardBody([
                         dbc.Row([
                             dbc.Col([
@@ -153,10 +156,13 @@ def discourse_analysis_layout():
                 dbc.Card([
                     dbc.CardHeader(
                         html.Div([
-                                    "Discourses",
-                                    explain("Discourses")
-                                ], className="card-header-container")  
-                            ),
+                            html.Div([
+                                html.H5("Discourses", className="card-title fw-bold"),
+                                html.H6("All detailed discourses that contributed to the visual analysis to support in-depth investigation.", className="card-subtitle")
+                            ],),
+                            explain("Discourses")      
+                        ], className="card-header-container")  
+                    ),
                     dbc.CardBody([
                         dcc.Loading(html.Div(id='table-container2'))
                     ]),
@@ -201,10 +207,15 @@ def update_output(dates, value):
     key_df = pd.DataFrame(most_common_words, columns=['Word', 'Frequency'])
 
     wordcount_chart = px.bar(
-        key_df, x='Word', y='Frequency', title="Top keywords",
-        labels={"Word": "Words", "Frequency": "Count"}, color='Frequency',
-        color_continuous_scale='blues'
-    ).update_layout(xaxis_title="Words", yaxis_title="Count", margin=dict(l=10, r=10, t=40, b=40), height=300)
+                        key_df, y='Word', x='Frequency', title="Top keywords",
+                        labels={"Word": "Words", "Frequency": "Count"}, color='Frequency',
+                        color_continuous_scale='blues', orientation='h'
+                        ).update_layout(
+                            xaxis_title="Count", 
+                            yaxis_title="Words", 
+                            margin=dict(l=10, r=10, t=40, b=40), 
+                            height=300
+                        )
 
     # Group by 'Stance' and count occurrences
     stance_counts = selected_df['Stance'].value_counts().reset_index()

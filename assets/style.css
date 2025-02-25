@@ -15,6 +15,7 @@ body {
 @media (min-width: 576px) {
     .container, .container-sm{
         padding: 0;
+        max-width: 600px;
     }
 }
 
@@ -51,29 +52,13 @@ body {
     font-size: 1.8rem !important;
 }
 
-.nav-link.active{
-    --bs-nav-pills-link-active-bg:#36485C!important;
-}
-
-.nav-link:hover{
-    background-color:#36485C;
-}
-
-.nav-link{
-    --bs-nav-link-color: #FFFFFF;
-    --bs-nav-link-padding-y: 1rem;
-    --bs-nav-link-hover-color:#FFFFFF;
-    --bs-nav-link-hover-bg:#36485C;
-    font-size: 1rem;
-    margin: 1px;
-}
 
 .bi{
     padding: 0 0.2rem;
 }
 
 :root, [data-bs-theme=light]{
-    --bs-border-radius: 0.8rem !important;
+    --bs-border-radius: 0.4rem !important;
 }
 
 .card{
@@ -115,27 +100,6 @@ body {
     border-width: 0 !important;
 }
 
-.DateRangePicker{
-    padding-bottom: 1rem !important;
-}
-
-#num-topics-slider{
-    padding-bottom: 1rem !important;
-}
-
-.DateInput_input {
-    font-size:  var(--bs-body-font-size) !important;
-    background-color: #FFFFFF;
-}
-
-.DateRangePickerInput__withBorder {
-    border: 1px solid #dbdbdb;
-}
-
-.alert{
-    margin-bottom: 0 !important;
-}
-
 .form-label{
     font-weight: 600 !important;
 }
@@ -175,32 +139,22 @@ body {
     border-bottom: 0 !important;
 }
 
-.search_text{
-    background-color: rgba(0,0,0,0.0);
-    border-color: #36485C;
-    padding: 12px;
-    border-radius: 0.8rem !important;
-    color: #BBCAD2;
-
-}
-
-.search_text::placeholder{
-    color: #BBCAD2;
-}
-
-.search_text:focus{
-    background-color: rgba(0,0,0,0.0);
-    border-color: #36485C;
-    color: #BBCAD2;
+.m_f0824112{
+    color: #ffffff;
+    padding: 10px;
+    margin-bottom: 0.2rem;
+    border-radius: 0.4rem;
 }
 
 
-
-.search_icon{
+.m_f0824112:hover{
     background-color: #36485C;
-    border-color: #36485C;
-    color: #BBCAD2;
+    color: #ffffff;
+}
 
+.m_f0824112:where([data-active], [aria-current='page']){
+    background-color: #36485C !important;
+    color: #ffffff;
 }
 
 .css-1bp1ao6 {
@@ -342,10 +296,6 @@ body {
     display: none;
 }
 
-#collapse *:first-child {
-    margin-top: 1rem;
-}
-
 #page-content {
     padding: 1.2rem 1rem;
     transition: margin-left 0.3s ease-in-out; /* Smooth transition for margin change */
@@ -359,10 +309,15 @@ body {
 
 /* Base styles for the menu bar */
 #menubar-content {
-    padding: 1.4rem 1rem;
+    padding: 1.4rem 1rem 0 1rem;
     transition: margin-left 0.3s ease-in-out; /* Smooth transition for margin change */
 }
 
+#sidebar {
+    .row{
+        margin-bottom: 0 !important;
+    }
+}
 /* Footer styling */
 #footer {
     padding: 2rem 1rem;
@@ -387,7 +342,6 @@ body {
     margin-bottom: 0; /* Remove margin if default styling adds it */
 
 }
-
 
 @media (min-width: 48em) {
     #sidebar {
@@ -463,28 +417,8 @@ body {
 
 }
 
-.button{
-    background-color: #36485C;
-    padding: 1rem 3rem;
-    border-color: #36485C;
-    border-radius: 0.8rem;
-    color:#FFFFFF;
-
-}
-
-.button:hover{
-    background-color: #212631!important;
-    box-shadow: none !important;
-    border-color: #212631;
-
-}
-
 .notification-card{
-    background-color: #ffffff;
-    color:#212631;
-    border-color:#ffffff;
-    box-shadow: 0 12px 30px rgba(46, 71, 101, 0.1) !important;
-    
+    border-color:var(--mantine-color-violet-light);   
 }
 
 .dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner table {
@@ -533,6 +467,9 @@ body {
 }
 
 #footer{
+    .row {
+        margin: 0;
+    }
     a{
         color:#5F7896;
         text-decoration: solid;
@@ -573,3 +510,19 @@ body {
 }
 
 
+/* Apply the margin only on large screens (e.g., 1024px and above) */
+@media (min-width: 1024px) {
+    .m_8bffd616 {
+        margin-bottom: 1rem;
+    }
+}
+
+.card-subtitle{
+    color: var(--mantine-color-dimmed);
+    font-size: var(--input-description-size, calc(var(--mantine-font-size-sm) - calc(0.125rem* var(--mantine-scale))));
+    word-wrap: break-word;
+    line-height: 1.2;
+    display: block;
+    margin: 0;
+    padding: 0;
+}

@@ -1,5 +1,6 @@
 import pandas as pd
 import dash_bootstrap_components as dbc
+import dash_mantine_components as dmc
 from dash import html
 from dotenv import load_dotenv
 import os
@@ -187,18 +188,13 @@ def explain(item):
 def create_notification(description):
     return html.Div(
         [
-            dbc.Button(
-                "Page Description",  # Initial button text when the alert is open
-                id="alert-toggle",
-                n_clicks=0,
-                className="button"
-            ),
-            dbc.Alert(
+            dmc.Alert(
                 description,
+                title="Page Information",
                 id="demo-alert",
-                is_open=True,  # Alert is initially open
+                withCloseButton=True,                
                 className="notification-card",  # Apply the transition class
-                color="light",
+                color="violet",  # Use the info color for the notification
             ),
         ],
         className="notification-container"

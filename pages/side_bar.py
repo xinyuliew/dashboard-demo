@@ -1,41 +1,84 @@
 import dash
-from dash import html
+from dash import html, dcc
 import dash_bootstrap_components as dbc
+import dash_mantine_components as dmc
+from dash_iconify import DashIconify
 
+def get_icon(icon):
+    return DashIconify(icon=icon, height=18)
 
 def sidebar():
     return html.Div(
-    [
-        sidebar_header,
-        html.Div(
-            [
-            ],
-            id="blurb",
-        ),
-        dbc.InputGroup(
-                [
-                    dbc.Input(id="input", placeholder="Search", type="text", className="search_text"),
-                    dbc.InputGroupText(html.I(className="bi bi-search"), className="search_icon"),
-                ]
-            ),
-        # use the Collapse component to animate hiding / revealing links
-        dbc.Collapse(
-            dbc.Nav(
-                [
-                    dbc.NavLink([html.I(className="bi bi-grid"), "   Overview"], href="/", id="page-1-link", active='exact'),
-                    dbc.NavLink([html.I(className="bi bi-graph-up"), "   Discourse Analysis"], href="/discourse_analysis", id="page-2-link", active='exact'),
-                    #dbc.NavLink([html.I(className="bi bi-gear"), "   Settings"], href="/settings", id="page-3-link", active='exact'),
-                    dbc.NavLink([html.I(className="bi bi-chat-right-dots"), "   Support"], href="/support", id="page-5-link", active='exact'),
-                    dbc.NavLink([html.I(className="bi bi-info-square"), "   Sources"], href="/sources", id="page-6-link", active='exact'),
+        [
+            dcc.Location(id="side-url", refresh=False),  # Track URL changes
+            sidebar_header,
+            html.Div(id="blurb"),
+            dmc.Flex(
+                children=[
+                    dmc.TextInput(
+                        placeholder="Search", size="sm", style={"width": "100%"}
+                    ),
+                    dmc.ActionIcon(
+                        size="input-sm", children=DashIconify(icon="bi:search")
+                    ),
                 ],
-                vertical=True,
-                pills=True,
+                align="center",
+                justify="space-between",
+                style={"width": "100%"}
             ),
-            id="collapse",
-        ),
-    ],
-    id="sidebar",
-)
+         
+            dbc.Collapse(
+                dbc.Nav(
+                    [
+                        dmc.NavLink(
+                            label="Overview", 
+                            color="white", 
+                            leftSection=get_icon("uis:analysis"), 
+                            href="/", 
+                            id="overview-link", 
+                            active="exact",  # Only active when the path is exactly "/"
+                            variant="filled", 
+                            rightSection=DashIconify(icon="tabler-chevron-right")
+                        ),
+                        dmc.NavLink(
+                            label="Discourse Analysis", 
+                            color="white", 
+                            leftSection=get_icon("ci:chat-conversation-circle"), 
+                            href="/discourse_analysis", 
+                            id="discourse-link", 
+                            active="exact",  # Active only on exact match
+                            variant="filled", 
+                            rightSection=DashIconify(icon="tabler-chevron-right")
+                        ),
+                        dmc.NavLink(
+                            label="Support", 
+                            color="white", 
+                            leftSection=get_icon("material-symbols:contact-support-outline"), 
+                            href="/support", 
+                            id="support-link", 
+                            active="exact",  # Active only on exact match
+                            variant="filled", 
+                            rightSection=DashIconify(icon="tabler-chevron-right")
+                        ),
+                        dmc.NavLink(
+                            label="Sources", 
+                            color="white", 
+                            leftSection=get_icon("material-symbols:frame-source"), 
+                            href="/sources", 
+                            id="sources-link", 
+                            active="exact",  # Active only on exact match
+                            variant="filled", 
+                            rightSection=DashIconify(icon="tabler-chevron-right")
+                        ),
+                    ],
+                    vertical=True,
+                    pills=True
+                ),
+                id="collapse",
+            ),
+        ],
+        id="sidebar",
+    )
 
 sidebar_header = dbc.Row(
     [
@@ -43,24 +86,18 @@ sidebar_header = dbc.Row(
         dbc.Col(
             [
                 html.Button(
-                    # use the Bootstrap navbar-toggler classes to style
                     html.I(className="bi bi-list"),
                     className="navbar-toggler",
                     id="navbar-toggle",
                 ),
                 html.Button(
-                    # use the Bootstrap navbar-toggler classes to style
                     html.I(className="bi bi-list"),
                     className="navbar-toggler",
                     id="sidebar-toggle",
                 ),
             ],
-            # the column containing the toggle will be only as wide as the
-            # toggle, resulting in the toggle being right aligned
             width="auto",
-            # vertically align the toggle in the center
             align="center",
         ),
     ]
 )
-

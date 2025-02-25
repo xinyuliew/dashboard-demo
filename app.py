@@ -12,7 +12,7 @@ app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP,
                 suppress_callback_exceptions=True)
 
 
-server = app.server  # This is required for gunicorn
+server = app.server  
 
 from pages.overview import overview_layout
 from pages.analysis import discourse_analysis_layout
@@ -22,23 +22,20 @@ from pages.support import support_layout
 from pages.sources import sources_layout
 from pages.login import login_layout
 
-
 dash.page_container = html.Div()
 
-# Define the app layout
 app.layout = dmc.MantineProvider(
     html.Div([
-    dcc.Location(id="url", refresh=False),  # Handle URL changes
-    sidebar(),  # Sidebar component
-    html.Div(id="menubar-content"),  # Div for menubar content
-    html.Div(id="page-content"),  # Div for main page content
-    html.Div(id="login-page-container", style={"display": "none"}),  # Separate container for login page (hidden by default)
-    html.Div(id="footer-container"),  # Footer container
-    dash.page_container,  # Page container for dynamic page loading
+    dcc.Location(id="url", refresh=False),  
+    sidebar(),  
+    html.Div(id="menubar-content"),  
+    html.Div(id="page-content"),  
+    html.Div(id="login-page-container", style={"display": "none"}),  
+    html.Div(id="footer-container"), 
+    dash.page_container,  
 ])
 )
 
-# Callback to render content, menubar, and handle visibility of login page, sidebar, footer
 @app.callback(
     [Output("page-content", "children"),
      Output("menubar-content", "children"),
@@ -50,8 +47,6 @@ app.layout = dmc.MantineProvider(
 )
 def render_page_content(pathname):
     content, menubar_content, login_page_content, login_page_style, footer_style, sidebar_style = None, None, None, {"display": "none"}, None, {"display": "block"}
-
-    # For normal pages (non-login)
     if pathname == "/":
         content = overview_layout()
         menubar_content = menubar("Overview")
@@ -64,22 +59,20 @@ def render_page_content(pathname):
         content = account_layout()
         menubar_content = menubar("My account")
         footer_style = footer()
-
     elif pathname == "/support":
         content = support_layout()
         menubar_content = menubar("Support")
         footer_style = footer()
-
     elif pathname == "/sources":
         content = sources_layout()
         menubar_content = menubar("Sources")
         footer_style = footer()
     elif pathname == "/login":
-        login_page_content = login_layout()  # Custom login page layout
-        login_page_style = {"display": "block"}  # Show login page layout
-        menubar_content = None  # Hide the menubar on the login page
-        footer_style = None  # Hide the footer on the login page
-        sidebar_style = {"display": "none"}  # Hide the sidebar on the login page
+        login_page_content = login_layout() 
+        login_page_style = {"display": "block"} 
+        menubar_content = None
+        footer_style = None  
+        sidebar_style = {"display": "none"} 
     else:
         content = html.Div("Error 404 - Page not found")
         menubar_content = None
@@ -87,7 +80,6 @@ def render_page_content(pathname):
 
     return content, menubar_content, login_page_content, login_page_style, footer_style, sidebar_style
 
-# Callback to toggle sidebar visibility (already handled in render_page_content)
 @app.callback(
     Output("sidebar", "className"),
     [Input("sidebar-toggle", "n_clicks")],
@@ -95,10 +87,9 @@ def render_page_content(pathname):
 )
 def toggle_classname(n, classname):
     if n and classname == "":
-        return "collapsed"  # Collapse sidebar when toggled
+        return "collapsed"  
     return ""
 
-# Callback to toggle demo alert visibility
 @app.callback(
     Output("demo-alert", "is_open"),
     [Input("alert-toggle", "n_clicks")],
@@ -106,10 +97,9 @@ def toggle_classname(n, classname):
 )
 def toggle_alert(n, is_open):
     if n:
-        return not is_open  # Toggle alert visibility
+        return not is_open 
     return is_open
 
-# Callback to toggle navbar collapse
 @app.callback(
     Output("collapse", "is_open"),
     [Input("navbar-toggle", "n_clicks")],
@@ -117,8 +107,25 @@ def toggle_alert(n, is_open):
 )
 def toggle_collapse(n, is_open):
     if n:
-        return not is_open  # Toggle collapse state of navbar
+        return not is_open  
     return is_open
+
+@app.callback(
+    [
+        Output("overview-link", "active"),
+        Output("discourse-link", "active"),
+        Output("support-link", "active"),
+        Output("sources-link", "active"),
+    ],
+    [Input("side-url", "pathname")],
+)
+def update_active_link(pathname):
+    return (
+        pathname == "/",
+        pathname == "/discourse_analysis",
+        pathname == "/support",
+        pathname == "/sources",
+    )
 
 if __name__ == "__main__":
     app.run_server(debug=True, use_reloader=True)

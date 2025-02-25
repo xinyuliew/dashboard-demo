@@ -7,7 +7,11 @@ import dash_bootstrap_components as dbc
 from utils import explain, create_notification, get_data_supa, get_supabase_client, barchart_layout, stats_count
 import dash_mantine_components as dmc
 from dash.exceptions import PreventUpdate
-
+import pandas as pd
+import numpy as np
+import xgboost as xgb
+import joblib
+import plotly.express as px
 # Register Page
 dash.register_page(__name__, path='/')
 
@@ -53,7 +57,7 @@ def overview_layout():
                                                 dmc.Space(h=10),
                                                 dmc.Text(id="selected-date-input-range-picker"), 
                                                 ],
-                                            xs=12, sm=12, md=6, lg=4,
+                                            xs=12, sm=12, md=4, lg=4,
                                         ),
                                         dbc.Col([
                                             dmc.MultiSelect(
@@ -66,11 +70,10 @@ def overview_layout():
                                                     {"value": "twitter", "label": "X(Twitter)"},
                                                     {"value": "facebook", "label": "Facebook"},
                                                 ],
-                                                w=400,
                                                 mb=10,
                                             ),
                                             ],
-                                            xs=12, sm=12, md=6, lg=4,
+                                            xs=12, sm=12, md=4, lg=4,
                                         ),
                                         dbc.Col([
                                             dmc.NumberInput(
@@ -80,10 +83,9 @@ def overview_layout():
                                                 description="Select number of topics to cluster",
                                                 min=1,
                                                 max=5,
-                                                w=250,
                                             ),
                                             ],
-                                            xs=12, sm=12, md=6, lg=4),
+                                            xs=12, sm=12, md=4, lg=4),
                                             html.Div(id='output-container-date-picker-range')
                                         ],
                                     justify="between", 
@@ -94,17 +96,23 @@ def overview_layout():
                         width=12, className="selectionrow"  # Full width for the card
                     ),
                 ),
-                dbc.Row([
+               dbc.Row([
                     dbc.Col([
                         dbc.Card([
                             dbc.CardHeader(
+                                html.Div([
                                     html.Div([
-                                        "Top Discussed Topics",
-                                        explain("Top")
-                                    ], className="card-header-container")  
-                                ),
+                                        html.H5("Trending Topics", className="card-title fw-bold"),  # Bold title
+                                        html.H6("Clustered topic themes of discourses based on your selection with the harmfulness score.", 
+                                        className="card-subtitle"),  # Italic subtitle 
+                                    ]),
+                                    explain("Top")
+                                ], className="card-header-container")  
+                            ),
                             dbc.CardBody([
-                                dcc.Loading(html.Div(id='table-container'))
+                                dmc.ScrollArea(
+                                    dcc.Loading(html.Div(id='table-container'))
+                                )
                             ])
                         ])
                     ], width=12)
@@ -114,7 +122,11 @@ def overview_layout():
                         dbc.Card([
                             dbc.CardHeader(
                                 html.Div([
-                                    "Stance Analysis",
+                                    html.Div([
+                                        html.H5("Stance Distribution by Topic", className="card-title fw-bold"),  # Bold title
+                                        html.H6("The percentage distribution of opinions within discourses by trending topic.", 
+                                        className="card-subtitle"),  # Italic subtitle 
+                                    ]),
                                     explain("Stance")
                                 ], className="card-header-container")  
                             ),
@@ -127,7 +139,11 @@ def overview_layout():
                         dbc.Card([
                             dbc.CardHeader(
                                 html.Div([
-                                    "Sentiment Analysis",
+                                    html.Div([
+                                        html.H5("Sentiment Distribution by Topic", className="card-title fw-bold"),  # Bold title
+                                        html.H6("The percentage distribution of emotional tone used within discourses by trending topic.",
+                                        className="card-subtitle"),
+                                    ]),
                                     explain("Sentiment")
                                 ], className="card-header-container")  
                             ),
@@ -142,7 +158,11 @@ def overview_layout():
                         dbc.Card([
                             dbc.CardHeader(
                                  html.Div([
-                                    "Popularity Insights",
+                                     html.Div([
+                                        html.H5("Popularity Over Time", className="card-title fw-bold"),  
+                                        html.H6("The level of engagement or interest in topics over time.",
+                                        className="card-subtitle"),
+                                    ]),
                                     explain("Popularity")
                                 ], className="card-header-container")  
                             ),
@@ -221,35 +241,53 @@ def update_output(dates, value):
     topic_order = sorted(topic_id_mapping.values())
 
     data_stance = stats_count(filtered_df_topic, 'Stance', topic_id_mapping)
-    fig_stance = px.bar(data_stance, x='Percentage proportions (%)', y='TOPIC_ID', color='Stance', 
+    fig_stance = px.bar(data_stance, x='Percentage proportions (%)', y='Topic', color='Stance', 
                         orientation='h', barmode='stack', color_discrete_map={'AGAINST': '#bd1f36', 'FAVOR': '#40916c', 'NONE': '#cfcdc9'})
     fig_stance = barchart_layout(fig_stance, topic_order)
     
     data_sentiment = stats_count(filtered_df_topic, 'Sentiment', topic_id_mapping)
-    fig_sentiment = px.bar(data_sentiment, x='Percentage proportions (%)', y='TOPIC_ID', color='Sentiment', orientation='h',
-                    barmode='stack', color_discrete_map={'POSITIVE': '#4CAF50', 'NEGATIVE': '#F44336', 'NEUTRAL': '#9E9E9E'})
+    fig_sentiment = px.bar(data_sentiment, x='Percentage proportions (%)', y='Topic', color='Sentiment', orientation='h',
+                    barmode='stack', color_discrete_map={'POSITIVE': '#228B22', 'NEGATIVE': '#A52A2A', 'NEUTRAL': '#FFD700'})
     fig_sentiment = barchart_layout(fig_sentiment, topic_order)
-
     line_plot_data_list = []
 
+    # Loop over each topic
     for topic in sorted_topics['Topics']:
         topic_df = filtered_df_topic[filtered_df_topic['Topic'] == topic]
-        line_plot_data = topic_df.groupby('created_utc')['No_of_comments'].sum().reset_index()
+        
+        # Create a synthetic popularity proxy using sentiment and stance
+        topic_df['Synthetic_Popularity'] = (
+            (topic_df['Polarity'] * 0.5) +  # Adjust polarity weight
+            (topic_df['Subjectivity'] * 0.3) +  # Adjust subjectivity weight
+            (topic_df['No_of_comments'] * 0.2)  # Weight based on number of comments
+        )
+    
+        # Group by 'created_utc' and sum the synthetic popularity
+        line_plot_data = topic_df.groupby('created_utc')['Synthetic_Popularity'].sum().reset_index()
+        
+        # Add topic as a column for grouping
         line_plot_data['Topic'] = topic
         line_plot_data_list.append(line_plot_data)
-    
+
+
+    # Combine all the data into one dataframe
     combined_line_plot_data = pd.concat(line_plot_data_list)
+
+    # Rename columns for the plot
     combined_line_plot_data = combined_line_plot_data.rename(columns={
         'created_utc': 'Date',
-        'No_of_comments': 'Popularity',
+        'Synthetic_Popularity': 'Popularity',  # Show synthetic popularity
         'Topic': 'TOPICS'
     })
 
+    # Plot the graph using Plotly
     fig_popularity = px.line(combined_line_plot_data, x='Date', y='Popularity', color='TOPICS'
-                            ).update_layout(legend=dict(orientation="h", yanchor="bottom", y=1.05, xanchor="center", x=0.45),
-                                            legend_title_text=None, modebar=dict(remove=['lasso2d', 'select2d', 'reset', 'hover', 'zoom', 'autoscale']),
-                                            yaxis=dict(categoryorder='array', categoryarray=topic_order),
-                                            margin=dict(l=0, r=0), 
-                                            )
+                            ).update_layout(
+                                legend=dict(orientation="h", yanchor="bottom", y=1.05, xanchor="center", x=0.45),
+                                legend_title_text=None,
+                                modebar=dict(remove=['lasso2d', 'select2d', 'reset', 'hover', 'zoom', 'autoscale']),
+                                yaxis=dict(categoryorder='array', categoryarray=topic_order),
+                                margin=dict(l=0, r=0)
+                            )
         
     return date_selection_string, table, fig_stance, fig_sentiment, fig_popularity

@@ -28,4 +28,4 @@ def footer():
                 )
             ], xs=12, sm=12, md=12, lg=8),
         ], className="text-center text-md-start mx-auto"),  # Center content on small screens
-    ], id="footer", className="py-3")
+    ], id="footer")

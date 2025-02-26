@@ -100,7 +100,7 @@ def overview_layout():
                                 html.Div([
                                     html.Div([
                                         html.H5("Trending Topics", className="card-title fw-bold"),  # Bold title
-                                        html.H6("Clustered topic themes of discourses based on your selection with the harmfulness score.", 
+                                        html.H6("Clustered themes within discourses based on your selected parameters.", 
                                         className="card-subtitle"),  # Italic subtitle 
                                     ]),
                                     explain("Top")
@@ -121,7 +121,7 @@ def overview_layout():
                                 html.Div([
                                     html.Div([
                                         html.H5("Stance Distribution by Topic", className="card-title fw-bold"),  # Bold title
-                                        html.H6("The percentage distribution of opinions within discourses by trending topic.", 
+                                        html.H6("Comparison of opinions expressed within discourses.", 
                                         className="card-subtitle"),  # Italic subtitle 
                                     ]),
                                     explain("Stance")
@@ -138,7 +138,7 @@ def overview_layout():
                                 html.Div([
                                     html.Div([
                                         html.H5("Sentiment Distribution by Topic", className="card-title fw-bold"),  # Bold title
-                                        html.H6("The percentage distribution of emotional tone used within discourses by trending topic.",
+                                        html.H6("Comparison of emotional tone used within discourses.",
                                         className="card-subtitle"),
                                     ]),
                                     explain("Sentiment")
@@ -229,8 +229,24 @@ def update_output(dates, value):
     table = dash.dash_table.DataTable(
         data=sorted_topics[['Topic_id', 'Topics', 'Total number of post', 'Total number of replies', 'Harmfulness']].to_dict('records'),
         columns=[{'name': col, 'id': col} for col in ['Topic_id', 'Topics', 'Total number of post', 'Total number of replies', 'Harmfulness']],
-        style_cell={'textAlign': 'left'},
-        sort_action='native'
+        
+        # Add tooltips for each column to indicate how each is calculated
+        tooltip_header={
+            'Topics': 'Extracted discussion topic.',
+            'Total number of post': 'Initial post count.',
+            'Total number of replies': 'Replies to posts.',
+            'Harmfulness': 'Measured level of harmful or toxic language.'
+        },
+
+        style_cell={'textAlign': 'left',
+                    'overflow': 'hidden',
+                    'textOverflow': 'ellipsis',
+                    'maxWidth': 0,
+                },
+        sort_action='native',
+        tooltip_delay=200,  # Delay in milliseconds
+        tooltip_duration=None  # Display indefinitely 
+       
     )
 
     topic_id_mapping = dict(zip(sorted_topics['Topics'], sorted_topics['Topic_id']))
@@ -238,13 +254,13 @@ def update_output(dates, value):
     topic_order = sorted(topic_id_mapping.values())
 
     data_stance = stats_count(filtered_df_topic, 'Stance', topic_id_mapping)
-    fig_stance = px.bar(data_stance, x='Percentage proportions (%)', y='Topic', color='Stance', 
-                        orientation='h', barmode='stack', color_discrete_map={'AGAINST': '#bd1f36', 'FAVOR': '#40916c', 'NONE': '#cfcdc9'})
+    fig_stance = px.bar(data_stance, x='Proportions (%)', y='Topic', color='Stance', text_auto='.2s',
+                        orientation='h', barmode='stack', color_discrete_map={'Against': '#bd1f36', 'Favor': '#40916c', 'None': '#cfcdc9'})
     fig_stance = barchart_layout(fig_stance, topic_order)
     
     data_sentiment = stats_count(filtered_df_topic, 'Sentiment', topic_id_mapping)
-    fig_sentiment = px.bar(data_sentiment, x='Percentage proportions (%)', y='Topic', color='Sentiment', orientation='h',
-                    barmode='stack', color_discrete_map={'POSITIVE': '#228B22', 'NEGATIVE': '#A52A2A', 'NEUTRAL': '#FFD700'})
+    fig_sentiment = px.bar(data_sentiment, x='Proportions (%)', y='Topic', color='Sentiment', orientation='h',  text_auto='.2s',
+                    barmode='stack', color_discrete_map={'Positive': '#228B22', 'Negative': '#A52A2A', 'Neutral': '#FFD700'})
     fig_sentiment = barchart_layout(fig_sentiment, topic_order)
     line_plot_data_list = []
 
@@ -281,7 +297,7 @@ def update_output(dates, value):
                                 legend_title_text=None,
                                 modebar=dict(remove=['lasso2d', 'select2d', 'reset', 'hover', 'zoom', 'autoscale']),
                                 yaxis=dict(categoryorder='array', categoryarray=topic_order),
-                                margin=dict(l=0, r=0)
+                                margin=dict(l=0, r=0, t=30, b=30),  # Adjusted for better spacing
                             )
         
     return date_selection_string, table, fig_stance, fig_sentiment, fig_popularity

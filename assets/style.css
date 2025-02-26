@@ -263,9 +263,6 @@ body {
 }
 
 #sidebar {
-    text-align: center;
-    margin: 1rem;
-    border-radius: 0.8rem;
     padding: 2rem 1.2rem;
     background-color: #212631;
 }
@@ -400,12 +397,12 @@ body {
 
     /* Set margins of the main content so that it doesn't overlap the sidebar */
     #page-content {
-        margin-left: 19rem; /* Adjust based on expanded sidebar width */
+        margin-left: 18rem; /* Adjust based on expanded sidebar width */
         margin-right: 1rem;
         transition: margin-left 0.3s ease-in-out; /* Smooth transition for margin change */
     }
     #menubar-content {
-        margin-left: 19rem; /* Default width of the sidebar when expanded */
+        margin-left: 18rem; /* Default width of the sidebar when expanded */
         margin-right: 1rem;
         transition: margin-left 0.3s ease-in-out; /* Smooth transition for margin change */
     }
@@ -423,6 +420,7 @@ body {
 
 .dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner table {
     font-family: sans-serif !important;
+    font-size: 0.875rem !important;
     --accent: var(--bs-nav-link-hover-bg) !important;
 }
 
@@ -525,4 +523,12 @@ body {
     display: block;
     margin: 0;
     padding: 0;
+}
+
+.dash-table-tooltip {
+    background-color: #000000 !important;
+    font-size: 0.875rem !important;
+    color: #FFFFFF !important;
+    border-radius: 0.4rem !important;
+    min-width: none;
 }

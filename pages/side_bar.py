@@ -84,7 +84,7 @@ sidebar_header = dbc.Row(
     [
         dbc.Col(html.H2("DiscourseDash")),
         dbc.Col(
-            [
+            [   
                 html.Button(
                     html.I(className="bi bi-list"),
                     className="navbar-toggler",

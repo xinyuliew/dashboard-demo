@@ -16,7 +16,7 @@ def menubar(title="NavbarSimple"):
                                 dmc.MenuDropdown(
                                     [   
                                         dmc.MenuItem(
-                                            "My Account", leftSection=DashIconify(icon="tabler:user-circle"), href="/account"
+                                            "My Account", leftSection=DashIconify(icon="tabler:user-circle"), 
                                         ),
                                         dmc.MenuItem("Settings", leftSection=DashIconify(icon="tabler:settings")),
                                         dmc.MenuItem("Messages", leftSection=DashIconify(icon="tabler:message")),

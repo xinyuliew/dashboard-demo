@@ -1,36 +1,37 @@
 import dash_bootstrap_components as dbc
 from dash import html, callback, Input, Output, State
-from utils import get_data_supa, get_supabase_client
+from utils import get_supabase_client, create_notification
 import dash_mantine_components as dmc
-from supabase import create_client
-import os
-import re  # Added for email validation
+import re  
 
-# Initialize Supabase client
 supabase = get_supabase_client()
 
-# Support Form Layout with Required Inputs
 def support_layout():
     layout = html.Div([
         dbc.Container([
-            # General Settings Card
+            dbc.Row([
+                    dbc.Col([
+                         create_notification("This allows users to provide feedback on the analysis or the dashboard."),
+                    ]),
+                ]),
             dbc.Row([
                 dbc.Col([
                     dbc.Card([
-                         dbc.CardHeader(html.H4("Submit a Request", className="card-title fw-bold")),
+                         dbc.CardHeader(html.H4("Contact us", className="card-title fw-bold")),
                          dbc.CardBody([
                             # Input Fields
-                            dmc.TextInput(label="Name", id="name-input", required=True),
+                            dmc.TextInput(label="Name", id="name-input", required=True, placeholder="First Last"),
                             dmc.TextInput(label="Email", id="email-input", required=True, placeholder="example@email.com"),
                             dmc.TextInput(label="Phone", id="phone-input", required=False, placeholder="Optional"),
 
                             dmc.Select(
                                 label="Issue Category",
                                 id="issue-category",
-                                data=["Bug Report", "Feature Request", "General Inquiry"],
+                                data=["Incorrect labels", "Data Issue", "Bug Report", "Feature Request", "General Inquiry", "Other"],
+                                placeholder="Select an option",
                                 searchable=True,
                             ),
-                            dmc.Textarea(label="Issue Description", id="issue-description", required=True),
+                            dmc.Textarea(label="Issue Description", id="issue-description", required=True, placeholder="Please describe the issue in detail"),
                             dmc.Textarea(label="Additional Comments", id="additional-comments"),
                             # add some gap here
                             dmc.Space(h=20),

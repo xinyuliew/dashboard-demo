@@ -157,32 +157,32 @@ def explain(item):
     if item == "Stance":
         return html.Div([
             make_button(tooltip_id),  # Unique ID for the button
-            make_tooltip("The percentage distribution of opinions, 'Against', 'Favour', or 'None', within discourses by topic ID.", tooltip_id)
+            make_tooltip("Calculated based on expressed position labelled within texts", tooltip_id)
         ], className="help-icon")
     elif item == "Sentiment":
         return html.Div([
             make_button(tooltip_id),  # Unique ID for the button
-            make_tooltip("T he percentage distribution of emotional tone, 'Positive', 'Negative', or 'Neutral', within discourses by topic ID.", tooltip_id)
+            make_tooltip("Calculated based on emotions labelled within texts ", tooltip_id)
         ], className="help-icon")
     elif item == "Popularity":
         return html.Div([
             make_button(tooltip_id),  # Unique ID for the button
-            make_tooltip("The level of engagement or interest in topics over time.", tooltip_id)
+            make_tooltip("Calculated using engagement metrics to illustrate the influence of trending topics.", tooltip_id)
         ], className="help-icon")
     elif item == "Top":
         return html.Div([
             make_button(tooltip_id),  # Unique ID for the button
-            make_tooltip("Topic clustering to bring forward the most prominent or relevant discussion.", tooltip_id)
+            make_tooltip("Displays a breakdown of posts and comments to show detailed discourse statistics.", tooltip_id)
         ], className="help-icon")
     elif item == "Summary":
         return html.Div([
             make_button(tooltip_id),  # Unique ID for the button
-            make_tooltip("A zoomed-in view of stances and sentiments for topic(s) of interest, allowing the customisation for investigation into details and trends.", tooltip_id)
+            make_tooltip("Provides a concise overview of key insights derived from your filtered parameters of choice.", tooltip_id)
         ], className="help-icon")
     elif item == "Discourses":
         return html.Div([
             make_button(tooltip_id),  # Unique ID for the button
-            make_tooltip("All detailed discourses that contributed to the visual analysis to support in-depth investigation.", tooltip_id)
+            make_tooltip("To support unfolding of conversations with analysis labels", tooltip_id)
         ], className="help-icon")
 
 def create_notification(description):
@@ -201,18 +201,19 @@ def create_notification(description):
     )
 
 def barchart_layout(figure, topic_order):
-    return figure.update_layout(legend=dict(orientation="h", yanchor="bottom", y=1.05, xanchor="center", x=0.45),
-                                     xaxis=dict(range=[0, 100]),
-                                     modebar=dict(remove=['lasso2d', 'select2d', 'reset', 'hover', 'zoom', 'autoscale']),
-                                     yaxis=dict(categoryorder='array', categoryarray=topic_order), 
-                                     margin=dict(l=0, r=0), 
-                                    )
+    figure.update_layout(
+        legend=dict(title_text="", orientation="h", yanchor="bottom", y=1.05, xanchor="center", x=0),
+        xaxis=dict(range=[0, 100], title="Proportions (%)"),
+        yaxis=dict(categoryorder="array", categoryarray=topic_order, title="Topic"),
+        margin=dict(l=0, r=0, t=30, b=30),  # Adjusted for better spacing
+        modebar=dict(remove=['lasso2d', 'select2d', 'reset', 'hover', 'zoom', 'autoscale'])
+    )
+    return figure
     
 def stats_count(filtered_df_topic, item, topic_id_mapping):
     counts = filtered_df_topic.groupby(['Topic', item]).size().unstack(fill_value=0)
     proportions = (counts.div(counts.sum(axis=1), axis=0) * 100).round(0).astype(int)
     data = pd.melt(proportions.reset_index(), id_vars=["Topic"])
     data['TOPIC_ID'] = data['Topic'].map(topic_id_mapping)
-    data = data.rename(columns={'value': 'Percentage proportions (%)'})
-    data[item] = data[item].str.upper()
+    data = data.rename(columns={'value': 'Proportions (%)'})
     return data

@@ -130,7 +130,7 @@ def discourse_analysis_layout():
                         html.Div([
                             html.Div([
                                 html.H5("Summary", className="card-title fw-bold"), 
-                                html.H6("A zoomed-in view of stances and sentiments for topic(s) of interest, allowing the customisation for investigation into details and trends.", className="card-subtitle")
+                                html.H6("A zoomed-in view of top kewords, stances and sentiments for topic(s) of interest, allowing the customisation for investigation into details and trends.", className="card-subtitle")
                             ],),
                             explain("Summary")
                         ], className="card-header-container")  
@@ -158,7 +158,7 @@ def discourse_analysis_layout():
                         html.Div([
                             html.Div([
                                 html.H5("Discourses", className="card-title fw-bold"),
-                                html.H6("All detailed discourses that contributed to the visual analysis to support in-depth investigation.", className="card-subtitle")
+                                html.H6("All resulting discourses that contributed to the visual analysis to support in-depth investigation.", className="card-subtitle")
                             ],),
                             explain("Discourses")      
                             ], className="card-header-container")  
@@ -213,7 +213,7 @@ def update_output(dates, value):
                         ).update_layout(
                             xaxis_title="Count", 
                             yaxis_title="Words", 
-                            margin=dict(l=10, r=10, t=40, b=40), 
+                            margin=dict(l=0, r=0, t=30, b=30),  # Adjusted for better spacing
                             height=300
                         )
 
@@ -231,7 +231,8 @@ def update_output(dates, value):
                         'Favor': '#6FDF6F',
                         'None': '#C0C0C0'
     }).update_layout(xaxis_title="Proportions (%)", yaxis_title="Stances", showlegend=False, 
-                     xaxis=dict(range=[0, 100]), margin=dict(l=10, r=10, t=40, b=40), height=300)
+                     xaxis=dict(range=[0, 100]), margin=dict(l=0, r=0, t=30, b=30),  # Adjusted for better spacing
+                    height=300)
     
     # Group by 'Sentiment' and count occurrences
     sentiment_counts = selected_df['Sentiment'].value_counts().reset_index()
@@ -244,7 +245,7 @@ def update_output(dates, value):
             'Negative': '#F44336',
             'Neutral': '#9E9E9E'
     }).update_layout(xaxis_title="Proportions (%)", yaxis_title="Sentiments", showlegend=False, modebar=dict(remove=['lasso2d', 'select2d', 'reset', 'hover', 'zoom', 'autoscale']), 
-                     xaxis=dict(range=[0, 100]), margin=dict(l=10, r=10, t=40, b=40), height = 300)
+                     xaxis=dict(range=[0, 100]), margin=dict(l=0, r=0, t=30, b=30), height = 300)
     
     
     rows = create_rows(df_root, df_comments)

@@ -2,12 +2,17 @@ import dash
 import dash_mantine_components as dmc
 from dash import html
 import dash_bootstrap_components as dbc
-
+from utils import create_notification
 # Initialize Dash app
 dash.register_page(__name__, path='/sources')
 
 def sources_layout():
     layout = html.Div([
+        dbc.Row([
+                    dbc.Col([
+                         create_notification("This page provides information about all the detailed methodology used in this project.")
+                    ])
+                ]),
         dbc.Row([
             dbc.Col([
                 dbc.Card(
@@ -53,6 +58,28 @@ def sources_layout():
                                             ]),
                                         ],
                                         value="models",
+                                    ),
+                                    dmc.AccordionItem(
+                                        [
+                                            dmc.AccordionControl("Tools"),
+                                            dmc.AccordionPanel([
+                                                html.P([
+                                                    "Dash, Plotly, Pandas, Scikit-learn, Hugging Face..."
+                                                ])
+                                            ]),
+                                        ],
+                                        value="tools",
+                                    ),
+                                    dmc.AccordionItem(
+                                        [
+                                            dmc.AccordionControl("Methodology"),
+                                            dmc.AccordionPanel([
+                                                html.P([
+                                                    "In the future, we will provide more information about additional data sources and the methodology used to collect and analyse the data in supporting the improved analysis."
+                                                   ])
+                                            ]),
+                                        ],
+                                        value="methodology",
                                     ),
                                 ],
                             )

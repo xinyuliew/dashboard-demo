@@ -227,15 +227,15 @@ def update_output(dates, value):
     sorted_topics = sorted_topics.head(value)
     
     table = dash.dash_table.DataTable(
-        data=sorted_topics[['Topics', 'Total volume', 'Total engagement', 'Harmfulness']].to_dict('records'),
-        columns=[{'name': col, 'id': col} for col in ['Topics', 'Total volume', 'Total engagement', 'Harmfulness']],
+        data=sorted_topics[['Topic_id', 'Topics', 'Total volume', 'Total engagement', 'Harmfulness']].to_dict('records'),
+        columns=[{'name': col, 'id': col} for col in ['Topic_id', 'Topics', 'Total volume', 'Total engagement', 'Harmfulness']],
         
         # Add tooltips for each column to indicate how each is calculated
         tooltip_header={
             'Topics': 'Clustered theme description',
             'Total volume': 'Count of related post',
             'Total engagement': 'Count of replies generated towards posts',
-            'Harmfulness': 'Detection of hate speech, toxicity, threats, or abusive language'
+            'Harmfulness': 'Hate speech, toxicity, threats, or abusive language.'
         },
 
         style_cell={'textAlign': 'left',

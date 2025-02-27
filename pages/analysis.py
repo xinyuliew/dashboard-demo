@@ -95,7 +95,7 @@ def discourse_analysis_layout():
                                             description="Select a date range",
                                             minDate=df['created_utc'].min(),
                                             type="range",
-                                            value=[date(2020, 4, 24), date(2021, 5, 6)],
+                                            value=[date(2020, 11, 20), date(2021, 5, 6)],
                                         ),    
                                         dmc.Space(h=10),
                                         dmc.Text(id="selected-date-input-range-picker2"), 

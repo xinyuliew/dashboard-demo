@@ -18,7 +18,7 @@ df = get_data_supa(supabase, "reddit")
 
 # Assign unique IDs and Harmfulness to topics once
 topic_counts = df['Topic'].value_counts()
-sorted_topics = pd.DataFrame({'Topics': topic_counts.index, 'Total number of post': topic_counts.values})
+sorted_topics = pd.DataFrame({'Topics': topic_counts.index, 'Total volume': topic_counts.values})
 sorted_topics['Topic_id'] = [str(i).zfill(3) for i in range(1, len(sorted_topics) + 1)]
 sorted_topics['Harmfulness'] = (['High'] * 2 + ['Medium'] * 2 + ['Low'])[:len(sorted_topics)]
 
@@ -49,7 +49,7 @@ def overview_layout():
                                                     description="Select a date range",
                                                     minDate=df['created_utc'].min(),
                                                     type="range",
-                                                    value=[date(2020, 4, 24), date(2021, 5, 6)],
+                                                    value=[date(2020, 11, 20), date(2021, 5, 6)],
                                                 ),    
                                                 dmc.Space(h=10),
                                                 dmc.Text(id="selected-date-input-range-picker"), 
@@ -214,11 +214,11 @@ def update_output(dates, value):
     combined_counts = post_counts.combine_first(replies_counts).sort_values(ascending=False)
 
     sorted_topics = combined_counts.reset_index()
-    sorted_topics.columns = ['Topics', 'Total number of post']
+    sorted_topics.columns = ['Topics', 'Total volume']
     sorted_topics['Topic_id'] = [str(i).zfill(3) for i in range(1, len(sorted_topics) + 1)]
     
     replies = [replies_counts.get(topic, 0) for topic in sorted_topics['Topics']]
-    sorted_topics['Total number of replies'] = replies
+    sorted_topics['Total engagement'] = replies
 
     severity_values = ['High'] * 2 + ['Medium'] * 2 + ['Low']
     severity_values = severity_values[:len(sorted_topics)]
@@ -227,15 +227,15 @@ def update_output(dates, value):
     sorted_topics = sorted_topics.head(value)
     
     table = dash.dash_table.DataTable(
-        data=sorted_topics[['Topic_id', 'Topics', 'Total number of post', 'Total number of replies', 'Harmfulness']].to_dict('records'),
-        columns=[{'name': col, 'id': col} for col in ['Topic_id', 'Topics', 'Total number of post', 'Total number of replies', 'Harmfulness']],
+        data=sorted_topics[['Topics', 'Total volume', 'Total engagement', 'Harmfulness']].to_dict('records'),
+        columns=[{'name': col, 'id': col} for col in ['Topics', 'Total volume', 'Total engagement', 'Harmfulness']],
         
         # Add tooltips for each column to indicate how each is calculated
         tooltip_header={
-            'Topics': 'Extracted discussion topic.',
-            'Total number of post': 'Initial post count.',
-            'Total number of replies': 'Replies to posts.',
-            'Harmfulness': 'Measured level of harmful or toxic language.'
+            'Topics': 'Clustered theme description',
+            'Total volume': 'Count of related post',
+            'Total engagement': 'Count of replies generated towards posts',
+            'Harmfulness': 'Detection of hate speech, toxicity, threats, or abusive language'
         },
 
         style_cell={'textAlign': 'left',

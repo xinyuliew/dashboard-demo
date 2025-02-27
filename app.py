@@ -51,9 +51,9 @@ def render_page_content(pathname):
         content = overview_layout()
         menubar_content = menubar("Overview")
         footer_style = footer()
-    elif pathname == "/discourse_analysis":
+    elif pathname == "/detailed_analysis":
         content = discourse_analysis_layout()
-        menubar_content = menubar("Discourse Analysis")
+        menubar_content = menubar("Detailed Analysis")
         footer_style = footer()
     elif pathname == "/account":
         content = account_layout()
@@ -122,7 +122,7 @@ def toggle_collapse(n, is_open):
 def update_active_link(pathname):
     return (
         pathname == "/",
-        pathname == "/discourse_analysis",
+        pathname == "/detailed_analysis",
         pathname == "/support",
         pathname == "/sources",
     )

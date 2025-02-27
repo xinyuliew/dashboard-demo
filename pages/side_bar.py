@@ -41,10 +41,10 @@ def sidebar():
                             rightSection=DashIconify(icon="tabler-chevron-right")
                         ),
                         dmc.NavLink(
-                            label="Discourse Analysis", 
+                            label="Detailed Analysis", 
                             color="white", 
                             leftSection=get_icon("ci:chat-conversation-circle"), 
-                            href="/discourse_analysis", 
+                            href="/detailed_analysis", 
                             id="discourse-link", 
                             active="exact",  # Active only on exact match
                             variant="filled", 

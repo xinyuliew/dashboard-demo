@@ -20,7 +20,7 @@ def footer():
                 dbc.Nav(
                     [
                         dbc.NavLink("Overview", href="/", active='exact'),
-                        dbc.NavLink("Discourse Analysis", href="/discourse_analysis", active='exact'),
+                        dbc.NavLink("Detailed Analysis", href="/detailed_analysis", active='exact'),
                         dbc.NavLink("Support", href="/support", active='exact'),
                         dbc.NavLink("My account", href="/account", active='exact'),
                     ],

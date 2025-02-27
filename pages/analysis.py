@@ -15,7 +15,7 @@ nltk.download('stopwords')
 from nltk.corpus import stopwords
 
 # Initialize Dash app
-dash.register_page(__name__, path='/discourse_analysis')
+dash.register_page(__name__, path='/detailed_analysis')
 
 # Initialize Supabase client
 supabase = get_supabase_client()
@@ -80,7 +80,7 @@ def discourse_analysis_layout():
     layout = html.Div([
         dbc.Row([
                     dbc.Col([
-                         create_notification("This is a demo showcasing an in-depth view of social media discourses, facilitating investigations by featuring stance and sentiment labels for each text within discourses. This is designed to support investigative efforts, such as uncovering the propagation and reasoning behind narratives.")
+                         create_notification("This is a demo showcasing an in-depth view of social media conversations, facilitating investigations by featuring stance and sentiment labels for each text within discourses. This is designed to support investigative efforts, such as uncovering the propagation and reasoning behind narratives.")
                     ]),
                 ]),
         dbc.Row(
@@ -130,7 +130,7 @@ def discourse_analysis_layout():
                         html.Div([
                             html.Div([
                                 html.H5("Summary", className="card-title fw-bold"), 
-                                html.H6("A zoomed-in view of top kewords, stances and sentiments for topic(s) of interest, allowing the customisation for investigation into details and trends.", className="card-subtitle")
+                                html.H6("A focused view of key keywords, stances, and sentiments for selected topics of interest. This allows users to customise their analysis in detailed view", className="card-subtitle")
                             ],),
                             explain("Summary")
                         ], className="card-header-container")  
@@ -158,7 +158,7 @@ def discourse_analysis_layout():
                         html.Div([
                             html.Div([
                                 html.H5("Discourses", className="card-title fw-bold"),
-                                html.H6("All resulting discourses that contributed to the visual analysis to support in-depth investigation.", className="card-subtitle")
+                                html.H6("All resulting conversations that contributed to the visual analysis to support in-depth investigation.", className="card-subtitle")
                             ],),
                             explain("Discourses")      
                             ], className="card-header-container")  

@@ -75,9 +75,9 @@ def overview_layout():
                                         dbc.Col([
                                             dmc.NumberInput(
                                                 id='num-topics-slider',
-                                                label="Filter Topics",
+                                                label="Topic Filter",
                                                 placeholder="From 1-5",
-                                                description="Select number of topics to cluster",
+                                                description="Select the number of topics to group related themes",
                                                 min=1,
                                                 max=5,
                                             ),
@@ -100,7 +100,7 @@ def overview_layout():
                                 html.Div([
                                     html.Div([
                                         html.H5("Trending Topics", className="card-title fw-bold"),  # Bold title
-                                        html.H6("Clustered themes within discourses based on your selected parameters.", 
+                                        html.H6("A summary view of themes grouped from discourses based on your selected parameters.", 
                                         className="card-subtitle"),  # Italic subtitle 
                                     ]),
                                     explain("Top")
@@ -157,7 +157,7 @@ def overview_layout():
                                  html.Div([
                                      html.Div([
                                         html.H5("Popularity Over Time", className="card-title fw-bold"),  
-                                        html.H6("The level of engagement or interest in topics over time.",
+                                        html.H6("View the level of engagement or interest in trending topics over time.",
                                         className="card-subtitle"),
                                     ]),
                                     explain("Popularity")

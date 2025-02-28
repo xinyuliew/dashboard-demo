@@ -11,31 +11,28 @@ from dash.exceptions import PreventUpdate
 import re
 from collections import Counter
 import nltk
-nltk.download('stopwords')
+from itertools import chain
 from nltk.corpus import stopwords
+from functools import lru_cache
 
-# Initialize Dash app
+@lru_cache(maxsize=128)
+def get_most_common_words_cached(text):
+    all_tokens = text.lower().split()  
+    filtered_tokens = [word for word in all_tokens if word not in stop_words and len(word) > 2]
+    return Counter(filtered_tokens).most_common(7)
+
+try:
+    stop_words = frozenset(stopwords.words("english"))
+except LookupError:
+    nltk.download("stopwords")
+    stop_words = frozenset(stopwords.words("english"))
+
+TOKEN_PATTERN = re.compile(r'\b\w+\b')
+
 dash.register_page(__name__, path='/detailed_analysis')
-
-# Initialize Supabase client
 supabase = get_supabase_client()
-
-# Fetch data from the "reddit" table in Supabase
-df = get_data_supa(supabase, "reddit")  # Pass the supabase client and table name
-
+df = get_data_supa(supabase, "reddit") 
 available_topics = df['Topic'].unique()
-
-# Load stopwords
-stop_words = set(stopwords.words("english"))
-
-def simple_tokenize(text):
-    tokens = re.findall(r'\b\w+\b', text.lower())
-    return [word for word in tokens if word not in stop_words and len(word) > 2]
-
-def get_most_common_words(texts, n=7):
-    all_tokens = [token for text in texts for token in simple_tokenize(str(text))]
-    return Counter(all_tokens).most_common(n)
-
 
 def create_rows(df_root, df_comments):
     def generate_rows(parent_id):
@@ -176,79 +173,68 @@ def discourse_analysis_layout():
 layout = discourse_analysis_layout()
 
 @callback(
-    Output('output-container-date-picker-range2', 'children'),
-    Output('stance_distribution', 'figure'),
-    Output('sentiment_distribution', 'figure'),
-    Output('table_keywords', 'figure'),
-    Output('table-container2', 'children'),
-    Input('my-date-picker-range2', 'value'),
-    Input('num-topics-picker', 'value'),
+    Output("output-container-date-picker-range2", "children"),
+    Output("stance_distribution", "figure"),
+    Output("sentiment_distribution", "figure"),
+    Output("table_keywords", "figure"),
+    Output("table-container2", "children"),
+    Input("my-date-picker-range2", "value"),
+    Input("num-topics-picker", "value")
 )
-
-def update_output(dates, value):
-    if None in dates:
+def update_output(dates, selected_topics):
+    if not dates or not selected_topics:
         raise PreventUpdate
-   
+
     start_date, end_date = map(date.fromisoformat, dates)
-    # Filter DataFrame based on date range
-    filtered_df = df[(df['created_utc'] >= start_date) & (df['created_utc'] <= end_date)]
+    selected_df = df.query("created_utc >= @start_date & created_utc <= @end_date & Topic in @selected_topics")
 
-    # Filter root posts by topics of interest
-    selected_df = filtered_df[filtered_df['Topic'].isin(value)]
+    if selected_df.empty:
+        return f"No data available for {start_date} to {end_date}", px.bar(title="No Data"), px.bar(title="No Data"), px.bar(title="No Data"), html.Div("No data available")
 
-    # Put every data in selected_df that their "parent" is 1 into df_root
-    df_root = selected_df[selected_df['Parent'] == '1']
-
-    # Put every data in selected_df that their "parent" is not 1 into df_comments
-    df_comments = selected_df[selected_df['Parent'] != '1']
-
-    # Generate most common words
-    most_common_words = get_most_common_words(selected_df['text'])
-    key_df = pd.DataFrame(most_common_words, columns=['Word', 'Frequency'])
+    all_text = " ".join(selected_df["text"].dropna())
+    most_common_words = get_most_common_words_cached(all_text)  # Cached function call
+    key_df = pd.DataFrame(most_common_words, columns=["Word", "Frequency"])
 
     wordcount_chart = px.bar(
-                        key_df, y='Word', x='Frequency', title="Top keywords",
-                        labels={"Word": "Words", "Frequency": "Count"}, color='Frequency',
-                        color_continuous_scale='blues', orientation='h'
-                        ).update_layout(
-                            xaxis_title="Count", 
-                            yaxis_title="Words", 
-                            margin=dict(l=0, r=0, t=30, b=30),  # Adjusted for better spacing
-                            height=300
-                        )
+        key_df, y="Word", x="Frequency", title="Top Keywords",
+        labels={"Word": "Words", "Frequency": "Count"}, color="Frequency",
+        color_continuous_scale="blues", orientation="h"
+    ).update_layout(
+        xaxis_title="Count", yaxis_title="Words",
+        margin=dict(l=0, r=0, t=30, b=30), height=300
+    )
 
-    # Group by 'Stance' and count occurrences
-    stance_counts = selected_df['Stance'].value_counts().reset_index()
-    stance_counts.columns = ['Stance', 'Count']
+    def compute_proportions(column_name):
+        counts = selected_df[column_name].value_counts(normalize=True).mul(100).reset_index()
+        counts.columns = [column_name, "Proportion"]
+        return counts
 
-    # Calculate proportions as percentages
-    stance_proportions = stance_counts.copy()
-    stance_proportions['Proportion'] = (stance_proportions['Count'] / stance_proportions['Count'].sum()) * 100
+    stance_proportions = compute_proportions("Stance")
+    sentiment_proportions = compute_proportions("Sentiment")
 
-    # Create the bar chart with proportions
-    stance_chart = px.bar(stance_proportions, x='Proportion', y='Stance', color='Stance', title='Stance distribution', color_discrete_map={
-                        'Against': '#FF6F6F',
-                        'Favor': '#6FDF6F',
-                        'None': '#C0C0C0'
-    }).update_layout(xaxis_title="Proportions (%)", yaxis_title="Stances", showlegend=False, 
-                     xaxis=dict(range=[0, 100]), margin=dict(l=0, r=0, t=30, b=30),  # Adjusted for better spacing
-                    height=300)
-    
-    # Group by 'Sentiment' and count occurrences
-    sentiment_counts = selected_df['Sentiment'].value_counts().reset_index()
-    sentiment_counts.columns = ['Sentiment', 'Count']
-    sentiment_proportions = sentiment_counts.copy()
-    sentiment_proportions['Proportion'] = (sentiment_proportions['Count'] / sentiment_proportions['Count'].sum()) * 100
+    stance_chart = px.bar(
+        stance_proportions, x="Proportion", y="Stance", color="Stance", title="Stance Distribution",
+        color_discrete_map={"Against": "#FF6F6F", "Favor": "#6FDF6F", "None": "#C0C0C0"}
+    ).update_layout(
+        xaxis_title="Proportions (%)", yaxis_title="Stances", showlegend=False,
+        xaxis=dict(range=[0, 100]), margin=dict(l=0, r=0, t=30, b=30), height=300
+    )
 
-    sentiment_chart = px.bar(sentiment_proportions, x='Proportion', y='Sentiment', color='Sentiment', title='Sentiment distribution', color_discrete_map={
-            'Positive': '#4CAF50',
-            'Negative': '#F44336',
-            'Neutral': '#9E9E9E'
-    }).update_layout(xaxis_title="Proportions (%)", yaxis_title="Sentiments", showlegend=False, modebar=dict(remove=['lasso2d', 'select2d', 'reset', 'hover', 'zoom', 'autoscale']), 
-                     xaxis=dict(range=[0, 100]), margin=dict(l=0, r=0, t=30, b=30), height = 300)
-    
-    
+    sentiment_chart = px.bar(
+        sentiment_proportions, x="Proportion", y="Sentiment", color="Sentiment", title="Sentiment Distribution",
+        color_discrete_map={"Positive": "#4CAF50", "Negative": "#F44336", "Neutral": "#9E9E9E"}
+    ).update_layout(
+        xaxis_title="Proportions (%)", yaxis_title="Sentiments", showlegend=False,
+        xaxis=dict(range=[0, 100]), margin=dict(l=0, r=0, t=30, b=30), height=300
+    )
+
+    df_root = selected_df[selected_df["Parent"] == "1"]
+    df_comments = selected_df[selected_df["Parent"] != "1"]
     rows = create_rows(df_root, df_comments)
-    discourse_table = html.Div(collapsible_table.ReactTable(id='table-container2', rows=rows), className="table-discourse")
 
-    return f"You have selected from {start_date} to {end_date}", stance_chart, sentiment_chart, wordcount_chart,discourse_table
+    discourse_table = html.Div(
+        collapsible_table.ReactTable(id="table-container2", rows=rows),
+        className="table-discourse"
+    )
+
+    return f"You have selected from {start_date} to {end_date}", stance_chart, sentiment_chart, wordcount_chart, discourse_table

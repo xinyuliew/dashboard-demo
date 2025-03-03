@@ -50,7 +50,7 @@ def overview_layout():
                                                 dmc.Space(h=10),
                                                 dmc.Text(id="selected-date-input-range-picker"), 
                                                 ],
-                                            xs=12, sm=12, md=4, lg=4,
+                                            xs=12, sm=12, md=12, lg=4,
                                         ),
                                         dbc.Col([
                                             dmc.MultiSelect(
@@ -66,7 +66,7 @@ def overview_layout():
                                                 mb=10,
                                             ),
                                             ],
-                                            xs=12, sm=12, md=4, lg=4,
+                                            xs=12, sm=12, md=12, lg=4,
                                         ),
                                         dbc.Col([
                                             dmc.NumberInput(
@@ -78,7 +78,7 @@ def overview_layout():
                                                 max=5,
                                             ),
                                             ],
-                                            xs=12, sm=12, md=4, lg=4),
+                                            xs=12, sm=12, md=12, lg=4),
                                             html.Div(id='output-container-date-picker-range')
                                         ],
                                     justify="between", 

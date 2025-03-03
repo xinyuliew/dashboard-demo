@@ -127,7 +127,9 @@ def overview_layout():
                                 dcc.Loading(dcc.Graph(id='stances-chart'))
                             ])
                         ])
-                    ], xs=12, sm=12, md=12, lg=6),
+                    ], xs=12, sm=12, md=12, lg=12),
+                ]),
+                dbc.Row([
                     dbc.Col([
                         dbc.Card([
                             dbc.CardHeader(
@@ -143,7 +145,7 @@ def overview_layout():
                                 dcc.Loading(dcc.Graph(id='sentiments-chart'))
                             ])
                         ])
-                    ], id="sentimentcard", xs=12, sm=12, md=12, lg=6)  # <-- This bracket was missing
+                    ], xs=12, sm=12, md=12, lg=12) 
                 ]),
                 dbc.Row([
                     dbc.Col([

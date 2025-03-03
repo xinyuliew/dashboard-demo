@@ -202,10 +202,11 @@ def create_notification(description):
 
 def barchart_layout(figure, topic_order):
     figure.update_layout(
+        height=300,
         legend=dict(title_text="", orientation="h", yanchor="bottom", y=1.05, xanchor="center", x=0),
         xaxis=dict(range=[0, 100], title="Proportions (%)"),
         yaxis=dict(categoryorder="array", categoryarray=topic_order, title="Topic"),
-        margin=dict(l=0, r=0, t=30, b=30),  # Adjusted for better spacing
+        margin=dict(l=0, r=0, t=30, b=30), 
         modebar=dict(remove=['lasso2d', 'select2d', 'reset', 'hover', 'zoom', 'autoscale'])
     )
     return figure

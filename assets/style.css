@@ -532,9 +532,3 @@ body {
     border-radius: 0.4rem !important;
     min-width: none;
 }
-
-@media (max-width: 768px) {
-    #sentimentcard .card {
-        margin-top: 1rem !important;
-    }
-}

@@ -19,7 +19,7 @@ from functools import lru_cache
 def get_most_common_words_cached(text):
     all_tokens = text.lower().split()  
     filtered_tokens = [word for word in all_tokens if word not in stop_words and len(word) > 2]
-    return Counter(filtered_tokens).most_common(7)
+    return Counter(filtered_tokens).most_common(6)
 
 try:
     stop_words = frozenset(stopwords.words("english"))
@@ -201,7 +201,7 @@ def update_output(dates, selected_topics):
         color_continuous_scale="blues", orientation="h"
     ).update_layout(
         xaxis_title="Count", yaxis_title="Words",
-        margin=dict(l=0, r=0, t=30, b=30), height=300
+        margin=dict(l=0, r=0, t=30, b=30), height=200
     )
 
     def compute_proportions(column_name):
@@ -217,7 +217,7 @@ def update_output(dates, selected_topics):
         color_discrete_map={"Against": "#FF6F6F", "Favor": "#6FDF6F", "None": "#C0C0C0"}
     ).update_layout(
         xaxis_title="Proportions (%)", yaxis_title="Stances", showlegend=False,
-        xaxis=dict(range=[0, 100]), margin=dict(l=0, r=0, t=30, b=30), height=300
+        xaxis=dict(range=[0, 100]), margin=dict(l=0, r=0, t=30, b=30), height=200
     )
 
     sentiment_chart = px.bar(
@@ -225,7 +225,7 @@ def update_output(dates, selected_topics):
         color_discrete_map={"Positive": "#4CAF50", "Negative": "#F44336", "Neutral": "#9E9E9E"}
     ).update_layout(
         xaxis_title="Proportions (%)", yaxis_title="Sentiments", showlegend=False,
-        xaxis=dict(range=[0, 100]), margin=dict(l=0, r=0, t=30, b=30), height=300
+        xaxis=dict(range=[0, 100]), margin=dict(l=0, r=0, t=30, b=30), height=200
     )
 
     df_root = selected_df[selected_df["Parent"] == "1"]

@@ -134,8 +134,7 @@ def overview_layout():
                                 html.Div([
                                     html.Div([
                                         html.H5("Sentiment Distribution by Topic", className="card-title fw-bold"),  # Bold title
-                                        html.H6("Comparison of emotional tone used within discourses.",
-                                        className="card-subtitle"),
+                                        html.H6("Comparison of emotional tone used within discourses.", className="card-subtitle"),
                                     ]),
                                     explain("Sentiment")
                                 ], className="card-header-container")  
@@ -144,7 +143,7 @@ def overview_layout():
                                 dcc.Loading(dcc.Graph(id='sentiments-chart'))
                             ])
                         ])
-                    ], xs=12, sm=12, md=12, lg=6),
+                    ], id="sentimentcard", xs=12, sm=12, md=12, lg=6)  # <-- This bracket was missing
                 ]),
                 dbc.Row([
                     dbc.Col([

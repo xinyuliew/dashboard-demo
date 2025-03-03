@@ -14,6 +14,7 @@ _dash_renderer._set_react_version("18.2.0")
 # Enable compression
 app = dash.Dash(
     external_stylesheets=[
+        "assets/style.css",
         "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css",
         dbc.icons.BOOTSTRAP,
         dmc.styles.DATES

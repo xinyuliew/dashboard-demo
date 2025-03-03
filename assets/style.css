@@ -15,7 +15,7 @@ body {
 @media (min-width: 576px) {
     .container, .container-sm{
         padding: 0;
-        max-width: 600px;
+        max-width: 690px;
     }
 }
 
@@ -531,4 +531,10 @@ body {
     color: #FFFFFF !important;
     border-radius: 0.4rem !important;
     min-width: none;
+}
+
+@media (max-width: 768px) {
+    #sentimentcard .card {
+        margin-top: 1rem !important;
+    }
 }

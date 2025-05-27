@@ -2,8 +2,6 @@
 
 This interactive dashboard prototype was built for research purposes. Developed using the **Dash Open Source Framework**, it was chosen for its seamless integration with Python libraries and its potential for integration with machine learning frameworks in future iterations.
 
-For a detailed description, please refer to the following publication and use it for citation:
-
 ```
 @inproceedings{10.1145/3686038.3686048,
   author = {Liew, Xin Yu and Hameed, Nazia and Clos, Jeremie and Fischer, Joel E.},
